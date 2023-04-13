@@ -5,16 +5,32 @@ namespace App\Http\Controllers;
 use App\Models\Child;
 use App\Http\Requests\StoreChildRequest;
 use App\Http\Requests\UpdateChildRequest;
+use Illuminate\Http\Request;
+
 
 class ChildController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index_by_age()
     {
-        //
+        $child=Child::orderBy('age', 'Asc')->get()->toArray();
+        return response()->json($child, 200);
     }
+
+    public function index_by_section($section)
+    {
+        $child=Child::where('section','=',$section)->get();
+        return response()->json($child, 200);
+    }
+
+    public function index_by_infection($infection)
+    {
+        $child=Child::where('infection','=',$infection)->get();
+        return response()->json($child, 200);
+    }
+
 
     /**
      * Show the form for creating a new resource.

@@ -17,3 +17,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::get('index_by_age', [App\Http\Controllers\ChildController::class, 'index_by_age']);
+Route::get('index_by_section/{section}', [App\Http\Controllers\ChildController::class, 'index_by_section']);
+Route::get('index_by_infection/{infection}', [App\Http\Controllers\ChildController::class, 'index_by_infection']);
