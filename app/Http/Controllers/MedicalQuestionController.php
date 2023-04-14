@@ -13,7 +13,8 @@ class MedicalQuestionController extends Controller
      */
     public function index()
     {
-        //
+        $ques = MedicalQuestion::all();
+        return response()->json($ques, 200);
     }
 
     /**

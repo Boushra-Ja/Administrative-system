@@ -11,9 +11,9 @@ class TitelsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function Educational_index()
     {
-        //
+       // $edu=Titels::where()
     }
 
     /**

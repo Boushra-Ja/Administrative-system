@@ -11,9 +11,11 @@ class EductionalChoiceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($ques_id)
     {
-        //
+        $choice = EductionalChoice::where('edu_id', '=', $ques_id)->get();
+        return response()->json($choice, 200);
+
     }
 
     /**

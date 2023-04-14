@@ -11,9 +11,10 @@ class MedicalChoiceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($ques_id)
     {
-        //
+        $choice = MedicalChoice::where('med_id', '=', $ques_id)->get();
+        return response()->json($choice, 200);
     }
 
     /**

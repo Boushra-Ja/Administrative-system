@@ -13,7 +13,8 @@ class EductionalQuestionController extends Controller
      */
     public function index()
     {
-        //
+        $ques = EductionalQuestion::all();
+        return response()->json($ques, 200);
     }
 
     /**
