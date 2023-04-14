@@ -10,5 +10,7 @@ class MedicalQuestion extends Model
     use HasFactory;
     protected $fillable = [
         'question',
+        'type'
+
     ];
 }
