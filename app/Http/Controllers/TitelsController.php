@@ -11,9 +11,18 @@ class TitelsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function Educational_index()
+    public function educational_title_index()
     {
-       // $edu=Titels::where()
+        $edu = Titels::where('type', '=', 'e')->get();
+        return response()->json($edu, 200);
+
+    }
+
+    public function medical_title_index()
+    {
+        $med = Titels::where('type', '=', 'm')->get();
+        return response()->json($med, 200);
+
     }
 
     /**
