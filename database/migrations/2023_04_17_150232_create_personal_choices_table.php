@@ -9,13 +9,11 @@ return new class extends Migration
 
     public function up(): void
     {
-        Schema::create('children', function (Blueprint $table) {
+        Schema::create('personal_choices', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name') ;
-            $table->integer('age');
-            $table->integer('phone_num') ;
-            $table->string('infection');
-            $table->string('section');
+            $table->string('choice') ;
+            $table->integer('personal_id')->unsigned();
+            $table->foreign('personal_id')->references('id')->on('personal_questions')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -23,6 +21,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('children');
+        Schema::dropIfExists('personal_choices');
     }
 };

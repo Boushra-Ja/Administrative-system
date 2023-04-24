@@ -79,6 +79,18 @@ class TitelsSeeder extends Seeder
 
         ]);
 
+        ////المعلومات الشخصية
+        DB::table('titels')->insert([
+            'id'=>"10",
+            'name' => "معلومات عامة عن العائلة",
+            'type'=>'p'
 
+        ]);
+        DB::table('titels')->insert([
+            'id'=>"11",
+            'name' => "معلومات عامة عن الطفل",
+            'type'=>'p'
+
+        ]);
     }
 }

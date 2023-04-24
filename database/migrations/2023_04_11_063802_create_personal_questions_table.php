@@ -12,6 +12,9 @@ return new class extends Migration
         Schema::create('personal_questions', function (Blueprint $table) {
             $table->increments('id');
             $table->string('question') ;
+            $table->boolean('type') ;
+            $table->integer('title_id')->unsigned();
+            $table->foreign('title_id')->references('id')->on('titels')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
