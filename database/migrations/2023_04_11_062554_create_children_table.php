@@ -14,8 +14,8 @@ return new class extends Migration
             $table->string('name') ;
             $table->integer('age');
             $table->integer('phone_num') ;
-            $table->string('infection');
-            $table->string('section');
+            $table->string('infection')->nullable();
+            $table->string('section')->nullable();
             $table->timestamps();
         });
     }

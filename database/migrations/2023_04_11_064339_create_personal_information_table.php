@@ -11,9 +11,11 @@ return new class extends Migration
     {
         Schema::create('personal_information', function (Blueprint $table) {
             $table->increments('id');
-             $table->integer('ques_id')->unsigned();
+            $table->integer('ques_id')->unsigned();
             $table->foreign('ques_id')->references('id')->on('personal_questions')->constrained()->onDelete('cascade');
             $table->string('answer') ;
+            $table->integer('child_id')->unsigned();
+            $table->foreign('child_id')->references('id')->on('children')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

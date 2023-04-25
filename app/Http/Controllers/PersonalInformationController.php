@@ -2,63 +2,53 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\API\BaseController;
 use App\Models\PersonalInformation;
 use App\Http\Requests\StorePersonalInformationRequest;
 use App\Http\Requests\UpdatePersonalInformationRequest;
+use App\Models\Child;
+use Illuminate\Support\Facades\DB;
 
-class PersonalInformationController extends Controller
+class PersonalInformationController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StorePersonalInformationRequest $request)
     {
-        //
+        $child_id = Child::orderBy('created_at', 'desc')->first()->value('id') ;
+        $child = PersonalInformation::create([
+            'answer' => $request->answer,
+            'ques_id' => $request->ques_id,
+            'child_id' =>  $child_id
+
+        ]);
+
+        if($child)
+            return $this->sendResponse($child, 'success in add all information ');
+
+        return $this->sendErrors([], 'failed in added child');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(PersonalInformation $personalInformation)
+
+
+    public function update(UpdatePersonalInformationRequest $request)
     {
-        //
+        $child = PersonalInformation::where('child_id', '=', $request->child_id)->where('ques_id' , $request->ques_id)->get();
+        $child->update([
+            'answer' => $request->answer,
+        ]);
+
+        if($child)
+            return $this->sendResponse($child, 'success in update information of child');
+
+        return $this->sendErrors([], 'failed in update information of child');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(PersonalInformation $personalInformation)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdatePersonalInformationRequest $request, PersonalInformation $personalInformation)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(PersonalInformation $personalInformation)
     {
         //

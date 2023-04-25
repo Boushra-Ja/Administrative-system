@@ -11,5 +11,6 @@ class PersonalInformation extends Model
     protected $fillable = [
         'answer',
         'ques_id',
+        'child_id'
     ];
 }

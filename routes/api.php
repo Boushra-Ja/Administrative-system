@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\ChildController;
+use App\Http\Controllers\PersonalInformationController;
+use App\Http\Controllers\PersonalQuestionController;
+use App\Models\PersonalInformation;
+use App\Models\PersonalQuestion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,3 +34,14 @@ Route::get('MedicalChoice_index/{ques_id}', [App\Http\Controllers\MedicalChoiceC
 
 Route::get('educational_title_index', [App\Http\Controllers\TitelsController::class, 'educational_title_index']);
 Route::get('medical_title_index', [App\Http\Controllers\TitelsController::class, 'medical_title_index']);
+
+
+///////////////////
+
+Route::resource('child' , ChildController::class) ;
+Route::get('personal_question/all' , [PersonalQuestionController::class , 'index']) ;
+Route::post('all_personal_info' , [PersonalInformationController::class , 'store']) ;
+Route::post('update/personalInfo' , [PersonalInformationController::class , 'update']) ;
+
+
+////php artisan migrate --path="database/migrations/2023_04_14_062044_create_titels_table.php"
