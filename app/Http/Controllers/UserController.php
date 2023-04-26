@@ -26,7 +26,7 @@ class UserController extends Controller
 
 
 
-        if ($valid['unique_number'] == 1111 && $valid['role']== 'role' )
+        if ($valid['unique_number'] == 1111 && $valid['role']== 'admin' )
             if($valid['email'] == $Email1 || $valid['email'] == $Email2  )
                       $check = true;
         if (!$check) {
