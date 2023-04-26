@@ -1,9 +1,10 @@
-<?php
+    <?php
 
 use App\Http\Controllers\ChildController;
 use App\Http\Controllers\PersonalInformationController;
 use App\Http\Controllers\PersonalQuestionController;
-use App\Models\PersonalInformation;
+    use App\Http\Controllers\UserController;
+    use App\Models\PersonalInformation;
 use App\Models\PersonalQuestion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -45,3 +46,4 @@ Route::post('update/personalInfo' , [PersonalInformationController::class , 'upd
 Route::get('child/show/{id}' , [ChildController::class , 'show']) ;
 
 ////php artisan migrate --path="database/migrations/2023_04_14_062044_create_titels_table.php"
+    Route::post('login' , [UserController::class , 'login']) ;
