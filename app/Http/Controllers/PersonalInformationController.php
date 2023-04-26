@@ -6,6 +6,7 @@ use App\Http\Controllers\API\BaseController;
 use App\Models\PersonalInformation;
 use App\Http\Requests\StorePersonalInformationRequest;
 use App\Http\Requests\UpdatePersonalInformationRequest;
+use App\Http\Resources\Boshra\PersonalInfoResourse;
 use App\Models\Child;
 use Illuminate\Support\Facades\DB;
 
@@ -14,8 +15,13 @@ class PersonalInformationController extends BaseController
 
     public function index()
     {
-        //
+
     }
+    public function show($child_id)
+    {
+
+    }
+
 
     public function store(StorePersonalInformationRequest $request)
     {

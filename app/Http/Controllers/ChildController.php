@@ -6,6 +6,7 @@ use App\Http\Controllers\API\BaseController;
 use App\Models\Child;
 use App\Http\Requests\StoreChildRequest;
 use App\Http\Requests\UpdateChildRequest;
+use App\Http\Resources\Boshra\ChildResourse;
 use Illuminate\Http\Request;
 
 
@@ -50,9 +51,12 @@ class ChildController extends BaseController
     }
 
 
-    public function show(Child $child)
+    public function show($id)
     {
-        //
+
+        $child = Child::where('id' , $id) ->get() ;
+        return $this->sendResponse(ChildResourse::collection($child), "this is all information for child");
+
     }
 
 
