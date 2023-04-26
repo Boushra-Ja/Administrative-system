@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
             EductionalQuestionSeeder::class,
             EductionalChoiceSeeder::class,
             PersonalQuestionSeeder::class,
-            PersonalChoiceSeeder::class
+            PersonalChoiceSeeder::class,
+            UserSeeder::class,
 
         ]);
     }
