@@ -32,10 +32,16 @@ class PersonalQuestionSeeder extends Seeder
 
         ]);
         PersonalQuestion::create([
-            'question' => ': تاريخ ومكان الميلاد',
+            'question' => ': تاريخ الميلاد',
             'title_id' => 11,
             'type' => 0 ,
             'id' => 4
+        ]);
+        PersonalQuestion::create([
+            'question' => ':  مكان الميلاد',
+            'title_id' => 11,
+            'type' => 0 ,
+            'id' => 33
         ]);
         PersonalQuestion::create([
             'question' => ': الجنس',
@@ -258,6 +264,15 @@ class PersonalQuestionSeeder extends Seeder
             'title_id' => 10,
             'type' => 0,
             'id' => 31
+
+
+        ]);
+
+        PersonalQuestion::create([
+            'question' => 'ملاحظات' ,
+            'title_id' => 10,
+            'type' => 0,
+            'id' => 32
 
 
         ]);
