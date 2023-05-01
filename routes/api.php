@@ -27,12 +27,6 @@ Route::get('index_by_age', [App\Http\Controllers\ChildController::class, 'index_
 Route::get('index_by_section/{section}', [App\Http\Controllers\ChildController::class, 'index_by_section']);
 Route::get('index_by_infection/{infection}', [App\Http\Controllers\ChildController::class, 'index_by_infection']);
 
-Route::get('EductionalQuestion_index', [App\Http\Controllers\EductionalQuestionController::class, 'index']);
-Route::get('EductionalChoice_index/{ques_id}', [App\Http\Controllers\EductionalChoiceController::class, 'index']);
-
-Route::get('MedicalQuestion_index', [App\Http\Controllers\MedicalQuestionController::class, 'index']);
-Route::get('MedicalChoice_index/{ques_id}', [App\Http\Controllers\MedicalChoiceController::class, 'index']);
-
 Route::get('educational_title_index', [App\Http\Controllers\TitelsController::class, 'educational_title_index']);
 Route::get('medical_title_index', [App\Http\Controllers\TitelsController::class, 'medical_title_index']);
 

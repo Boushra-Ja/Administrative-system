@@ -10,7 +10,8 @@ class EductionalQuestion extends Model
     use HasFactory;
     protected $fillable = [
         'question',
-        'type'
+        'type',
+        'titel_id'
 
     ];
 }

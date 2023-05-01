@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\bayan\Education_QResource;
+use App\Http\Resources\bayan\Medical_QResource;
 use App\Models\Titels;
 use App\Http\Requests\StoreTitelsRequest;
 use App\Http\Requests\UpdateTitelsRequest;
@@ -14,14 +16,16 @@ class TitelsController extends Controller
     public function educational_title_index()
     {
         $edu = Titels::where('type', '=', 'e')->get();
-        return response()->json($edu, 200);
+        $d= Education_QResource::collection($edu);
+        return response()->json($d, 200);
 
     }
 
     public function medical_title_index()
     {
         $med = Titels::where('type', '=', 'm')->get();
-        return response()->json($med, 200);
+        $d= Medical_QResource::collection($med);
+         return response()->json($d, 200);
 
     }
 
