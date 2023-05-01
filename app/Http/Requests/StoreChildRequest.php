@@ -18,7 +18,7 @@ class StoreChildRequest extends FormRequest
         return [
             'name' => 'required|string',
             'phone_number' => 'required|numeric',
-            'age' => 'required'
+            'age' => 'required|string'
         ];
     }
 }

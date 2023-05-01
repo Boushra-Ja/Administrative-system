@@ -7,6 +7,7 @@ use App\Models\Child;
 use App\Http\Requests\StoreChildRequest;
 use App\Http\Requests\UpdateChildRequest;
 use App\Http\Resources\Boshra\ChildResourse;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 
@@ -35,10 +36,18 @@ class ChildController extends BaseController
 
     public function store(StoreChildRequest $request)
     {
+        $dateOfBirth = $request->age;
+
+        $years = (int)Carbon ::parse($dateOfBirth)->diff(Carbon::now())->format('%y') ;
+        $months = (int)Carbon ::parse($dateOfBirth)->diff(Carbon::now())->format('%m') ;
+        $days = (int)Carbon ::parse($dateOfBirth)->diff(Carbon::now())->format('%d') ;
+
+        $age = ($years * 12 )+ $months ;
+
         $child = Child::create([
             'name' => $request->name,
             'phone_num' => $request->phone_number,
-            'age' => $request->age
+            'age' => $age
 
         ]);
 
