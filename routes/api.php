@@ -36,7 +36,8 @@ Route::get('medical_title_index', [App\Http\Controllers\TitelsController::class,
 Route::resource('child' , ChildController::class) ;
 Route::get('personal_question/all' , [PersonalQuestionController::class , 'index']) ;
 Route::get('child/show/{id}' , [ChildController::class , 'show']) ;
-Route::resource('personal_info' , PersonalInformationController::class)->except('show' , 'index') ;
+Route::resource('personal_info' , PersonalInformationController::class)->except('show' , 'index' , 'update') ;
+Route::post('update_child_info' , [PersonalInformationController::class , 'update_child']);
 ////php artisan migrate --path="database/migrations/2023_04_14_062044_create_titels_table.php"
 
 

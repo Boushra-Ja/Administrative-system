@@ -11,13 +11,13 @@ class PersonalQuestionSeeder extends Seeder
     public function run(): void
     {
         PersonalQuestion::create([
-            'question' => ': اسم الطالب',
+            'question' => ' اسم الطالب',
             'title_id' => 11,
             'type' => 0 ,
             'id' => 1
         ]);
         PersonalQuestion::create([
-            'question' => ': رقم دراسة الحالة',
+            'question' => 'رقم دراسة الحالة',
             'title_id' => 11,
             'type' => 0,
             'id' => 2
@@ -25,33 +25,33 @@ class PersonalQuestionSeeder extends Seeder
 
         ]);
         PersonalQuestion::create([
-            'question' => ': تاريخ دراسة الحالة',
+            'question' => ' تاريخ دراسة الحالة',
             'title_id' => 11,
             'type' => 0,
             'id' => 3
 
         ]);
         PersonalQuestion::create([
-            'question' => ': تاريخ الميلاد',
+            'question' => ' تاريخ الميلاد',
             'title_id' => 11,
             'type' => 0 ,
             'id' => 4
         ]);
         PersonalQuestion::create([
-            'question' => ':  مكان الميلاد',
+            'question' => '  مكان الميلاد',
             'title_id' => 11,
             'type' => 0 ,
             'id' => 33
         ]);
         PersonalQuestion::create([
-            'question' => ': الجنس',
+            'question' => ' الجنس',
             'title_id' => 11,
             'type' => 0,
             'id' => 5
 
         ]);
         PersonalQuestion::create([
-            'question' => ': الجنسية',
+            'question' => ' الجنسية',
             'title_id' => 11,
             'type' => 0,
             'id' => 6
@@ -60,7 +60,7 @@ class PersonalQuestionSeeder extends Seeder
 
         ]);
         PersonalQuestion::create([
-            'question' => ': رقم الهاتف',
+            'question' => ' رقم الهاتف',
             'title_id' => 11,
             'type' => 0,
             'id' => 7
@@ -69,14 +69,14 @@ class PersonalQuestionSeeder extends Seeder
 
         ]);
         PersonalQuestion::create([
-            'question' => ': العنوان',
+            'question' => ' العنوان',
             'title_id' => 11,
             'type' => 0,
             'id' => 8
 
         ]);
         PersonalQuestion::create([
-            'question' => ': الجهة المحولة',
+            'question' => ' الجهة المحولة',
             'title_id' => 11,
             'type' => 0,
             'id' => 9
@@ -84,7 +84,7 @@ class PersonalQuestionSeeder extends Seeder
 
         ]);
         PersonalQuestion::create([
-            'question' => ': تاريخ التحويل',
+            'question' => ' تاريخ التحويل',
             'title_id' => 11,
             'type' => 0,
             'id' => 10
@@ -93,7 +93,7 @@ class PersonalQuestionSeeder extends Seeder
 
         ]);
         PersonalQuestion::create([
-            'question' => ': تشخيص المحوّل',
+            'question' => ' تشخيص المحوّل',
             'title_id' => 11,
             'type' => 0,
             'id' => 11
@@ -101,7 +101,7 @@ class PersonalQuestionSeeder extends Seeder
 
         ]);
         PersonalQuestion::create([
-            'question' => ': هاتف الجهة المحولة',
+            'question' => ' هاتف الجهة المحولة',
             'title_id' => 11,
             'type' => 0,
             'id' => 12
@@ -109,7 +109,7 @@ class PersonalQuestionSeeder extends Seeder
 
         ]);
         PersonalQuestion::create([
-            'question' => ': ملخص المشكلة الحالية(نوعها وأعراضها)كما يرويها ولي الأمر',
+            'question' => ' ملخص المشكلة الحالية(نوعها وأعراضها)كما يرويها ولي الأمر',
             'title_id' => 11,
             'type' => 0,
             'id' => 13
@@ -118,7 +118,7 @@ class PersonalQuestionSeeder extends Seeder
         ]);
 
         PersonalQuestion::create([
-            'question' => ': اسم الأم',
+            'question' => ' اسم الأم',
             'title_id' => 10,
             'type' => 0,
             'id' => 14
@@ -126,7 +126,7 @@ class PersonalQuestionSeeder extends Seeder
 
         ]);
         PersonalQuestion::create([
-            'question' => ': عمر الأم',
+            'question' => ' عمر الأم',
             'title_id' => 10,
             'type' => 0,
             'id' => 15
@@ -134,7 +134,7 @@ class PersonalQuestionSeeder extends Seeder
 
         ]);
         PersonalQuestion::create([
-            'question' => ': المستوى التعليمي للأم',
+            'question' => ' المستوى التعليمي للأم',
             'title_id' => 10,
             'type' => 0,
             'id' => 16
@@ -142,7 +142,7 @@ class PersonalQuestionSeeder extends Seeder
 
         ]);
         PersonalQuestion::create([
-            'question' => ': عمل الأم ومكانها',
+            'question' => ' عمل الأم ومكانها',
             'title_id' => 10,
             'type' => 0,
             'id' => 17
@@ -150,7 +150,7 @@ class PersonalQuestionSeeder extends Seeder
 
         ]);
         PersonalQuestion::create([
-            'question' => ': اسم الأب',
+            'question' => ' اسم الأب',
             'title_id' => 10,
             'type' => 0,
             'id' => 18
@@ -158,7 +158,7 @@ class PersonalQuestionSeeder extends Seeder
 
         ]);
         PersonalQuestion::create([
-            'question' => ': عمر الأب',
+            'question' => ' عمر الأب',
             'title_id' => 10,
             'type' => 0,
             'id' => 19
@@ -166,7 +166,7 @@ class PersonalQuestionSeeder extends Seeder
 
         ]);
         PersonalQuestion::create([
-            'question' => ': المستوى التعليمي للأب',
+            'question' => ' المستوى التعليمي للأب',
             'title_id' => 10,
             'type' => 0,
             'id' => 20
@@ -174,7 +174,7 @@ class PersonalQuestionSeeder extends Seeder
 
         ]);
         PersonalQuestion::create([
-            'question' => ': عمل الأب ومكانه',
+            'question' => ' عمل الأب ومكانه',
             'title_id' => 10,
             'type' => 0,
             'id' => 21
@@ -182,7 +182,7 @@ class PersonalQuestionSeeder extends Seeder
 
         ]);
         PersonalQuestion::create([
-            'question' => ': درجة القرابة بين الأم والأب',
+            'question' => ' درجة القرابة بين الأم والأب',
             'title_id' => 10,
             'type' => 0,
             'id' => 22
@@ -190,7 +190,7 @@ class PersonalQuestionSeeder extends Seeder
 
         ]);
         PersonalQuestion::create([
-            'question' => ': عمر الأم عند إنجاب الطفل',
+            'question' => ' عمر الأم عند إنجاب الطفل',
             'title_id' => 10,
             'type' => 0,
             'id' => 23
@@ -210,7 +210,7 @@ class PersonalQuestionSeeder extends Seeder
 
 
         PersonalQuestion::create([
-            'question' => ': إن كان الجواب نعم اذكر الأمراض',
+            'question' => ' إن كان الجواب نعم اذكر الأمراض',
             'title_id' => 10,
             'type' => 0,
             'id' => 25
@@ -235,7 +235,7 @@ class PersonalQuestionSeeder extends Seeder
 
         ]);
         PersonalQuestion::create([
-            'question' => ': ماهي صلة القرابة',
+            'question' => ' ماهي صلة القرابة',
             'title_id' => 10,
             'type' => 0,
             'id' => 28
@@ -243,7 +243,7 @@ class PersonalQuestionSeeder extends Seeder
 
         ]);
         PersonalQuestion::create([
-            'question' => ': ما هو عدد إخوة الطفل',
+            'question' => ' ما هو عدد إخوة الطفل',
             'title_id' => 10,
             'type' => 0,
             'id' => 29
@@ -251,7 +251,7 @@ class PersonalQuestionSeeder extends Seeder
 
         ]);
         PersonalQuestion::create([
-            'question' => ': ترتيب الطفل في الأسرة',
+            'question' => ' ترتيب الطفل في الأسرة',
             'title_id' => 10,
             'type' => 0,
             'id' => 30
