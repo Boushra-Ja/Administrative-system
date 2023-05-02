@@ -16,8 +16,8 @@ class StorePersonalInformationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'answer' => 'required' ,
-            'ques_id' => 'required' ,
+            'sister_info' => 'required' ,
+            'child_info' => 'required' ,
         ];
     }
 }

@@ -14,6 +14,7 @@ return new class extends Migration
             $table->integer('child_id')->unsigned();
             $table->foreign('child_id')->references('id')->on('children')->constrained()->onDelete('cascade');
             $table->string('gender') ;
+            $table->string('name') ;
             $table->integer('age');
             $table->string('Educ_level');
             $table->timestamps();
