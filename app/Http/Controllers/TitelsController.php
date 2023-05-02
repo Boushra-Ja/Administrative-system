@@ -6,7 +6,7 @@ use App\Http\Resources\bayan\Education_QResource;
 use App\Http\Resources\bayan\Medical_QResource;
 use App\Models\Titels;
 use App\Http\Requests\StoreTitelsRequest;
-use App\Http\Requests\UpdateTitelsRequest;
+use App\Http\Requests\UpdateTitelsRequest; 
 
 class TitelsController extends Controller
 {
