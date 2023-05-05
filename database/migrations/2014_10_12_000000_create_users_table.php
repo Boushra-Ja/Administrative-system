@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('name');
             $table->bigInteger('unique_number');
             $table->string('role');
-            $table->string('email')->unique();
+            $table->string('email');
             $table->integer('points');
             $table->rememberToken();
             $table->timestamps();
