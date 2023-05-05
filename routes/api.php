@@ -41,12 +41,11 @@ Route::get('medical_title_index', [App\Http\Controllers\TitelsController::class,
 
 Route::resource('child' , ChildController::class) ;
 Route::get('personal_question/all' , [PersonalQuestionController::class , 'index']) ;
-Route::post('all_personal_info' , [PersonalInformationController::class , 'store']) ;
-Route::post('update/personalInfo' , [PersonalInformationController::class , 'update']) ;
-
-
+Route::get('child/show/{id}' , [ChildController::class , 'show']) ;
+Route::resource('personal_info' , PersonalInformationController::class)->except('show' , 'index' , 'update') ;
+Route::post('update_child_info' , [PersonalInformationController::class , 'update_child']);
 ////php artisan migrate --path="database/migrations/2023_04_14_062044_create_titels_table.php"
-    Route::post('LoginAdmin' , [UserController::class , 'LoginAdmin']) ;
-    Route::post('LoginEmployeeOrSpecialist' , [UserController::class , 'LoginEmployeeOrSpecialist']) ;
-    Route::post('AddEmployee' , [UserController::class , 'AddEmployee']) ;
-    Route::post('AddSpecialist' , [UserController::class , 'AddSpecialist']) ;
+
+
+
+Route::post('login' , [UserController::class , 'login']) ;
