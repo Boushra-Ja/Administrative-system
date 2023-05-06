@@ -120,4 +120,13 @@ class UserController extends  BaseController
 
     }
 
+    ///عرض جميع الموظفين في الجمعيه//
+    public function show_Employee()
+    {
+
+        $Emp= User::where('role', '=', 'Employee')->get();
+        return response()->json($Emp, 200);
+    }
+
+
 }
