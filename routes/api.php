@@ -29,6 +29,8 @@ Route::get('index_by_infection/{infection}', [App\Http\Controllers\ChildControll
 
 Route::get('educational_title_index', [App\Http\Controllers\TitelsController::class, 'educational_title_index']);
 Route::get('medical_title_index', [App\Http\Controllers\TitelsController::class, 'medical_title_index']);
+Route::post('medical_store', [App\Http\Controllers\MedicalConditionController::class, 'store']);
+Route::post('educational_store', [App\Http\Controllers\EductionalConditionController::class, 'store']);
 
 
 ///////////////////
