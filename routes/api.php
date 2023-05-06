@@ -46,6 +46,7 @@ Route::resource('personal_info' , PersonalInformationController::class)->except(
 Route::post('update_child_info' , [PersonalInformationController::class , 'update_child']);
 ////php artisan migrate --path="database/migrations/2023_04_14_062044_create_titels_table.php"
 
-
-
-Route::post('login' , [UserController::class , 'login']) ;
+Route::post('LoginAdmin' , [UserController::class , 'LoginAdmin']) ;
+Route::post('Login_Other' , [UserController::class , 'LoginEmployeeOrSpecialist']) ;
+Route::post('AddEmployee' , [UserController::class , 'AddEmployee']) ;
+Route::post('AddSpecialist' , [UserController::class , 'AddSpecialist']) ;
