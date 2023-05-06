@@ -2,23 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\AppMiddleware;
 use App\Models\Appointment;
-use App\Http\Requests\StoreAppointmentRequest;
+use Illuminate\Http\Request;
 use App\Http\Requests\UpdateAppointmentRequest;
 
 class AppointmentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+
+    public function __construct()
     {
-        //
+        $this->middleware(AppMiddleware::class);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    public function home(){
+
+        dd('You are active');
+    }
+
     public function create()
     {
         //
@@ -27,22 +28,29 @@ class AppointmentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreAppointmentRequest $request)
+    public function Store_Appointment(Request $request)
     {
-        //
+        $valid = $request->validate([
+            'child_id' => 'required ',
+            'app_date' => 'required ',
+
+
+
+        ]);
+
+        $pp = Appointment::create([
+            'child_id' => $valid['child_id'],
+            'app_date' => $valid['app_date'],
+
+        ]);
+        return response()->json([
+            'message'=>'An Appointment has been booked successfully',
+            'Appointment' => $pp,
+        ]);
+
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Appointment $appointment)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Appointment $appointment)
     {
         //
