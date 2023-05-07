@@ -46,6 +46,8 @@ Route::get('personal_question/all' , [PersonalQuestionController::class , 'index
 Route::get('child/show/{id}' , [ChildController::class , 'show']) ;
 Route::resource('personal_info' , PersonalInformationController::class)->except('show' , 'index' , 'update') ;
 Route::post('update_child_info' , [PersonalInformationController::class , 'update_child']);
+Route::get('employee/tasks/{id}' , [TaskController::class , 'tasks_Employee']) ;
+Route::post('task/terminate/{id}' , [TaskController::class , 'finish_task']) ;
 ////php artisan migrate --path="database/migrations/2023_04_14_062044_create_titels_table.php"
 
 
