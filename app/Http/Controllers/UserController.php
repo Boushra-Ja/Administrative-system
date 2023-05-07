@@ -112,4 +112,14 @@ class UserController extends  BaseController
         }
         return $this->sendErrors([] , ' login failed') ;
     }
+
+    ///عرض جميع الموظفين في الجمعيه//
+    public function show_Employee()
+    {
+
+        $Emp= User::where('role', '=', 'Employee')->get();
+        return response()->json($Emp, 200);
+    }
+
+
 }

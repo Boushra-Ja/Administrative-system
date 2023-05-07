@@ -1,8 +1,10 @@
     <?php
 
-use App\Http\Controllers\ChildController;
+    use App\Http\Controllers\AppointmentController;
+    use App\Http\Controllers\ChildController;
 use App\Http\Controllers\PersonalInformationController;
 use App\Http\Controllers\PersonalQuestionController;
+    use App\Http\Controllers\TaskController;
     use App\Http\Controllers\UserController;
     use App\Models\PersonalInformation;
 use App\Models\PersonalQuestion;
@@ -46,7 +48,32 @@ Route::resource('personal_info' , PersonalInformationController::class)->except(
 Route::post('update_child_info' , [PersonalInformationController::class , 'update_child']);
 ////php artisan migrate --path="database/migrations/2023_04_14_062044_create_titels_table.php"
 
-Route::post('LoginAdmin' , [UserController::class , 'LoginAdmin']) ;
-Route::post('Login_Other' , [UserController::class , 'LoginEmployeeOrSpecialist']) ;
-Route::post('AddEmployee' , [UserController::class , 'AddEmployee']) ;
-Route::post('AddSpecialist' , [UserController::class , 'AddSpecialist']) ;
+
+////@batoul///
+
+    Route::post('LoginAdmin' , [UserController::class , 'LoginAdmin']) ;
+
+    Route::post('Login_Other' , [UserController::class , 'LoginEmployeeOrSpecialist']) ;
+
+    Route::post('AddEmployee' , [UserController::class , 'AddEmployee']) ;
+
+    Route::post('AddSpecialist' , [UserController::class , 'AddSpecialist']);
+
+    Route::group(['middleware' => ['auth:sanctum']], function () {
+
+        Route::post('Store_Appointment', [AppointmentController::class,'Store_Appointment'])
+            ->middleware('Role');
+
+        Route::post('Store_Task', [TaskController::class,'Store_Task'])
+            ->middleware('Role');
+
+        Route::get('show_MyTasks', [TaskController::class,'show_MyTasks']);
+
+        Route::post('update_Task/{id}', [TaskController::class,'update_Task'])
+            ->middleware('Role');
+
+
+
+    });
+    Route::get('show_Employee', [UserController::class,'show_Employee']);
+
