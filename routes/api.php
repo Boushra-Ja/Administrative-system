@@ -38,6 +38,7 @@ Route::get('MedicalChoice_index/{ques_id}', [App\Http\Controllers\MedicalChoiceC
 Route::get('educational_title_index', [App\Http\Controllers\TitelsController::class, 'educational_title_index']);
 Route::get('medical_title_index', [App\Http\Controllers\TitelsController::class, 'medical_title_index']);
 
+Route::get('all_children', [App\Http\Controllers\ChildController::class, 'index']);
 
 ///////////////////
 
