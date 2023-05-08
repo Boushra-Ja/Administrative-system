@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\API\BaseController;
 use App\Http\Middleware\AppMiddleware;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdateTaskRequest;
 
-class TaskController extends Controller
+class TaskController extends BaseController
 {
 
 
@@ -51,6 +52,34 @@ class TaskController extends Controller
     }
 
 
+    public function tasks_Employee($id)
+    {
+        $tasks= Task::where('user_id', '=', $id)
+        ->where('check' , false)->get();
+
+        if($tasks)
+        {
+            return $this->sendResponse($tasks , 'this is all tasks for you') ;
+        }
+
+        return $this->sendErrors([] , 'error in retrive your tasks') ;
+    }
+
+    public function finish_task($task_id)
+    {
+        $task = Task::where('id' , $task_id);
+        $update = $task->update([
+            'check' => true
+        ]) ;
+
+        if($update)
+        {
+            return $this->sendResponse($task , 'finish the task...');
+        }
+
+        return $this->sendErrors([ ] , 'error in the finish the task...') ;
+
+    }
 
     public function update_Task(Request $request,$id)
     {

@@ -34,6 +34,7 @@ Route::get('medical_title_index', [App\Http\Controllers\TitelsController::class,
 Route::post('medical_store', [App\Http\Controllers\MedicalConditionController::class, 'store']);
 Route::post('educational_store', [App\Http\Controllers\EductionalConditionController::class, 'store']);
 
+Route::get('all_children', [App\Http\Controllers\ChildController::class, 'index']);
 
 ///////////////////
 
@@ -42,6 +43,8 @@ Route::get('personal_question/all' , [PersonalQuestionController::class , 'index
 Route::get('child/show/{id}' , [ChildController::class , 'show']) ;
 Route::resource('personal_info' , PersonalInformationController::class)->except('show' , 'index' , 'update') ;
 Route::post('update_child_info' , [PersonalInformationController::class , 'update_child']);
+Route::get('employee/tasks/{id}' , [TaskController::class , 'tasks_Employee']) ;
+Route::post('task/terminate/{id}' , [TaskController::class , 'finish_task']) ;
 ////php artisan migrate --path="database/migrations/2023_04_14_062044_create_titels_table.php"
 
 
@@ -49,13 +52,15 @@ Route::post('update_child_info' , [PersonalInformationController::class , 'updat
 
     Route::post('LoginAdmin' , [UserController::class , 'LoginAdmin']) ;
 
-    Route::post('LoginEmployeeOrSpecialist' , [UserController::class , 'LoginEmployeeOrSpecialist']) ;
+    Route::post('Login_Other' , [UserController::class , 'LoginEmployeeOrSpecialist']) ;
 
-    Route::post('AddEmployee' , [UserController::class , 'AddEmployee']) ;
-
-    Route::post('AddSpecialist' , [UserController::class , 'AddSpecialist']);
 
     Route::group(['middleware' => ['auth:sanctum']], function () {
+
+        Route::post('AddEmployee' , [UserController::class , 'AddEmployee']) ;
+
+        Route::post('AddSpecialist' , [UserController::class , 'AddSpecialist']);
+
 
         Route::post('Store_Appointment', [AppointmentController::class,'Store_Appointment'])
             ->middleware('Role');

@@ -3,21 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
+use App\Http\Requests\LoginOtherRequest;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 
 class UserController extends  BaseController
 {    ///تسجيل دخول ادمن///
-    function LoginAdmin( Request $request)
+    function LoginAdmin(Request $request)
     {
 
-       $Email1='amira@gmail.com';
-        $Email2='razi@gmail.com';
+        $Email1 = 'amira@gmail.com';
+        $Email2 = 'razi@gmail.com';
         $valid = $request->validate([
             'email' => 'required',
-            'unique_number'=>'required',
-            'role'=>'required',
+            'unique_number' => 'required',
+            'role' => 'required',
 
         ]);
 
@@ -27,71 +28,70 @@ class UserController extends  BaseController
 
 
 
-        if ($valid['unique_number'] == 1111 && $valid['role']== 'admin' )
-            if($valid['email'] == $Email1 || $valid['email'] == $Email2  )
-                      $check = true;
-        if (!$check) {
-            return response()->json(['message' => 'Login problem']);
-        } else {
-            $token = $user->createToken('ProductsTolken')->plainTextToken;
-            return response()->json([
-                  'user' => $user,
-                  'token' => $token,
-            ]);
-        }}
-        catch (Exception $exception ){
+            if ($valid['unique_number'] == 1111 && $valid['role'] == 'admin')
+                if ($valid['email'] == $Email1 || $valid['email'] == $Email2)
+                    $check = true;
+            if (!$check) {
+                return response()->json(['message' => 'Login problem']);
+            } else {
+                $token = $user->createToken('ProductsTolken')->plainTextToken;
+                return response()->json([
+                    'user' => $user,
+                    'token' => $token,
+                ]);
+            }
+        } catch (Exception $exception) {
             return response()->json(['message' => 'Your information is not true !! you are not Admin ']);
-
         }
     }
 
-///اضافه موظف///
-    function AddEmployee(Request $request){
+    ///اضافه موظف///
+    function AddEmployee(Request $request)
+    {
 
 
 
 
 
-      $userEmp=  User::create([
-            'name' => $request->name ,
-            'unique_number'=>random_int(100000, 999999),
-            'role'=>'Employee',
-            'email'=>'-',
-            'points'=>0
+        $userEmp =  User::create([
+            'name' => $request->name,
+            'unique_number' => random_int(100000, 999999),
+            'role' => 'Employee',
+            'email' => '-',
+            'points' => 0
 
 
         ]);
         $token = $userEmp->createToken('ProductsTolken')->plainTextToken;
-        if($userEmp)
+        if ($userEmp)
             return response()->json([
-                 'message'=>'Store employee successfully',
-                 'user' => $userEmp,
-                 'token' => $token,
+                'message' => 'Store employee successfully',
+                'user' => $userEmp,
+                'token' => $token,
             ]);
 
-     else {
-          return $this->sendErrors('failed in Store user', ['error' => 'not true']);
-}
-
-
+        else {
+            return $this->sendErrors('failed in Store user', ['error' => 'not true']);
+        }
     }
 
-///اضافة اخصائي///
-    function AddSpecialist(Request $request){
+    ///اضافة اخصائي///
+    function AddSpecialist(Request $request)
+    {
 
-        $userSpecialist=  User::create([
-            'name' => $request->name ,
-            'unique_number'=>random_int(100000, 999999),
-            'role'=>'Specialist',
-            'email'=>'-',
-            'points'=>0
+        $userSpecialist =  User::create([
+            'name' => $request->name,
+            'unique_number' => random_int(100000, 999999),
+            'role' => 'Specialist',
+            'email' => '-',
+            'points' => 0
 
 
         ]);
         $token = $userSpecialist->createToken('ProductsTolken')->plainTextToken;
-        if($userSpecialist)
+        if ($userSpecialist)
             return response()->json([
-                'message'=>'Store Specialist successfully',
+                'message' => 'Store Specialist successfully',
                 'user' => $userSpecialist,
                 'token' => $token,
             ]);
@@ -99,25 +99,18 @@ class UserController extends  BaseController
         else {
             return $this->sendErrors('failed in Store user', ['error' => 'not true']);
         }
-
-
     }
 
- ///تسجيل دخول موظف او اخصلئي ///
-    function  LoginEmployeeOrSpecialist(Request $request){
+    ///  تسجيل دخول موظف او اخصائي  او الأهل///
+    function  LoginEmployeeOrSpecialist(LoginOtherRequest $request)
+    {
+        $user = User::where('unique_number', $request->unique_number)->where('role' , $request->role )->first();
 
-
-
-       $y= User::where('unique_number',$request->unique_number )->get();
-
-        return response()->json([
-            'message'=>'login successfully',
-            'user' => $y,
-        ]);
-
-
-
-
+        if($user)
+        {
+            return $this->sendResponse($user , "login " . $request->role . " successfuly") ;
+        }
+        return $this->sendErrors([] , ' login failed') ;
     }
 
     ///عرض جميع الموظفين في الجمعيه//
@@ -127,6 +120,7 @@ class UserController extends  BaseController
         $Emp= User::where('role', '=', 'Employee')->get();
         return response()->json($Emp, 200);
     }
+
 
 
 }
