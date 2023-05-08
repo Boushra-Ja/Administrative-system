@@ -57,11 +57,13 @@ Route::post('task/terminate/{id}' , [TaskController::class , 'finish_task']) ;
 
     Route::post('Login_Other' , [UserController::class , 'LoginEmployeeOrSpecialist']) ;
 
-    Route::post('AddEmployee' , [UserController::class , 'AddEmployee']) ;
-
-    Route::post('AddSpecialist' , [UserController::class , 'AddSpecialist']);
 
     Route::group(['middleware' => ['auth:sanctum']], function () {
+
+        Route::post('AddEmployee' , [UserController::class , 'AddEmployee']) ;
+
+        Route::post('AddSpecialist' , [UserController::class , 'AddSpecialist']);
+
 
         Route::post('Store_Appointment', [AppointmentController::class,'Store_Appointment'])
             ->middleware('Role');
