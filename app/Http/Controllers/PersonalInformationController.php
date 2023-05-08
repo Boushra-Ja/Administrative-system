@@ -9,6 +9,7 @@ use App\Http\Requests\UpdatePersonalInformationRequest;
 use App\Http\Resources\Boshra\PersonalInfoResourse;
 use App\Models\Child;
 use App\Models\MemberFamily;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\Console\Input\Input;
 
@@ -29,26 +30,38 @@ class PersonalInformationController extends BaseController
     {
         $child_id = Child::orderBy('created_at', 'desc')->first()['id'];
 
-        $personal_info = $request->child_info;
-        $my_family  = $request->sister_info;
+        $answers = null ;
+        $family = null ;
 
+        if($request->has('child_info')) {
 
-        foreach ($personal_info as $item) {
+            $personal_info = $request->child_info;
+            foreach ($personal_info as $item) {
 
-            $answers = PersonalInformation::create([
-                'answer' => $item['answer'],
-                'ques_id' => $item['ques_id'],
-                'child_id' =>  $child_id
-                ]
-            );
+                $answers = PersonalInformation::create([
+                    'answer' => $item['answer'],
+                    'ques_id' => $item['ques_id'],
+                    'child_id' =>  $child_id
+                    ]
+                );
+
+                if($answers == null)
+                {
+                    return $this->sendErrors([], 'failed in added child');
+                }
+            }
+
+            if($request->has('sister_info'))
+            {
+                $my_family  = $request->sister_info;
+                $family = MemberFamilyController::store($my_family , $child_id) ;
+
+            }
+            return $this->sendResponse($family, 'success in add all information ');
+
         }
-
-        $family = MemberFamilyController::store($my_family , $child_id) ;
-
-        if ($answers && $family )
-            return $this->sendResponse($my_family, 'success in add all information ');
-
         return $this->sendErrors([], 'failed in added child');
+
     }
 
 

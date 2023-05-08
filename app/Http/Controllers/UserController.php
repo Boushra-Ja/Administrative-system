@@ -121,6 +121,21 @@ class UserController extends  BaseController
         return response()->json($Emp, 200);
     }
 
+    public function Employees_order_tasks()
+    {
+        $employees = User::where('role' ,'=', 'Employee')
+        ->join('tasks', 'tasks.user_id', '=', 'users.id')
+        ->count();
 
+        return $this->sendResponse($employees , 'this is all employees ordered by tasks') ;
+    }
+
+    public function Employees_order_points()
+    {
+        $employees = User::where('role' ,'=', 'Employee')
+        ->orderBy('points', 'Desc')->get() ;
+
+        return $this->sendResponse($employees , 'this is all employees ordered by points') ;
+    }
 
 }
