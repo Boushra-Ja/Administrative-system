@@ -51,7 +51,7 @@ Route::post('task/terminate/{id}' , [TaskController::class , 'finish_task']) ;
 ////php artisan migrate --path="database/migrations/2023_04_14_062044_create_titels_table.php"
 
 
-////@batoul///
+    ////@batoul///
 
     Route::post('LoginAdmin' , [UserController::class , 'LoginAdmin']) ;
 
@@ -60,9 +60,11 @@ Route::post('task/terminate/{id}' , [TaskController::class , 'finish_task']) ;
 
     Route::group(['middleware' => ['auth:sanctum']], function () {
 
-        Route::post('AddEmployee' , [UserController::class , 'AddEmployee']) ;
+        Route::post('AddEmployee' , [UserController::class , 'AddEmployee'])
+            ->middleware('Role');
 
-        Route::post('AddSpecialist' , [UserController::class , 'AddSpecialist']);
+        Route::post('AddSpecialist' , [UserController::class , 'AddSpecialist'])
+            ->middleware('Role');
 
 
         Route::post('Store_Appointment', [AppointmentController::class,'Store_Appointment'])
@@ -76,8 +78,19 @@ Route::post('task/terminate/{id}' , [TaskController::class , 'finish_task']) ;
         Route::post('update_Task/{id}', [TaskController::class,'update_Task'])
             ->middleware('Role');
 
+        Route::get('Show_appointment', [AppointmentController::class,'Show_appointment'])
+            ->middleware('Role');
+
+        Route::get('Show_Phones', [AppointmentController::class,'Show_Phones'])
+            ->middleware('Role');
+
+        Route::get('show_Employee', [UserController::class,'show_Employee'])
+            ->middleware('Role');
+
+        Route::get('show_Specialist', [UserController::class,'show_Specialist'])
+            ->middleware('Role');
+
+
 
 
     });
-    Route::get('show_Employee', [UserController::class,'show_Employee']);
-
