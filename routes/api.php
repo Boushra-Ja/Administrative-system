@@ -94,3 +94,5 @@ Route::post('task/terminate/{id}' , [TaskController::class , 'finish_task']) ;
 
 
     });
+
+    Route::get('show_MyTasks_id/{id}', [TaskController::class,'show_MyTasks_id']);

@@ -128,7 +128,6 @@ class UserController extends  BaseController
 
     public function show_Specialist()
     {
-
         $Spe= User::where('role', '=', 'Specialist')->get();
         return response()->json($Spe, 200);
     }

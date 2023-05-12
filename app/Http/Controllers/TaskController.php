@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
 use App\Http\Middleware\AppMiddleware;
+use App\Http\Resources\TaskkResource;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdateTaskRequest;
@@ -50,6 +51,15 @@ class TaskController extends BaseController
 
         $Tasks= Task::where('user_id', '=', auth()->user()->id)->get();
         return response()->json($Tasks, 200);
+    }
+
+    public function show_MyTasks_id($id)
+    {
+
+        $task = Task::where('user_id', '=', $id)->get();
+        return response()->json([
+            'Task' => TaskkResource::collection($task),
+        ]);
     }
 
 
