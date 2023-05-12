@@ -110,7 +110,7 @@ class UserController extends  BaseController
 
         if($user)
         {
-            return $this->sendResponse($user , "login " . $request->role . " successfuly") ;
+            return $this->sendResponse([$user] , "login " . $request->role . " successfuly") ;
         }
         return $this->sendErrors([] , ' login failed') ;
     }
