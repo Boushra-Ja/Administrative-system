@@ -10,6 +10,8 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+use function PHPUnit\Framework\isEmpty;
+
 class UserController extends  BaseController
 {    ///تسجيل دخول ادمن///
     function LoginAdmin(Request $request)
@@ -110,7 +112,7 @@ class UserController extends  BaseController
 
         if($user)
         {
-            return $this->sendResponse([$user] , "login " . $request->role . " successfuly") ;
+            return $this->sendResponse([new EmployeeResource($user)], "login " . $request->role . " successfuly") ;
         }
         return $this->sendErrors([] , ' login failed') ;
     }
@@ -120,7 +122,7 @@ class UserController extends  BaseController
     {
 
         $Emp= User::where('role', '=', 'Employee')->get();
-        return response()->json($Emp, 200);
+        return $this->sendResponse(EmployeeResource::collection($Emp) , 'this is all employees ordered by tasks') ;
     }
 
     public function Employees_order_tasks()
@@ -133,9 +135,13 @@ class UserController extends  BaseController
         ->orderBy('count' , 'Desc')
         ->get();
 
-        if($employees)
+        if(isEmpty($employees))
         {
+            return $this->sendResponse(EmployeeResource::collection(User::where('role' , 'Employee')->get()) , 'this is all employees ordered by tasks') ;
+        }
+        else if(!isEmpty($employees)) {
             return $this->sendResponse(EmployeeResource::collection($employees) , 'this is all employees ordered by tasks') ;
+
         }
         return $this->sendErrors([] , 'error in retrive all employees') ;
     }
@@ -145,7 +151,7 @@ class UserController extends  BaseController
         $employees = User::where('role' ,'=', 'Employee')
         ->orderBy('points', 'Desc')->get() ;
 
-        return $this->sendResponse($employees , 'this is all employees ordered by points') ;
+        return $this->sendResponse(EmployeeResource::collection($employees) , 'this is all employees ordered by points') ;
     }
 
 }

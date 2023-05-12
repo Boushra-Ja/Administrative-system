@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Boshra;
 
+use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -13,11 +14,12 @@ class EmployeeResource extends JsonResource
     {
         return [
 
-            'count' => $this->count ,
+            'count' => Task::where('user_id'  , $this->id)->where('tasks.check' , 0)->count() ,
             'emp_id' => $this->id ,
-            'name' => User::where('id' , $this->id)->value('name') ,
-            'email' => User::where('id' , $this->id)->value('email'),
-            'points' => User::where('id' , $this->id)->value('points')
+            'name' => $this->name ,
+            'email' => $this->email,
+            'points' => $this->points,
+            'unique_number' => $this->unique_number
         ] ;
     }
 }
