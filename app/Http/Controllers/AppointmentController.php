@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Middleware\AppMiddleware;
+
+use App\Http\Resources\appointmentResource;
+use App\Http\Resources\PhoneResource;
 use App\Models\Appointment;
+use App\Models\Child;
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdateAppointmentRequest;
 
@@ -51,14 +55,31 @@ class AppointmentController extends Controller
     }
 
 
-    public function edit(Appointment $appointment)
+    public function Show_appointment(Request $request)
     {
-        //
+
+
+        $AppModel = Appointment::query()->get();
+        return response()->json([
+            'Appointment' => AppointmentResource::collection($AppModel),
+        ]);
+
+
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    public function Show_Phones(Request $request)
+    {
+
+
+        $child = Child::query()->get();
+        return response()->json([
+            'phones' => PhoneResource::collection($child),
+        ]);
+
+
+    }
+
+
     public function update(UpdateAppointmentRequest $request, Appointment $appointment)
     {
         //
