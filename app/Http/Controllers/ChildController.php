@@ -9,7 +9,7 @@ use App\Http\Requests\UpdateChildRequest;
 use App\Http\Resources\Boshra\ChildResourse;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 
 class ChildController extends BaseController
 {
@@ -39,6 +39,16 @@ class ChildController extends BaseController
         return response()->json($child, 200);
     }
 
+    public function child_names()
+    {
+        $childs = Child::all(['id' , 'name']);
+
+        if($childs){
+            return $this->sendResponse($childs, 'this is all children');
+        }
+        return $this->sendErrors([], 'error in fetch all children');
+
+    }
     public function store(StoreChildRequest $request)
     {
         $dateOfBirth = $request->age;
