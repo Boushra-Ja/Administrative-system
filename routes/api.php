@@ -49,6 +49,7 @@ Route::post('update_child_info' , [PersonalInformationController::class , 'updat
 Route::get('employee/tasks/{id}' , [TaskController::class , 'tasks_Employee']) ;
 Route::post('task/terminate/{id}' , [TaskController::class , 'finish_task']) ;
 ////php artisan migrate --path="database/migrations/2023_04_14_062044_create_titels_table.php"
+Route::get('childs/names' , [ChildController::class , 'child_names']) ;
 
 
     ////@batoul///
