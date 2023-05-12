@@ -7,6 +7,7 @@ use App\Http\Middleware\AppMiddleware;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdateTaskRequest;
+use App\Http\Resources\Boshra\TaskResource;
 
 class TaskController extends BaseController
 {
@@ -59,7 +60,7 @@ class TaskController extends BaseController
 
         if($tasks)
         {
-            return $this->sendResponse($tasks , 'this is all tasks for you') ;
+            return $this->sendResponse(TaskResource::collection($tasks) , 'this is all tasks for you') ;
         }
 
         return $this->sendErrors([] , 'error in retrive your tasks') ;

@@ -17,6 +17,8 @@ class UpdatePersonalInformationRequest extends FormRequest
     {
         return [
             'child_id' => 'required' ,
+            'name' => 'required|string' ,
+            'phone_number' => 'required' ,
             'child_info' => 'required',
             'sister_info' => 'required'
         ];

@@ -23,7 +23,7 @@ class ChildResourse extends JsonResource
             'child_id' => $this->id ,
             'name' => $this->name ,
             'age' =>$this->age ,
-            'phone' => $this->phone_num ,
+            'phone' => '0' . $this->phone_num ,
             'birth_date' => PersonalInformation::where('child_id' , $this->id)->where('ques_id' , 4)->value('answer'),
             'family' => FamilyResource::collection($family) ,
             'personal_info' => PersonalInfoResourse::collection($personal_answers),

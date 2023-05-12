@@ -45,7 +45,6 @@ class ChildController extends BaseController
 
         $years = (int)Carbon ::parse($dateOfBirth)->diff(Carbon::now())->format('%y') ;
         $months = (int)Carbon ::parse($dateOfBirth)->diff(Carbon::now())->format('%m') ;
-        $days = (int)Carbon ::parse($dateOfBirth)->diff(Carbon::now())->format('%d') ;
 
         $age = ($years * 12 )+ $months ;
 
@@ -81,8 +80,14 @@ class ChildController extends BaseController
     }
 
 
-    public function destroy(Child $child)
+    public function destroy($id)
     {
-        //
+        $child = Child::where('id', '=', $id)->delete();
+        if($child)
+        {
+            $this->sendResponse($child , 'the child is deleted ') ;
+        }
+        $this->sendErrors([] , 'failed in the delete child') ;
+
     }
 }

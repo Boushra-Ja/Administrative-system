@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('infection')->nullable();
             $table->string('section')->nullable();
             $table->timestamps();
+            $table->softDeletes();
+
         });
     }
 
