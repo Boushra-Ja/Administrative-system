@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
 use App\Http\Requests\LoginOtherRequest;
+use App\Http\Resources\AllUsersResource;
 use App\Http\Resources\Boshra\EmployeeResource;
 use App\Models\User;
 use Exception;
@@ -112,7 +113,14 @@ class UserController extends  BaseController
 
         if($user)
         {
-            return $this->sendResponse([new EmployeeResource($user)], "login " . $request->role . " successfuly") ;
+            $token = $user->createToken('ProductsTolken')->plainTextToken;
+
+            return response()->json([
+                'message' => 'login '. $request->role. ' successfully',
+                 'user' => new EmployeeResource($user),
+                'token' => $token,
+            ]);
+          // return $this->sendResponse([new EmployeeResource($user)], "login " . $request->role . " successfuly") ;
         }
         return $this->sendErrors([] , ' login failed') ;
     }
@@ -152,6 +160,16 @@ class UserController extends  BaseController
         }
         return $this->sendErrors([] , 'error in retrive all employees') ;
     }
+
+
+    public  function AllUser(){
+
+        $model = User::where('role','=','Employee')->Orwhere('role','=' ,'Specialist')->get();
+        return response()->json(AllUsersResource::collection($model), 200);
+
+
+    }
+
 
     public function Employees_order_points()
     {

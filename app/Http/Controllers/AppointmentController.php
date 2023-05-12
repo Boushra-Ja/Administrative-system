@@ -34,6 +34,8 @@ class AppointmentController extends Controller
      */
     public function Store_Appointment(Request $request)
     {
+
+
         $valid = $request->validate([
             'child_id' => 'required ',
             'app_date' => 'required ',

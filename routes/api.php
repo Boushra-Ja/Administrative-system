@@ -52,6 +52,7 @@ Route::post('task/terminate/{id}' , [TaskController::class , 'finish_task']) ;
 Route::get('childs/names' , [ChildController::class , 'child_names']) ;
 
 
+
     ////@batoul///
 
     Route::post('LoginAdmin' , [UserController::class , 'LoginAdmin']) ;
@@ -67,9 +68,9 @@ Route::get('childs/names' , [ChildController::class , 'child_names']) ;
         Route::post('AddSpecialist' , [UserController::class , 'AddSpecialist'])
             ->middleware('Role');
 
-
-        Route::post('Store_Appointment', [AppointmentController::class,'Store_Appointment'])
-            ->middleware('Role');
+//
+//        Route::post('Store_Appointment', [AppointmentController::class,'Store_Appointment'])
+//            ->middleware('Role');
 
         Route::post('Store_Task', [TaskController::class,'Store_Task'])
             ->middleware('Role');
@@ -97,3 +98,7 @@ Route::get('childs/names' , [ChildController::class , 'child_names']) ;
     });
 
     Route::get('show_MyTasks_id/{id}', [TaskController::class,'show_MyTasks_id']);
+    Route::get('AllUser', [UserController::class,'AllUser']);
+  Route::post('deleted/{id}', [UserController::class,'deleted']);
+    Route::post('Store_Appointment', [AppointmentController::class,'Store_Appointment']);
+
