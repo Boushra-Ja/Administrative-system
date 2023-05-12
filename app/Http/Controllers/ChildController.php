@@ -33,6 +33,11 @@ class ChildController extends BaseController
     }
 
 
+    public function index()
+    {
+        $child=Child::all();
+        return response()->json($child, 200);
+    }
 
     public function store(StoreChildRequest $request)
     {

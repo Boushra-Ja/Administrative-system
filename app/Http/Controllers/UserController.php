@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
 use App\Http\Requests\LoginOtherRequest;
+use App\Http\Resources\Boshra\EmployeeResource;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends  BaseController
 {    ///تسجيل دخول ادمن///
@@ -108,7 +110,7 @@ class UserController extends  BaseController
 
         if($user)
         {
-            return $this->sendResponse($user , "login " . $request->role . " successfuly") ;
+            return $this->sendResponse([$user] , "login " . $request->role . " successfuly") ;
         }
         return $this->sendErrors([] , ' login failed') ;
     }
@@ -129,5 +131,29 @@ class UserController extends  BaseController
         return response()->json($Spe, 200);
     }
 
+    public function Employees_order_tasks()
+    {
+        $employees = DB::table('users')
+        ->join('tasks', 'tasks.user_id', '=', 'users.id')
+        ->select('users.id as id', DB::raw("count(tasks.user_id) as count" , 'tasks.check') )
+        ->where('tasks.check' , 0)
+        ->groupBy('users.id')
+        ->orderBy('count' , 'Desc')
+        ->get();
+
+        if($employees)
+        {
+            return $this->sendResponse(EmployeeResource::collection($employees) , 'this is all employees ordered by tasks') ;
+        }
+        return $this->sendErrors([] , 'error in retrive all employees') ;
+    }
+
+    public function Employees_order_points()
+    {
+        $employees = User::where('role' ,'=', 'Employee')
+        ->orderBy('points', 'Desc')->get() ;
+
+        return $this->sendResponse($employees , 'this is all employees ordered by points') ;
+    }
 
 }
