@@ -35,7 +35,7 @@ class EductionalConditionController extends Controller
         foreach ($request->ans as $item) {
 
             $answers = EductionalCondition::create([
-                'child_id' => $item['child_id'],
+                'child_id' => $request->child_id,
                 'ques_id' => $item['ques_id'],
                 'answer'=>$item['answer']
                 ]
