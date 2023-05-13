@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
 use App\Http\Middleware\AppMiddleware;
+use App\Http\Resources\TaskkResource;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdateTaskRequest;
+use App\Http\Resources\Boshra\TaskResource;
 
 class TaskController extends BaseController
 {
@@ -51,6 +53,15 @@ class TaskController extends BaseController
         return response()->json($Tasks, 200);
     }
 
+    public function show_MyTasks_id($id)
+    {
+
+        $task = Task::where('user_id', '=', $id)->get();
+        return response()->json([
+            'Task' => TaskkResource::collection($task),
+        ]);
+    }
+
 
     public function tasks_Employee($id)
     {
@@ -59,7 +70,7 @@ class TaskController extends BaseController
 
         if($tasks)
         {
-            return $this->sendResponse($tasks , 'this is all tasks for you') ;
+            return $this->sendResponse(TaskResource::collection($tasks) , 'this is all tasks for you') ;
         }
 
         return $this->sendErrors([] , 'error in retrive your tasks') ;

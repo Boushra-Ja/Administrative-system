@@ -34,7 +34,6 @@ Route::get('medical_title_index', [App\Http\Controllers\TitelsController::class,
 Route::post('medical_store', [App\Http\Controllers\MedicalConditionController::class, 'store']);
 Route::post('educational_store', [App\Http\Controllers\EductionalConditionController::class, 'store']);
 
-Route::get('all_children', [App\Http\Controllers\ChildController::class, 'index']);
 
 ///////////////////
 
@@ -46,9 +45,11 @@ Route::post('update_child_info' , [PersonalInformationController::class , 'updat
 Route::get('employee/tasks/{id}' , [TaskController::class , 'tasks_Employee']) ;
 Route::post('task/terminate/{id}' , [TaskController::class , 'finish_task']) ;
 ////php artisan migrate --path="database/migrations/2023_04_14_062044_create_titels_table.php"
+Route::get('childs/names' , [ChildController::class , 'child_names']) ;
 
 
-////@batoul///
+
+    ////@batoul///
 
     Route::post('LoginAdmin' , [UserController::class , 'LoginAdmin']) ;
 
@@ -57,13 +58,15 @@ Route::post('task/terminate/{id}' , [TaskController::class , 'finish_task']) ;
 
     Route::group(['middleware' => ['auth:sanctum']], function () {
 
-        Route::post('AddEmployee' , [UserController::class , 'AddEmployee']) ;
+        Route::post('AddEmployee' , [UserController::class , 'AddEmployee'])
+            ->middleware('Role');
 
-        Route::post('AddSpecialist' , [UserController::class , 'AddSpecialist']);
+        Route::post('AddSpecialist' , [UserController::class , 'AddSpecialist'])
+            ->middleware('Role');
 
 
         Route::post('Store_Appointment', [AppointmentController::class,'Store_Appointment'])
-            ->middleware('Role');
+          ->middleware('Role');
 
         Route::post('Store_Task', [TaskController::class,'Store_Task'])
             ->middleware('Role');
@@ -73,8 +76,23 @@ Route::post('task/terminate/{id}' , [TaskController::class , 'finish_task']) ;
         Route::post('update_Task/{id}', [TaskController::class,'update_Task'])
             ->middleware('Role');
 
+        Route::get('Show_appointment', [AppointmentController::class,'Show_appointment'])
+            ->middleware('Role');
+
+        Route::get('Show_Phones', [AppointmentController::class,'Show_Phones'])
+            ->middleware('Role');
+
+        Route::get('show_Employee', [UserController::class,'show_Employee'])
+            ->middleware('Role');
+
+        Route::get('show_Specialist', [UserController::class,'show_Specialist'])
+            ->middleware('Role');
+
+
 
 
     });
-    Route::get('show_Employee', [UserController::class,'show_Employee']);
+
+    Route::get('show_MyTasks_id/{id}', [TaskController::class,'show_MyTasks_id']);
+    Route::get('AllUser', [UserController::class,'AllUser']);
 

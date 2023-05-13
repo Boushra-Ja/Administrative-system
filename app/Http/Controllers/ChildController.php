@@ -9,7 +9,7 @@ use App\Http\Requests\UpdateChildRequest;
 use App\Http\Resources\Boshra\ChildResourse;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 
 class ChildController extends BaseController
 {
@@ -39,13 +39,22 @@ class ChildController extends BaseController
         return response()->json($child, 200);
     }
 
+    public function child_names()
+    {
+        $childs = Child::all(['id' , 'name']);
+
+        if($childs){
+            return $this->sendResponse($childs, 'this is all children');
+        }
+        return $this->sendErrors([], 'error in fetch all children');
+
+    }
     public function store(StoreChildRequest $request)
     {
         $dateOfBirth = $request->age;
 
         $years = (int)Carbon ::parse($dateOfBirth)->diff(Carbon::now())->format('%y') ;
         $months = (int)Carbon ::parse($dateOfBirth)->diff(Carbon::now())->format('%m') ;
-        $days = (int)Carbon ::parse($dateOfBirth)->diff(Carbon::now())->format('%d') ;
 
         $age = ($years * 12 )+ $months ;
 
@@ -81,8 +90,14 @@ class ChildController extends BaseController
     }
 
 
-    public function destroy(Child $child)
+    public function destroy($id)
     {
-        //
+        $child = Child::where('id', '=', $id)->delete();
+        if($child)
+        {
+            $this->sendResponse($child , 'the child is deleted ') ;
+        }
+        $this->sendErrors([] , 'failed in the delete child') ;
+
     }
 }
