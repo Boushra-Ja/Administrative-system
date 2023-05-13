@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\bayan\Education_AResource;
+use App\Http\Resources\bayan\Medecal_AResource;
 use App\Models\MedicalCondition;
 use App\Http\Requests\StoreMedicalConditionRequest;
 use App\Http\Requests\UpdateMedicalConditionRequest;
+use App\Models\Titels;
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\BaseController;
 
@@ -50,9 +53,12 @@ class MedicalConditionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(MedicalCondition $medicalCondition)
+    public function show()
     {
-        //
+        $edu = Titels::where('type', '=', 'm')->get();
+        $d= Medecal_AResource::collection($edu);
+        return response()->json($d, 200);
+
     }
 
     /**

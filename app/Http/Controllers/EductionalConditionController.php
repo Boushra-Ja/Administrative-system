@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\bayan\Education_AResource;
+use App\Http\Resources\bayan\Education_QResource;
 use App\Models\EductionalCondition;
 use App\Http\Requests\StoreEductionalConditionRequest;
 use App\Http\Requests\UpdateEductionalConditionRequest;
+use App\Models\Titels;
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\BaseController;
 
@@ -48,12 +51,17 @@ class EductionalConditionController extends Controller
 
     }
 
+
+
     /**
      * Display the specified resource.
      */
-    public function show(EductionalCondition $eductionalCondition)
+    public function show()
     {
-        //
+        $edu = Titels::where('type', '=', 'e')->get();
+        $d= Education_AResource::collection($edu);
+        return response()->json($d, 200);
+
     }
 
     /**
