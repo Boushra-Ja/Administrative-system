@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Symfony\Component\Console\Input\Input;
 
 use function PHPSTORM_META\type;
+use function PHPUnit\Framework\isEmpty;
 
 class PersonalInformationController extends BaseController
 {
@@ -69,14 +70,30 @@ class PersonalInformationController extends BaseController
 
         $personal_info = $request->child_info;
         $my_family  = $request->sister_info;
-        $age = Child::where('id', $request->child_id)->value('age') ;
+        $age = Child::where('id', $request->child_id)->value('age');
 
         foreach ($personal_info as $item) {
-            $child = PersonalInformation::where('child_id', '=', $request->child_id)->where('ques_id', $item['ques_id']);
-            if ($child) {
-                $child->update([
-                    'answer' => $item['answer'],
-                ]);
+            $found = PersonalInformation::where('child_id', '=', $request->child_id)->where('ques_id', $item['ques_id'])->get();
+
+            if (!($found->isEmpty())) {
+                $child = PersonalInformation::where('child_id', '=', $request->child_id)->where('ques_id', $item['ques_id']);
+
+                if ($item['answer'] == '') {
+                    $child->delete();
+                } else {
+                    $child->update([
+                        'answer' => $item['answer'],
+                    ]);
+                }
+            }
+            else{
+                PersonalInformation::create(
+                    [
+                        'answer' => $item['answer'],
+                        'ques_id' => $item['ques_id'],
+                        'child_id' =>  $request->child_id
+                    ]
+                );
             }
             if ($item['ques_id'] == 4) {
                 $years = (int)Carbon::parse($item['answer'])->diff(Carbon::now())->format('%y');
@@ -89,16 +106,19 @@ class PersonalInformationController extends BaseController
         if ($c) {
             $c->update([
                 'phone_num' => $request->phone_number,
-                'name' => $request->name ,
+                'name' => $request->name,
                 'age' => $age
             ]);
         }
+
+        $my_sister = MemberFamily::where('child_id', '=', $request->child_id);
+        $my_sister->delete() ;
 
         foreach ($my_family as $indivual) {
             $family = MemberFamily::where('id', '=', $indivual['id']);
 
             if ($family) {
-                $family->update(
+                $family->create(
                     [
                         'child_id' => $request->child_id,
                         'age' => $indivual['age'],
@@ -119,6 +139,5 @@ class PersonalInformationController extends BaseController
 
     public function destroy(PersonalInformation $personalInformation)
     {
-
     }
 }
