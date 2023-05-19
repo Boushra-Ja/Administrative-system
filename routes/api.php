@@ -34,8 +34,10 @@ Route::get('medical_title_index', [App\Http\Controllers\TitelsController::class,
 Route::post('medical_store', [App\Http\Controllers\MedicalConditionController::class, 'store']);
 Route::post('educational_store', [App\Http\Controllers\EductionalConditionController::class, 'store']);
 
-Route::get('educational_answer', [App\Http\Controllers\EductionalConditionController::class, 'show']);
-Route::get('medical_answer', [App\Http\Controllers\MedicalConditionController::class, 'show']);
+Route::post('educational_answer', [App\Http\Controllers\EductionalConditionController::class, 'show']);
+Route::post('medical_answer', [App\Http\Controllers\MedicalConditionController::class, 'show']);
+
+Route::post('done_Education_Medical', [App\Http\Controllers\TitelsController::class, 'done_Education_Medical']);
 
 ///////////////////
 
