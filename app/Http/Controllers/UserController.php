@@ -140,6 +140,23 @@ class UserController extends  BaseController
         return response()->json($Spe, 200);
     }
 
+    public function delete_SpecOrEmp($id)
+    {
+        if($id==1 || $id==2)
+        {
+
+            return response()->json([
+                'message'=>'This user cannot be deleted.... This id  is for the admin ',
+            ]);
+        }
+        else
+        {User::where('id', '=', $id)->delete();
+            return response()->json([
+                'message'=>'This user has been deleted successfully',
+            ]);}
+
+    }
+
     public function Employees_order_tasks()
     {
         $employees = DB::table('users')

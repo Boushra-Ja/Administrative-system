@@ -8,6 +8,7 @@ use App\Http\Resources\appointmentResource;
 use App\Http\Resources\PhoneResource;
 use App\Models\Appointment;
 use App\Models\Child;
+use App\Models\Task;
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdateAppointmentRequest;
 
@@ -69,6 +70,7 @@ class AppointmentController extends Controller
 
     }
 
+
     public function Show_Phones(Request $request)
     {
 
@@ -82,16 +84,5 @@ class AppointmentController extends Controller
     }
 
 
-    public function update(UpdateAppointmentRequest $request, Appointment $appointment)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Appointment $appointment)
-    {
-        //
-    }
 }

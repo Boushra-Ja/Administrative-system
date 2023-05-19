@@ -95,8 +95,11 @@ Route::get('childs/names' , [ChildController::class , 'child_names']) ;
 
 
 
+
     });
 
     Route::get('show_MyTasks_id/{id}', [TaskController::class,'show_MyTasks_id']);
+    Route::post('delete_appointment/{id}', [TaskController::class,'delete_appointment']);
+    Route::delete('delete_SpecOrEmp/{id}', [UserController::class,'delete_SpecOrEmp']);
     Route::get('AllUser', [UserController::class,'AllUser']);
 
