@@ -9,7 +9,7 @@ class Advice extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'user_id',
+        'child_id',
         'text',
     ];
 }
