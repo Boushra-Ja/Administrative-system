@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\API\BaseController;
 use App\Http\Middleware\AppMiddleware;
 use App\Http\Resources\TaskkResource;
+use App\Models\Appointment;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdateTaskRequest;
@@ -12,6 +13,22 @@ use App\Http\Resources\Boshra\TaskResource;
 
 class TaskController extends BaseController
 {
+
+
+    public function delete_appointment($id)
+    {
+
+
+        $AppModel = Task::query()->where('app_id','=',$id)
+            ->where('check','=','0')->delete();
+        $ap=Appointment::query()->where('id','=', $id)->delete();
+
+        return response()->json([
+            'message' =>"this appointment has deleted",
+        ]);
+
+
+    }
 
 
 

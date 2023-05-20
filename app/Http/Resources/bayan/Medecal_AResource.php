@@ -13,7 +13,6 @@ class Medecal_AResource extends JsonResource
     public function toArray(Request $request): array
     {
 
-        $choice = null;
         $question = MedicalQuestion::where('titel_id', '=', $this->id)->get();
 
         $d= M_A_Q_Resource::collection($question);
@@ -24,5 +23,8 @@ class Medecal_AResource extends JsonResource
             'title' => $this->name ,
             'question' => $d ,
         ];
+
+
+
     }
 }

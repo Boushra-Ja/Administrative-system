@@ -56,7 +56,7 @@ class EductionalConditionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show()
+    public function show(Request $request)
     {
         $edu = Titels::where('type', '=', 'e')->get();
         $d= Education_AResource::collection($edu);

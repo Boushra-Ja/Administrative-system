@@ -6,7 +6,10 @@ use App\Http\Resources\bayan\Education_QResource;
 use App\Http\Resources\bayan\Medical_QResource;
 use App\Models\Titels;
 use App\Http\Requests\StoreTitelsRequest;
-use App\Http\Requests\UpdateTitelsRequest; 
+use App\Http\Requests\UpdateTitelsRequest;
+use App\Models\EductionalCondition;
+use App\Models\MedicalCondition;
+use Illuminate\Http\Request;
 
 class TitelsController extends Controller
 {
@@ -28,6 +31,33 @@ class TitelsController extends Controller
          return response()->json($d, 200);
 
     }
+
+
+    public function done_Education_Medical(Request $request)
+    {
+
+        $done_m=MedicalCondition::where('child_id',$request->id)->first();
+        $done_e=EductionalCondition::where('child_id',$request->id)->first();
+
+        if($done_m){
+            if($done_e){
+                return response()->json([
+                    "medical"=>"done",
+                    "education"=>"done",], 200);
+            }
+            return response()->json(["medical"=>"done","education"=>"not"], 200);
+        }
+        if($done_e)
+        return response()->json(["education"=>"done","medical"=>"not"], 200);
+
+        
+
+        return response()->json([
+            "medical"=>"not",
+            "education"=>"not",], 200);
+
+    }
+    
 
     /**
      * Show the form for creating a new resource.

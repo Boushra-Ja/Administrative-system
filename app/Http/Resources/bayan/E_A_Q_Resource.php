@@ -20,7 +20,7 @@ class E_A_Q_Resource extends JsonResource
             if($this->id == '2')
             $choice=EductionalChoice::where('edu_id','=',$this->id)->get(['choice']);
 
-        $ans=EductionalCondition::where('ques_id',$this->id)->first();
+        $ans=EductionalCondition::where('ques_id',$this->id)->where('child_id',$request->id)->first();
 
         return [
             'question' => $this->question,
@@ -28,5 +28,8 @@ class E_A_Q_Resource extends JsonResource
             'choice'=>$choice
 
         ];
+
+
+
     }
 }
