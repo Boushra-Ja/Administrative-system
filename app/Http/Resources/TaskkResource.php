@@ -18,6 +18,7 @@ class TaskkResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'date_task'=>Appointment::where('id' , $this->app_id)->value('app_date'),
             'title'=> $this->title,
             'description'=>$this->description,
             'check'=>$this->check,

@@ -137,6 +137,7 @@ class PersonalInformationController extends BaseController
     }
 
 
+
     public function destroy(PersonalInformation $personalInformation)
     {
     }

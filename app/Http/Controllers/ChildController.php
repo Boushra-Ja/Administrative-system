@@ -52,6 +52,13 @@ class ChildController extends BaseController
     public function store(StoreChildRequest $request)
     {
         $dateOfBirth = $request->age;
+        $unique_num = random_int(100, 999999) ;
+        $check  = Child::where('unique_number' , $unique_num)->first() ;
+        while($check)
+        {
+            $unique_num = random_int(100, 999999) ;
+            $check  = Child::where('unique_number' , $unique_num)->first() ;
+        }
 
         $years = (int)Carbon ::parse($dateOfBirth)->diff(Carbon::now())->format('%y') ;
         $months = (int)Carbon ::parse($dateOfBirth)->diff(Carbon::now())->format('%m') ;
@@ -61,7 +68,8 @@ class ChildController extends BaseController
         $child = Child::create([
             'name' => $request->name,
             'phone_num' => $request->phone_number,
-            'age' => $age
+            'age' => $age ,
+            'unique_number' => $unique_num
 
         ]);
 
@@ -99,5 +107,17 @@ class ChildController extends BaseController
         }
         $this->sendErrors([] , 'failed in the delete child') ;
 
+
     }
-}
+        public function loginParent(Request $request)
+        {
+
+            $child = Child::where('unique_number' , $request->unique_number)->first() ;
+            if($child)
+            {
+                return $this->sendResponse([$child] , 'login success') ;
+            }
+            return $this->sendErrors([] , 'the user is not registered...');
+        }
+    }
+

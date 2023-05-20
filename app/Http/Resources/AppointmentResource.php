@@ -3,6 +3,8 @@
 namespace App\Http\Resources;
 
 use App\Models\Child;
+use App\Models\Task;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -18,7 +20,8 @@ class appointmentResource extends JsonResource
         return [
 
             'app_date' => $this->app_date ,
-            'name'=>  Child::where('id' , $this->child_id)->value('name'),
+            'user_name'=>User::where ('id',Task::where('app_id',$this->id)->value('user_id'))->value('name'),
+            'child_name'=>  Child::where('id' , $this->child_id)->value('name'),
             'infection'=>  Child::where('id' , $this->child_id)->value('infection'),
             'section'=>  Child::where('id' , $this->child_id)->value('section'),
             'number'=>  Child::where('id' , $this->child_id)->value('phone_num'),

@@ -1,6 +1,7 @@
     <?php
 
-    use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\AdviceController;
+use App\Http\Controllers\AppointmentController;
     use App\Http\Controllers\ChildController;
 use App\Http\Controllers\PersonalInformationController;
 use App\Http\Controllers\PersonalQuestionController;
@@ -50,8 +51,9 @@ Route::get('employee/tasks/{id}' , [TaskController::class , 'tasks_Employee']) ;
 Route::post('task/terminate/{id}' , [TaskController::class , 'finish_task']) ;
 ////php artisan migrate --path="database/migrations/2023_04_14_062044_create_titels_table.php"
 Route::get('childs/names' , [ChildController::class , 'child_names']) ;
-
-
+Route::post('parent/login' , [ChildController::class , 'loginParent']) ;
+Route::resource('advice' , AdviceController::class)->except('edit' , 'show' , 'create' , 'update') ;
+Route::get('advice/child/{id}' , [AdviceController::class , 'myAdvice']) ;
 
     ////@batoul///
 
@@ -95,8 +97,11 @@ Route::get('childs/names' , [ChildController::class , 'child_names']) ;
 
 
 
+
     });
 
     Route::get('show_MyTasks_id/{id}', [TaskController::class,'show_MyTasks_id']);
+    Route::post('delete_appointment/{id}', [TaskController::class,'delete_appointment']);
+    Route::delete('delete_SpecOrEmp/{id}', [UserController::class,'delete_SpecOrEmp']);
     Route::get('AllUser', [UserController::class,'AllUser']);
 
