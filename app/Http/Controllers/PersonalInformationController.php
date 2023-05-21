@@ -87,6 +87,8 @@ class PersonalInformationController extends BaseController
                 }
             }
             else{
+                if($item['answer'] != '')
+               {
                 PersonalInformation::create(
                     [
                         'answer' => $item['answer'],
@@ -94,6 +96,7 @@ class PersonalInformationController extends BaseController
                         'child_id' =>  $request->child_id
                     ]
                 );
+               }
             }
             if ($item['ques_id'] == 4) {
                 $years = (int)Carbon::parse($item['answer'])->diff(Carbon::now())->format('%y');
