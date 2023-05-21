@@ -1,6 +1,7 @@
     <?php
 
-    use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\AdviceController;
+use App\Http\Controllers\AppointmentController;
     use App\Http\Controllers\ChildController;
 use App\Http\Controllers\PersonalInformationController;
 use App\Http\Controllers\PersonalQuestionController;
@@ -34,8 +35,8 @@ Route::get('medical_title_index', [App\Http\Controllers\TitelsController::class,
 Route::post('medical_store', [App\Http\Controllers\MedicalConditionController::class, 'store']);
 Route::post('educational_store', [App\Http\Controllers\EductionalConditionController::class, 'store']);
 
-Route::post('educational_answer', [App\Http\Controllers\EductionalConditionController::class, 'show']);
-Route::post('medical_answer', [App\Http\Controllers\MedicalConditionController::class, 'show']);
+Route::put('educational_answer', [App\Http\Controllers\EductionalConditionController::class, 'show']);
+Route::put('medical_answer', [App\Http\Controllers\MedicalConditionController::class, 'show']);
 
 Route::post('done_Education_Medical', [App\Http\Controllers\TitelsController::class, 'done_Education_Medical']);
 
@@ -50,8 +51,9 @@ Route::get('employee/tasks/{id}' , [TaskController::class , 'tasks_Employee']) ;
 Route::post('task/terminate/{id}' , [TaskController::class , 'finish_task']) ;
 ////php artisan migrate --path="database/migrations/2023_04_14_062044_create_titels_table.php"
 Route::get('childs/names' , [ChildController::class , 'child_names']) ;
-
-
+Route::post('parent/login' , [ChildController::class , 'loginParent']) ;
+Route::resource('advice' , AdviceController::class)->except('edit' , 'show' , 'create' , 'update') ;
+Route::get('advice/child/{id}' , [AdviceController::class , 'myAdvice']) ;
 
     ////@batoul///
 

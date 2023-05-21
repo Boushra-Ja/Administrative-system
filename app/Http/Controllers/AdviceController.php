@@ -2,65 +2,55 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\API\BaseController;
 use App\Models\Advice;
 use App\Http\Requests\StoreAdviceRequest;
 use App\Http\Requests\UpdateAdviceRequest;
 
-class AdviceController extends Controller
+class AdviceController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
-        //
+        $advice = Advice::all() ;
+        if($advice)
+        {
+            return $this->sendResponse($advice , "this is all advice..");
+        }
+        return $this->sendErrors([] , 'error in retrived all advice' ) ;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function myAdvice($child_id)
     {
-        //
+        $advice = Advice::where('child_id' , $child_id)->get() ;
+        if($advice)
+        {
+            return $this->sendResponse($advice , "this is all advice..");
+        }
+        return $this->sendErrors([] , 'error in retrived all advice' ) ;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreAdviceRequest $request)
     {
-        //
+        $advice = Advice::create([
+
+            'child_id' => $request->child_id ,
+            'text' => $request->text
+        ]) ;
+        if($advice)
+        {
+            return $this->sendResponse($advice , "success in add advice..");
+        }
+        return $this->sendErrors([] , 'error in added advice' ) ;
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Advice $advice)
+    public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Advice $advice)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateAdviceRequest $request, Advice $advice)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Advice $advice)
-    {
-        //
+        $child = Advice::where('id', '=', $id)->delete();
+        if($child)
+        {
+            $this->sendResponse($child , 'the advice is deleted...') ;
+        }
+        $this->sendErrors([] , 'failed in the delete advice...') ;
     }
 }
