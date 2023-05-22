@@ -85,18 +85,21 @@ class PersonalInformationController extends BaseController
                         'answer' => $item['answer'],
                     ]);
                 }
-            } else {
-                if ($item['answer'] != '') {
-                    $child = PersonalInformation::create(
-                        [
-                            'answer' => $item['answer'],
-                            'ques_id' => $item['ques_id'],
-                            'child_id' =>  $request->child_id
-                        ]
-                    );
-                } else {
-                    $child = true;
-                }
+            }
+            else{
+                if($item['answer'] != '')
+               {
+                $child = PersonalInformation::create(
+                    [
+                        'answer' => $item['answer'],
+                        'ques_id' => $item['ques_id'],
+                        'child_id' =>  $request->child_id
+                    ]
+                );
+               }else{
+                $child = true  ;
+               }
+
             }
             if ($item['ques_id'] == 4) {
                 $years = (int)Carbon::parse($item['answer'])->diff(Carbon::now())->format('%y');
@@ -115,7 +118,7 @@ class PersonalInformationController extends BaseController
         }
 
         $my_sister = MemberFamily::where('child_id', '=', $request->child_id);
-        $my_sister->delete();
+        $my_sister->delete() ;
         if ($request->has('sister_info')) {
             $my_family  = $request->sister_info;
             $family = MemberFamilyController::store($my_family, $request->child_id);

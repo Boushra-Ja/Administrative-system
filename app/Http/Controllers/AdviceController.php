@@ -6,6 +6,7 @@ use App\Http\Controllers\API\BaseController;
 use App\Models\Advice;
 use App\Http\Requests\StoreAdviceRequest;
 use App\Http\Requests\UpdateAdviceRequest;
+use App\Http\Resources\Boshra\AdviceResource;
 
 class AdviceController extends BaseController
 {
@@ -15,7 +16,7 @@ class AdviceController extends BaseController
         $advice = Advice::all() ;
         if($advice)
         {
-            return $this->sendResponse($advice , "this is all advice..");
+            return $this->sendResponse(AdviceResource::collection($advice) , "this is all advice..");
         }
         return $this->sendErrors([] , 'error in retrived all advice' ) ;
     }
@@ -25,7 +26,7 @@ class AdviceController extends BaseController
         $advice = Advice::where('child_id' , $child_id)->get() ;
         if($advice)
         {
-            return $this->sendResponse($advice , "this is all advice..");
+            return $this->sendResponse(AdviceResource::collection($advice) , "this is all advice..");
         }
         return $this->sendErrors([] , 'error in retrived all advice' ) ;
     }
