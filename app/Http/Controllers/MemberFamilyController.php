@@ -14,39 +14,6 @@ class MemberFamilyController extends BaseController
 
     public Static function store($request, $child_id)
     {
-
-        $val = $request->validate([
-            'name' => 'required',
-            'gender' => 'required' ,
-            'age' => 'required|integer' ,
-            'Educ_level' => 'required|string'
-        ]);
-
-
-        $family = MemberFamily::create(
-            [
-                'child_id' => $child_id,
-                'name' => $val['name'],
-                'age' => $val['age'],
-                'gender' => $val['gender'],
-                'Educ_level' => $val['Educ_level']
-            ]
-        );
-        return $family;
-
-    }
-
-
-    public function show(MemberFamily $memberFamily)
-    {
-        //
-    }
-
-
-
-
-    public static function update(Request $request, $child_id)
-    {
         $family = null ;
 
         foreach ($request as $item) {
@@ -68,6 +35,21 @@ class MemberFamilyController extends BaseController
             );
         }
         return $family;
+
+    }
+
+
+    public function show(MemberFamily $memberFamily)
+    {
+        //
+    }
+
+
+
+
+    public static function update(Request $request, $child_id)
+    {
+
     }
 
 

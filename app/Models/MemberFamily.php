@@ -13,6 +13,7 @@ class MemberFamily extends Model
         'gender',
         'age',
         'Educ_level',
-        'name'
+        'name',
+        'id'
     ];
 }
