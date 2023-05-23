@@ -62,6 +62,11 @@ class ChildController extends BaseController
 
         $years = (int)Carbon ::parse($dateOfBirth)->diff(Carbon::now())->format('%y') ;
         $months = (int)Carbon ::parse($dateOfBirth)->diff(Carbon::now())->format('%m') ;
+        $days = (int)Carbon ::parse($dateOfBirth)->diff(Carbon::now())->format('%d') ;
+        if($days >= 15)
+        {
+            $months = $months + 1 ;
+        }
 
         $age = ($years * 12 )+ $months ;
 
