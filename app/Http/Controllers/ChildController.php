@@ -60,15 +60,35 @@ class ChildController extends BaseController
             $check  = Child::where('unique_number' , $unique_num)->first() ;
         }
 
-        $years = (int)Carbon ::parse($dateOfBirth)->diff(Carbon::now())->format('%y') ;
-        $months = (int)Carbon ::parse($dateOfBirth)->diff(Carbon::now())->format('%m') ;
-        $days = (int)Carbon ::parse($dateOfBirth)->diff(Carbon::now())->format('%d') ;
-        if($days >= 15)
+        $d_now = (Carbon::now())->format('d');
+        $m_now = (Carbon::now())->format('m') ;
+        $y_now = (Carbon::now())->format('y') ;
+
+        $d_child = Carbon::createFromFormat('d/m/Y', $dateOfBirth)->format('d');
+        $m_child = Carbon::createFromFormat('d/m/Y', $dateOfBirth)->format('m');
+        $y_child = Carbon::createFromFormat('d/m/Y', $dateOfBirth)->format('y');
+
+
+        if($d_now < $d_child)
         {
-            $months = $months + 1 ;
+            $d_now += 30 ;
+            $m_now -= 1 ;
+        }
+        if($m_now < $m_child)
+        {
+            $m_now += 12 ;
+            $y_now -= 1 ;
         }
 
-        $age = ($years * 12 )+ $months ;
+        $d_diff = $d_now - $d_child ;
+        $m_diff = $m_now - $m_child ;
+        $y_diff = $y_now - $y_child ;
+        if($d_diff >= 15)
+        {
+            $m_diff += 1 ;
+        }
+
+        $age = ($y_diff * 12) + $m_diff ;
 
         $child = Child::create([
             'name' => $request->name,
