@@ -41,26 +41,17 @@ class PersonalQuestionSeeder extends Seeder
             'question' => '  مكان الميلاد',
             'title_id' => 11,
             'type' => 0 ,
-            'id' => 33
+            'id' => 5
         ]);
         PersonalQuestion::create([
             'question' => ' الجنس',
             'title_id' => 11,
             'type' => 0,
-            'id' => 5
+            'id' => 6
 
         ]);
         PersonalQuestion::create([
             'question' => ' الجنسية',
-            'title_id' => 11,
-            'type' => 0,
-            'id' => 6
-
-
-
-        ]);
-        PersonalQuestion::create([
-            'question' => ' رقم الهاتف',
             'title_id' => 11,
             'type' => 0,
             'id' => 7
@@ -69,17 +60,26 @@ class PersonalQuestionSeeder extends Seeder
 
         ]);
         PersonalQuestion::create([
-            'question' => ' العنوان',
+            'question' => ' رقم الهاتف',
             'title_id' => 11,
             'type' => 0,
             'id' => 8
+
+
+
+        ]);
+        PersonalQuestion::create([
+            'question' => ' العنوان',
+            'title_id' => 11,
+            'type' => 0,
+            'id' => 9
 
         ]);
         PersonalQuestion::create([
             'question' => ' الجهة المحولة',
             'title_id' => 11,
             'type' => 0,
-            'id' => 9
+            'id' => 10
 
 
         ]);
@@ -87,7 +87,7 @@ class PersonalQuestionSeeder extends Seeder
             'question' => ' تاريخ التحويل',
             'title_id' => 11,
             'type' => 0,
-            'id' => 10
+            'id' => 11
 
 
 
@@ -96,7 +96,7 @@ class PersonalQuestionSeeder extends Seeder
             'question' => ' تشخيص المحوّل',
             'title_id' => 11,
             'type' => 0,
-            'id' => 11
+            'id' => 12
 
 
         ]);
@@ -104,7 +104,7 @@ class PersonalQuestionSeeder extends Seeder
             'question' => ' هاتف الجهة المحولة',
             'title_id' => 11,
             'type' => 0,
-            'id' => 12
+            'id' => 13
 
 
         ]);
@@ -112,7 +112,7 @@ class PersonalQuestionSeeder extends Seeder
             'question' => ' ملخص المشكلة الحالية(نوعها وأعراضها)كما يرويها ولي الأمر',
             'title_id' => 11,
             'type' => 0,
-            'id' => 13
+            'id' => 14
 
 
         ]);
@@ -121,7 +121,7 @@ class PersonalQuestionSeeder extends Seeder
             'question' => ' اسم الأم',
             'title_id' => 10,
             'type' => 0,
-            'id' => 14
+            'id' => 15
 
 
         ]);
@@ -129,7 +129,7 @@ class PersonalQuestionSeeder extends Seeder
             'question' => ' عمر الأم',
             'title_id' => 10,
             'type' => 0,
-            'id' => 15
+            'id' => 16
 
 
         ]);
@@ -137,7 +137,7 @@ class PersonalQuestionSeeder extends Seeder
             'question' => ' المستوى التعليمي للأم',
             'title_id' => 10,
             'type' => 0,
-            'id' => 16
+            'id' => 17
 
 
         ]);
@@ -145,7 +145,7 @@ class PersonalQuestionSeeder extends Seeder
             'question' => ' عمل الأم ومكانها',
             'title_id' => 10,
             'type' => 0,
-            'id' => 17
+            'id' => 18
 
 
         ]);
@@ -153,7 +153,7 @@ class PersonalQuestionSeeder extends Seeder
             'question' => ' اسم الأب',
             'title_id' => 10,
             'type' => 0,
-            'id' => 18
+            'id' => 19
 
 
         ]);
@@ -161,7 +161,7 @@ class PersonalQuestionSeeder extends Seeder
             'question' => ' عمر الأب',
             'title_id' => 10,
             'type' => 0,
-            'id' => 19
+            'id' => 20
 
 
         ]);
@@ -169,7 +169,7 @@ class PersonalQuestionSeeder extends Seeder
             'question' => ' المستوى التعليمي للأب',
             'title_id' => 10,
             'type' => 0,
-            'id' => 20
+            'id' => 21
 
 
         ]);
@@ -177,15 +177,23 @@ class PersonalQuestionSeeder extends Seeder
             'question' => ' عمل الأب ومكانه',
             'title_id' => 10,
             'type' => 0,
-            'id' => 21
+            'id' => 22
 
 
         ]);
         PersonalQuestion::create([
-            'question' => ' درجة القرابة بين الأم والأب',
+            'question' => ' هل هناك صلة قرابة؟' ,
+            'title_id' => 10,
+            'type' => 1,
+            'id' => 23
+
+
+        ]);
+        PersonalQuestion::create([
+            'question' => ' ماهي صلة القرابة في حال وجودها؟',
             'title_id' => 10,
             'type' => 0,
-            'id' => 22
+            'id' => 24
 
 
         ]);
@@ -193,7 +201,7 @@ class PersonalQuestionSeeder extends Seeder
             'question' => ' عمر الأم عند إنجاب الطفل',
             'title_id' => 10,
             'type' => 0,
-            'id' => 23
+            'id' => 25
 
 
         ]);
@@ -202,7 +210,7 @@ class PersonalQuestionSeeder extends Seeder
             'question' => ' هل يعاني أحد الوالدين من الأمراض؟؟',
             'title_id' => 10,
             'type' => 1,
-            'id' => 24
+            'id' => 26
 
 
         ]);
@@ -213,7 +221,7 @@ class PersonalQuestionSeeder extends Seeder
             'question' => ' إن كان الجواب نعم اذكر الأمراض',
             'title_id' => 10,
             'type' => 0,
-            'id' => 25
+            'id' => 27
 
 
         ]);
@@ -221,7 +229,7 @@ class PersonalQuestionSeeder extends Seeder
             'question' => 'هل يوجد بين أقرباء والدي فرد/أفراد معاقين؟',
             'title_id' => 10,
             'type' => 1,
-            'id' => 26
+            'id' => 28
 
 
         ]);
@@ -230,37 +238,22 @@ class PersonalQuestionSeeder extends Seeder
             'question' => 'ماهي الإعاقة؟',
             'title_id' => 10,
             'type' => 0,
-            'id' => 27
-
-
-        ]);
-        PersonalQuestion::create([
-            'question' => ' ماهي صلة القرابة',
-            'title_id' => 10,
-            'type' => 0,
-            'id' => 28
-
-
-        ]);
-        PersonalQuestion::create([
-            'question' => ' ما هو عدد إخوة الطفل',
-            'title_id' => 10,
-            'type' => 0,
             'id' => 29
 
 
         ]);
+
+
         PersonalQuestion::create([
-            'question' => ' ترتيب الطفل في الأسرة',
+            'question' => ' ما هو عدد إخوة الطفل',
             'title_id' => 10,
             'type' => 0,
             'id' => 30
 
 
         ]);
-
         PersonalQuestion::create([
-            'question' => 'اكتب أسماء الأخوة وأعمارهم ومستوى تعليمهم الغير متزوجين',
+            'question' => ' ترتيب الطفل في الأسرة',
             'title_id' => 10,
             'type' => 0,
             'id' => 31
@@ -269,12 +262,30 @@ class PersonalQuestionSeeder extends Seeder
         ]);
 
         PersonalQuestion::create([
-            'question' => 'ملاحظات' ,
+            'question' => 'اكتب أسماء الأخوة وأعمارهم ومستوى تعليمهم الغير متزوجين',
             'title_id' => 10,
             'type' => 0,
             'id' => 32
 
 
         ]);
+
+        PersonalQuestion::create([
+            'question' => 'ملاحظات' ,
+            'title_id' => 10,
+            'type' => 0,
+            'id' => 33
+
+
+        ]);
+        PersonalQuestion::create([
+            'question' => 'هل يعيش الطفل مع والديه' ,
+            'title_id' => 10,
+            'type' => 1,
+            'id' => 34
+
+
+        ]);
+
     }
 }
