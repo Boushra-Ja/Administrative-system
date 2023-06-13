@@ -122,7 +122,7 @@ class ReportResource extends JsonResource
         .$family .'.';
 
 
-        $pregnancy= array(20) ;
+        $pregnancy= array(10) ;
         /////////الحالة السريرية للحمل
         $pregnancy[0] = 'استمر الحمل ' . MedicalCondition::where('child_id' , $this->id)
         ->where('ques_id' , 5)->value('answer') . ' أشهر';
@@ -188,6 +188,47 @@ class ReportResource extends JsonResource
         $pregnancy[2] . '، ' .$pregnancy[3]  .$pregnancy[4] . '، ' .$pregnancy[5]
         .$pregnancy[6] . '، ' .$pregnancy[7] .'.' ;
 
+        /////تطور الطفل
+        $child_dev= array(10) ;
+        $child_dev[0] = 'بعد اكتمال الحمل والولادة' . $pregnancy[4] . ' وخلال الأشهر الأولى من عمر الطفل ' ;
+        $c = MedicalCondition::where('child_id' , $this->id)
+        ->where('ques_id' , 17)->value('answer') ;
+        if($c == "نعم")
+        {
+            $child_dev[1] = ' تعرض الطفل إلى إصابة في الرأس ';
+        }
+        else{
+            $child_dev[1] = ' لم يتعرض الطفل لأي إصابة في الرأس ';
+        }
+
+        $c = MedicalCondition::where('child_id' , $this->id)
+        ->where('ques_id' , 20)->value('answer') ;
+        if($c == "نعم")
+        {
+            $child_dev[2] = 'وقام بإجراء فحوصات طبية ';
+        }
+        else{
+            $child_dev[2] = ' ولم يجري أي فحوصات طبية';
+        }
+
+        $child_dev[3] = 'استمرت الرضاعة ' . MedicalCondition::where('child_id' , $this->id)
+        ->where('ques_id' , 33)->value('answer') ;
+
+        $child_dev[4] = ' وظهرت الأسنان بعمر ' . MedicalCondition::where('child_id' , $this->id)
+        ->where('ques_id' , 34)->value('answer') ;
+
+        $child_dev[5] = ' ومشى بعمر ' . MedicalCondition::where('child_id' , $this->id)
+        ->where('ques_id' , 36)->value('answer') ;
+
+        $child_dev[6] = ' وبدأ الكلام بعمر ' . MedicalCondition::where('child_id' , $this->id)
+        ->where('ques_id' , 39)->value('answer') ;
+        $child_dev[7] = "وكان نموه السيكولوجي مقبولا" ;
+
+        $child_info =  $child_dev[0].$child_dev[1] . '،' .$child_dev[2].
+        $child_dev[3] . '،' .$child_dev[4]. $child_dev[5] . '،' .$child_dev[6].$child_dev[7] . '.' ;
+
+        //////////////////
+
         return [
 
             'name' => 'الاسم : '.$this->name ,
@@ -198,7 +239,8 @@ class ReportResource extends JsonResource
             'birth_date' => $birth_date ,
             'referral_reason' => $referral_reason,
             'family_info' => $family_info,
-            'pregnancy_mother' => $pregnancy_mother
+            'pregnancy_mother' => $pregnancy_mother,
+            'child_dev' => $child_info
 
         ];
     }

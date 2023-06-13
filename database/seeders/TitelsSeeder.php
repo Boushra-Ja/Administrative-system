@@ -92,5 +92,25 @@ class TitelsSeeder extends Seeder
             'type'=>'p'
 
         ]);
+
+        DB::table('titels')->insert([
+            'id'=>"12",
+            'name' => "في مشاركته في نشاطات العائلة",
+            'type'=>'e'
+
+        ]);
+        DB::table('titels')->insert([
+            'id'=>"13",
+            'name' => 'المعززات المحتملة',
+            'type'=>'e'
+
+        ]);
+        DB::table('titels')->insert([
+            'id'=>"14",
+            'name' => "التأهيل التربوي للطفل",
+            'type'=>'e'
+
+        ]);
+
     }
 }

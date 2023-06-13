@@ -125,9 +125,9 @@ class MedicalQuestionSeeder extends Seeder
         ]);
 
         DB::table('medical_questions')->insert([
-            'question' => "تعرض الطفل الى اصابات في الرأس",
+            'question' => " هل تعرض الطفل الى اصابات في الرأس" ,
             'titel_id' => "2",
-            'type' => "0",
+            'type' => "1",
             'id' => 17
 
         ]);
@@ -146,9 +146,9 @@ class MedicalQuestionSeeder extends Seeder
 
         ]);
         DB::table('medical_questions')->insert([
-            'question' => "الفحوصات التي أجريت للطفل",
+            'question' => 'هل قام بإجراء فحوصات طبية ',
             'titel_id' => "2",
-            'type' => "0",
+            'type' => "1",
             'id' => 20
 
         ]);
