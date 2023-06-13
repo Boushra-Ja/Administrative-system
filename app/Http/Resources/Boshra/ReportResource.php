@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources\Boshra;
 
+use App\Models\MedicalCondition;
+use App\Models\MedicalQuestion;
 use App\Models\MemberFamily;
 use App\Models\PersonalInformation;
 use Illuminate\Http\Request;
@@ -24,38 +26,51 @@ class ReportResource extends JsonResource
         ->where('ques_id' , 4)->value('answer') ;
 
         $mother_name = PersonalInformation::where('child_id' , $this->id)
-        ->where('ques_id' , 14)->value('answer') ;
+        ->where('ques_id' , 15)->value('answer') ;
 
         $mother_age = PersonalInformation::where('child_id' , $this->id)
-        ->where('ques_id' , 15)->value('answer') ;
+        ->where('ques_id' , 16)->value('answer') ;
 
 
         $mother_edu = PersonalInformation::where('child_id' , $this->id)
-        ->where('ques_id' , 16)->value('answer') ;
-
-        $mother_cearer = PersonalInformation::where('child_id' , $this->id)
         ->where('ques_id' , 17)->value('answer') ;
 
-        $father_name = PersonalInformation::where('child_id' , $this->id)
+        $mother_cearer = PersonalInformation::where('child_id' , $this->id)
         ->where('ques_id' , 18)->value('answer') ;
 
-        $father_age = PersonalInformation::where('child_id' , $this->id)
+        $father_name = PersonalInformation::where('child_id' , $this->id)
         ->where('ques_id' , 19)->value('answer') ;
 
-        $father_edu = PersonalInformation::where('child_id' , $this->id)
+        $father_age = PersonalInformation::where('child_id' , $this->id)
         ->where('ques_id' , 20)->value('answer') ;
 
-        $father_cearer = PersonalInformation::where('child_id' , $this->id)
+        $father_edu = PersonalInformation::where('child_id' , $this->id)
         ->where('ques_id' , 21)->value('answer') ;
 
-        $mother_birth = PersonalInformation::where('child_id' , $this->id)
-        ->where('ques_id' , 23)->value('answer') ;
-
-        $relative_relation = PersonalInformation::where('child_id' , $this->id)
+        $father_cearer = PersonalInformation::where('child_id' , $this->id)
         ->where('ques_id' , 22)->value('answer') ;
 
+        $mother_birth = PersonalInformation::where('child_id' , $this->id)
+        ->where('ques_id' , 25)->value('answer') ;
+
+        $relative_check = PersonalInformation::where('child_id' , $this->id)
+        ->where('ques_id' , 23)->value('answer') ;
+
+        if($relative_check == "نعم")
+        {
+            $relative_relation = PersonalInformation::where('child_id' , $this->id)
+            ->where('ques_id' , 24)->value('answer') ;
+
+        }
+        else{
+            $relative_relation = "لا توجد صلة قرابة" ;
+
+        }
+
+
+
         $check_disease = PersonalInformation::where('child_id' , $this->id)
-        ->where('ques_id' , 24)->value('answer') ;
+        ->where('ques_id' , 26)->value('answer') ;
 
         if($check_disease == 'لا')
         {
@@ -66,21 +81,22 @@ class ReportResource extends JsonResource
         }
 
         $disease = PersonalInformation::where('child_id' , $this->id)
-        ->where('ques_id' , 25)->value('answer') ;
+        ->where('ques_id' , 27)->value('answer') ;
 
         $check_disability = PersonalInformation::where('child_id' , $this->id)
-        ->where('ques_id' , 26)->value('answer') ;
+        ->where('ques_id' , 28)->value('answer') ;
 
         if($check_disability == 'لا')
         {
             $check_disability = 'لا توجد حالة إعاقة في العائلة';
         }
         else{
-            $check_disability = 'توجد حالة إعاقة في العائلة';
+            $check_disability = "حالة الإعاقة الموجودة هي " . PersonalInformation::where('child_id' , $this->id)
+            ->where('ques_id' , 29)->value('answer');
         }
 
         $child_rank = PersonalInformation::where('child_id' , $this->id)
-        ->where('ques_id' , 30)->value('answer') ;
+        ->where('ques_id' , 31)->value('answer') ;
 
 
         $brother = MemberFamily::where('child_id' ,$this->child_id)
@@ -105,6 +121,73 @@ class ReportResource extends JsonResource
         .$check_disease.$disease.' ، '.$check_disability.' ، '.'والطفل ترتيبه في الأسرة '.$child_rank
         .$family .'.';
 
+
+        $pregnancy= array(20) ;
+        /////////الحالة السريرية للحمل
+        $pregnancy[0] = 'استمر الحمل ' . MedicalCondition::where('child_id' , $this->id)
+        ->where('ques_id' , 5)->value('answer') . ' أشهر';
+
+        $pregnancy[1] ='عانت الأم من ' . MedicalCondition::where('child_id' , $this->id)
+        ->where('ques_id' , 1)->value('answer') . ' أثناء الحمل ';
+
+        $c = MedicalCondition::where('child_id' , $this->id)
+        ->where('ques_id' , 2)->value('answer') ;
+        if($c == "نعم")
+        {
+            $pregnancy[2] = 'تعرضت الأم للأشعة وكان ذلك في الشهر ' . MedicalCondition::where('child_id' , $this->id)
+            ->where('ques_id' , 3)->value('answer') ;
+
+        }
+        else{
+            $pregnancy[2] = 'لم تتعرض للأشعة ';
+        }
+
+        $c = MedicalCondition::where('child_id' , $this->id)
+        ->where('ques_id' , 4)->value('answer') ;
+        if($c == "نعم")
+        {
+            $pregnancy[3] = 'لم تتناول الأدوية إلا بإشراف طبيب الحمل' ;
+
+        }
+        else{
+            $pregnancy[3] = 'لم تتناول الأدوية';
+        }
+
+        $pregnancy[4] = 'وكانت الولادة ' . MedicalCondition::where('child_id' , $this->id)
+        ->where('ques_id' , 6)->value('answer') ;
+
+        $pregnancy[5] = 'وكان الطفل ' . MedicalCondition::where('child_id' , $this->id)
+        ->where('ques_id' , 13)->value('answer') . ' النمو عند الولادة' ;
+
+
+        $c = MedicalCondition::where('child_id' , $this->id)
+        ->where('ques_id' , 9)->value('answer') ;
+        if($c == "نعم")
+        {
+            $pregnancy[6] = 'وازرق لونه' ;
+
+        }
+        else{
+            $pregnancy[6] = 'ولم يزرق لونه';
+        }
+
+        $c = MedicalCondition::where('child_id' , $this->id)
+        ->where('ques_id' , 10)->value('answer') ;
+        if($c == "نعم")
+        {
+            $pregnancy[7] = 'واحتاج الطفل إلى حاضنة لمدة ' .MedicalCondition::where('child_id' , $this->id)
+            ->where('ques_id' , 11)->value('answer') .' أشهر'  ;
+
+        }
+        else{
+            $pregnancy[7] = 'ولم يحتج الطفل إلى حاضنة';
+        }
+
+        $pregnancy[8] = 'وكان وزنه ضمن الحدود الطبيعية' ;
+        $pregnancy_mother = $pregnancy[0] . '، ' .$pregnancy[1] .
+        $pregnancy[2] . '، ' .$pregnancy[3]  .$pregnancy[4] . '، ' .$pregnancy[5]
+        .$pregnancy[6] . '، ' .$pregnancy[7] .'.' ;
+
         return [
 
             'name' => 'الاسم : '.$this->name ,
@@ -114,7 +197,8 @@ class ReportResource extends JsonResource
             'mother' => 'اسم الأم : '.$mother_name ,
             'birth_date' => $birth_date ,
             'referral_reason' => $referral_reason,
-            'family_info' => $family_info
+            'family_info' => $family_info,
+            'pregnancy_mother' => $pregnancy_mother
 
         ];
     }
