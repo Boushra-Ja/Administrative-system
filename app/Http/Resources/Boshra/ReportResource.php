@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Boshra;
 
+use App\Models\EductionalCondition;
 use App\Models\MedicalCondition;
 use App\Models\MedicalQuestion;
 use App\Models\MemberFamily;
@@ -228,6 +229,18 @@ class ReportResource extends JsonResource
         $child_dev[3] . '،' .$child_dev[4]. $child_dev[5] . '،' .$child_dev[6].$child_dev[7] . '.' ;
 
         //////////////////
+        $notes = 'لوحظ على الطفل أنه بحاجة للتقييم في شعبة ' .EductionalCondition::where('child_id' , $this->id)
+        ->where('ques_id' , 26)->value('answer') ;
+
+        //////نتائج التقييم
+        $doctor = MedicalCondition::where('child_id' , $this->id)
+        ->where('ques_id' , 31)->value('answer');
+        $res = MedicalCondition::where('child_id' , $this->id)
+        ->where('ques_id' , 32)->value('answer');
+        $m_res = 'بناءاً على فحص الدكتور/ة  ' . $doctor . ' اختصاصية نفسية تبين بأن لدى الطفل '. $res ;
+
+        ///////
+        $educ_res = 'تم إحالة الطفل لإجراء اختبار البورتج والتقييم غلى المجالات الخمسة(اجتماعي - معرفي - اتصالي - عناية - حركي) وكانت النتائج كما هو موضح في المخطط البياني والجدول التالي' ;
 
         return [
 
@@ -240,7 +253,10 @@ class ReportResource extends JsonResource
             'referral_reason' => $referral_reason,
             'family_info' => $family_info,
             'pregnancy_mother' => $pregnancy_mother,
-            'child_dev' => $child_info
+            'child_dev' => $child_info,
+            'notes' => $notes,
+            'medical_resault' => $m_res ,
+            'educ_resault' => $educ_res,
 
         ];
     }

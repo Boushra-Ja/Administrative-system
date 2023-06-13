@@ -141,7 +141,9 @@ class ChildController extends BaseController
         $child = Child::where('id', $child_id)->get();
         $res = ReportResource::collection($child)->additional([
             'recomm' => $request->recomm,
-            'summary' => $request->summary
+            'summary' => $request->summary,
+            'evaluation_tools' => 'برنامج البورتج'
+
         ]);
         return $res ;
     }

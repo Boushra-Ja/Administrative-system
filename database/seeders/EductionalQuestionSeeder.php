@@ -202,7 +202,7 @@ class EductionalQuestionSeeder extends Seeder
             'question' => "وصف المشكلة كما يراها ولي الأمر",
             'titel_id'=>"9",
             'type'=>"0",
-            'id'=>"26",
+            'id'=>"27",
 
         ]);
     }
