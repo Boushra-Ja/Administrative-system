@@ -15,7 +15,7 @@ class EductionalQuestionSeeder extends Seeder
         DB::table('eductional_questions')->insert([
             'question' => "هل يضبط عملية الاخراج",
             'titel_id'=>"6",
-            'type'=>"0",
+            'type'=>"1",
             'id'=>"1",
         ]);
         DB::table('eductional_questions')->insert([
@@ -45,7 +45,7 @@ class EductionalQuestionSeeder extends Seeder
         DB::table('eductional_questions')->insert([
             'question' => "هل هناك مشاكل لغوية أو نطقية",
             'titel_id'=>"6",
-            'type'=>"0",
+            'type'=>"1",
             'id'=>"6",
 
         ]);

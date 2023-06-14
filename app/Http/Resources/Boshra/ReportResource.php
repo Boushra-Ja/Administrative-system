@@ -128,36 +128,36 @@ class ReportResource extends JsonResource
         $pregnancy[0] = 'استمر الحمل ' . MedicalCondition::where('child_id' , $this->id)
         ->where('ques_id' , 5)->value('answer') . ' أشهر';
 
-        $pregnancy[1] ='عانت الأم من ' . MedicalCondition::where('child_id' , $this->id)
+        $pregnancy[1] =' عانت الأم من ' . MedicalCondition::where('child_id' , $this->id)
         ->where('ques_id' , 1)->value('answer') . ' أثناء الحمل ';
 
         $c = MedicalCondition::where('child_id' , $this->id)
         ->where('ques_id' , 2)->value('answer') ;
         if($c == "نعم")
         {
-            $pregnancy[2] = 'تعرضت الأم للأشعة وكان ذلك في الشهر ' . MedicalCondition::where('child_id' , $this->id)
+            $pregnancy[2] = ' تعرضت الأم للأشعة وكان ذلك في الشهر ' . MedicalCondition::where('child_id' , $this->id)
             ->where('ques_id' , 3)->value('answer') ;
 
         }
         else{
-            $pregnancy[2] = 'لم تتعرض للأشعة ';
+            $pregnancy[2] = ' لم تتعرض للأشعة ';
         }
 
         $c = MedicalCondition::where('child_id' , $this->id)
         ->where('ques_id' , 4)->value('answer') ;
         if($c == "نعم")
         {
-            $pregnancy[3] = 'لم تتناول الأدوية إلا بإشراف طبيب الحمل' ;
+            $pregnancy[3] = ' لم تتناول الأدوية إلا بإشراف طبيب الحمل' ;
 
         }
         else{
-            $pregnancy[3] = 'لم تتناول الأدوية';
+            $pregnancy[3] = ' لم تتناول الأدوية';
         }
 
-        $pregnancy[4] = 'وكانت الولادة ' . MedicalCondition::where('child_id' , $this->id)
+        $pregnancy[4] = ' وكانت الولادة ' . MedicalCondition::where('child_id' , $this->id)
         ->where('ques_id' , 6)->value('answer') ;
 
-        $pregnancy[5] = 'وكان الطفل ' . MedicalCondition::where('child_id' , $this->id)
+        $pregnancy[5] = ' وكان الطفل ' . MedicalCondition::where('child_id' , $this->id)
         ->where('ques_id' , 13)->value('answer') . ' النمو عند الولادة' ;
 
 
@@ -165,26 +165,26 @@ class ReportResource extends JsonResource
         ->where('ques_id' , 9)->value('answer') ;
         if($c == "نعم")
         {
-            $pregnancy[6] = 'وازرق لونه' ;
+            $pregnancy[6] = ' وازرق لونه' ;
 
         }
         else{
-            $pregnancy[6] = 'ولم يزرق لونه';
+            $pregnancy[6] = ' ولم يزرق لونه';
         }
 
         $c = MedicalCondition::where('child_id' , $this->id)
         ->where('ques_id' , 10)->value('answer') ;
         if($c == "نعم")
         {
-            $pregnancy[7] = 'واحتاج الطفل إلى حاضنة لمدة ' .MedicalCondition::where('child_id' , $this->id)
+            $pregnancy[7] = ' واحتاج الطفل إلى حاضنة لمدة ' .MedicalCondition::where('child_id' , $this->id)
             ->where('ques_id' , 11)->value('answer') .' أشهر'  ;
 
         }
         else{
-            $pregnancy[7] = 'ولم يحتج الطفل إلى حاضنة';
+            $pregnancy[7] = ' ولم يحتج الطفل إلى حاضنة';
         }
 
-        $pregnancy[8] = 'وكان وزنه ضمن الحدود الطبيعية' ;
+        $pregnancy[8] = ' وكان وزنه ضمن الحدود الطبيعية' ;
         $pregnancy_mother = $pregnancy[0] . '، ' .$pregnancy[1] .
         $pregnancy[2] . '، ' .$pregnancy[3]  .$pregnancy[4] . '، ' .$pregnancy[5]
         .$pregnancy[6] . '، ' .$pregnancy[7] .'.' ;

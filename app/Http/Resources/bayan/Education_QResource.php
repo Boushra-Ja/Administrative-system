@@ -16,15 +16,25 @@ class Education_QResource extends JsonResource
 
         $choice = null;
         $question = EductionalQuestion::where('titel_id', '=', $this->id)->get();
-        foreach($question as $item){
-            if($item->id == '2')
-            $choice=EductionalChoice::where('edu_id','=',$item->id)->get();
+        foreach ($question as $item) {
+            if ($item->id == '4')
+                $choice = EductionalChoice::where('edu_id', '=', $item->id)->get();
+            else if ($item->id == '1')
+                $choice = EductionalChoice::where('edu_id', '=', $item->id)->get();
+            else if ($item->id == '2')
+                $choice = EductionalChoice::where('edu_id', '=', $item->id)->get();
+            else if ($item->id == '3')
+                $choice = EductionalChoice::where('edu_id', '=', $item->id)->get();
+            else if ($item->id == '5')
+                $choice = EductionalChoice::where('edu_id', '=', $item->id)->get();
+            else if ($item->id == '6')
+                $choice = EductionalChoice::where('edu_id', '=', $item->id)->get();
         }
 
         return [
-            'title' => $this->name ,
-            'question' => $question ,
-            'choice'=>$choice
+            'title' => $this->name,
+            'question' => $question,
+            'choice' => $choice
 
         ];
     }
