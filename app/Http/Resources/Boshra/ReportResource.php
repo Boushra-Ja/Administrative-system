@@ -2,11 +2,14 @@
 
 namespace App\Http\Resources\Boshra;
 
+use App\Models\Child;
 use App\Models\EductionalCondition;
 use App\Models\MedicalCondition;
 use App\Models\MedicalQuestion;
 use App\Models\MemberFamily;
 use App\Models\PersonalInformation;
+use App\Models\PortageDimenssion;
+use App\Models\TestResault;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -59,12 +62,11 @@ class ReportResource extends JsonResource
 
         if($relative_check == "نعم")
         {
-            $relative_relation = PersonalInformation::where('child_id' , $this->id)
-            ->where('ques_id' , 24)->value('answer') ;
+            $relative_relation = 'وتوجد صلة قرابة بين الوالدين ' ;
 
         }
         else{
-            $relative_relation = "لا توجد صلة قرابة" ;
+            $relative_relation = "ولا توجد صلة قرابة" ;
 
         }
 
@@ -75,7 +77,7 @@ class ReportResource extends JsonResource
 
         if($check_disease == 'لا')
         {
-            $check_disease = 'لا يعاني الوالدين من أي مرض';
+            $check_disease = 'ولا يعاني الوالدين من أي مرض';
         }
         else{
             $check_disease = ' يعاني الوالدين من المرض';
@@ -89,7 +91,7 @@ class ReportResource extends JsonResource
 
         if($check_disability == 'لا')
         {
-            $check_disability = 'لا توجد حالة إعاقة في العائلة';
+            $check_disability = 'ولا توجد حالة إعاقة في العائلة';
         }
         else{
             $check_disability = "حالة الإعاقة الموجودة هي " . PersonalInformation::where('child_id' , $this->id)
@@ -108,25 +110,25 @@ class ReportResource extends JsonResource
 
         if($sister == 0 && $brother == 0)
         {
-            $family = 'ليس له إخوة' ;
+            $family = ' ' . 'وليس له إخوة'  ;
         }
         else{
-            $family = 'له من الإخوة '.$brother .'ذكر و ' .$sister.'أنثى' ;
+            $family = 'وله من الإخوة '.$brother .'ذكر و ' .$sister.'أنثى' ;
         }
 
         $referral_reason = 'تمت إحالة الطفل من قبل الصحة المدرسية تربية دمشق لإجراء القحص الطبي والتربوي وبيان الرأي في إمكانية دخوله للمدارس الدامجة.';
 
-        $family_info = 'يعيش الطفل مع والديه ، حيث يبلغ عمر الأب '.$father_age.'سنة وهو '.$father_cearer.'، ومستواه التعليمي '.$father_edu.'، '
-        .'والأم '.$mother_cearer.'تبلغ من العمر '.$mother_age.' سنة ومستواها التعليمي '.$mother_edu.'، '.
-        ' وكان عمر الأم عند إنجاب الطفل'.$mother_birth.'سنة ، وتوجد صلة قرابة بين الوالدين ('.$relative_relation.' )'
-        .$check_disease.$disease.' ، '.$check_disability.' ، '.'والطفل ترتيبه في الأسرة '.$child_rank
+        $family_info = ' يعيش الطفل مع والديه ، حيث يبلغ عمر الأب '.$father_age.' سنة وهو '.$father_cearer.' ، ومستواه التعليمي '.$father_edu.' ، '
+        .' والأم '.$mother_cearer.' تبلغ من العمر '.$mother_age.'  سنة ومستواها التعليمي '.$mother_edu.' ، '.
+        ' وكان عمر الأم عند إنجاب الطفل' .' ' . $mother_birth.' سنة ، '.$relative_relation.' '
+        .$check_disease.$disease.' ، '.$check_disability.' ، '.' والطفل ترتيبه في الأسرة '.$child_rank
         .$family .'.';
 
 
         $pregnancy= array(10) ;
         /////////الحالة السريرية للحمل
-        $pregnancy[0] = 'استمر الحمل ' . MedicalCondition::where('child_id' , $this->id)
-        ->where('ques_id' , 5)->value('answer') . ' أشهر';
+        $pregnancy[0] = 'استمر الحمل ' . ' ' .  MedicalCondition::where('child_id' , $this->id)
+        ->where('ques_id' , 5)->value('answer') . ' أشهر' ;
 
         $pregnancy[1] =' عانت الأم من ' . MedicalCondition::where('child_id' , $this->id)
         ->where('ques_id' , 1)->value('answer') . ' أثناء الحمل ';
@@ -242,10 +244,76 @@ class ReportResource extends JsonResource
         ///////
         $educ_res = 'تم إحالة الطفل لإجراء اختبار البورتج والتقييم غلى المجالات الخمسة(اجتماعي - معرفي - اتصالي - عناية - حركي) وكانت النتائج كما هو موضح في المخطط البياني والجدول التالي' ;
 
+        ///////////////////////////////////////////////
+        $ratio = array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        $age = Child::where('id', $this->child_id)->value('age');
+
+        $s_dim = TestResault::where('child_id', $this->child_id)
+            ->where('dim_id', PortageDimenssion::where('title', 'البعد الاجتماعي')->value('id'))
+            ->orderBy('created_at', 'Desc')->take(2)->get();
+
+        $i = 0;
+        foreach ($s_dim as $elem) {
+            $ratio[$i] = (($elem['basal'] + $elem['additional']) / $age) * 100;
+            $i++;
+        }
+        if ($i != 2) {
+            $i = 2;
+        }
+
+        $m_dim = TestResault::where('child_id', $this->child_id)
+            ->where('dim_id', PortageDimenssion::where('title', 'البعد الحركي')->value('id'))
+            ->orderBy('created_at', 'Desc')->take(2)->get();
+
+        foreach ($m_dim as $elem) {
+            $ratio[$i] = (($elem['basal'] + $elem['additional']) / $age) * 100;
+            $i++;
+        }
+
+        if ($i != 4) {
+            $i = 4;
+        }
+
+        $c_dim = TestResault::where('child_id', $this->child_id)
+            ->where('dim_id', PortageDimenssion::where('title', 'بعد العناية الذاتية')->value('id'))
+            ->orderBy('created_at', 'Desc')->take(2)->get();
+
+        foreach ($c_dim as $elem) {
+            $ratio[$i] = (($elem['basal'] + $elem['additional']) / $age) * 100;
+            $i++;
+        }
+        if ($i != 6) {
+            $i = 6;
+        }
+
+        $com_dim = TestResault::where('child_id', $this->child_id)
+            ->where('dim_id', PortageDimenssion::where('title', 'البعد الاتصالي')->value('id'))
+            ->orderBy('created_at', 'Desc')->take(2)->get();
+
+        foreach ($com_dim as $elem) {
+            $ratio[$i] = (($elem['basal'] + $elem['additional']) / $age) * 100;
+            $i++;
+        }
+
+        if ($i != 8) {
+            $i = 8;
+        }
+
+
+        $k_dim = TestResault::where('child_id', $this->child_id)
+            ->where('dim_id', PortageDimenssion::where('title', 'البعد المعرفي')->value('id'))
+            ->orderBy('created_at', 'Desc')->take(2)->get();
+
+        foreach ($k_dim as $elem) {
+            $ratio[$i] = (($elem['basal'] + $elem['additional']) / $age) * 100;
+            $i++;
+        }
+
+        /////////////////////
         return [
 
             'name' => 'الاسم : '.$this->name ,
-            'phone' => 'هاتف : ' .$this->phone ,
+            'phone' => 'هاتف : ' .$this->phone_num ,
             't_age' => 'العمر الزمني للطفل : '.$this->age ,
             'father' => 'اسم الأب : '.$father_name,
             'mother' => 'اسم الأم : '.$mother_name ,
@@ -257,6 +325,16 @@ class ReportResource extends JsonResource
             'notes' => $notes,
             'medical_resault' => $m_res ,
             'educ_resault' => $educ_res,
+            'new_social_ratio' => $ratio[0],
+            'old_social_ratio' => $ratio[1],
+            'new_montor_ratio' => $ratio[2],
+            'old_montor_ratio' => $ratio[3],
+            'new_care_ratio' => $ratio[4],
+            'old_care_ratio' => $ratio[5],
+            'new_comm_ratio' => $ratio[6],
+            'old_comm_ratio' => $ratio[7],
+            'new_know_ratio' => $ratio[8],
+            'old_know_ratio' => $ratio[9]
 
         ];
     }
