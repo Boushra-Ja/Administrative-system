@@ -13,18 +13,13 @@ class Medical_QResource extends JsonResource
     public function toArray(Request $request): array
     {
 
-        $choice = null;
         $question = MedicalQuestion::where('titel_id', '=', $this->id)->get();
-        foreach($question as $item){
-            if($item->id == '2')
-            $choice=MedicalChoice::where('med_id','=',$item->id)->get();
-        }
+        $d= M_choiceResource::collection($question);
 
 
         return [
             'title' => $this->name ,
-            'question' => $question ,
-            'choice'=>$choice
+            'list' => $d,
         ];
     }
 }

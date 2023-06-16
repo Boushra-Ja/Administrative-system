@@ -13,8 +13,6 @@ return new class extends Migration
             $table->increments('id');
             $table->string('question') ;
             $table->boolean('type') ;
-            $table->integer('title_id')->unsigned();
-            $table->foreign('title_id')->references('id')->on('titels')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
