@@ -19,7 +19,7 @@ class M_A_Q_Resource extends JsonResource
 
         $choice=null;
 
-        if($this->id == '2')
+        if($this->id == '4'||$this->id == '9'||$this->id == '2'||$this->id == '10'||$this->id == '17'||$this->id == '20' )
         $choice=MedicalChoice::where('med_id','=',$this->id)->get(['choice']);
 
         $ans=MedicalCondition::where('ques_id',$this->id)->where('child_id',$request->id)->first();
