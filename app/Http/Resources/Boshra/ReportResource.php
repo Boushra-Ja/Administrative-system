@@ -246,9 +246,9 @@ class ReportResource extends JsonResource
 
         ///////////////////////////////////////////////
         $ratio = array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-        $age = Child::where('id', $this->child_id)->value('age');
+        $age = Child::where('id', $this->id)->value('age');
 
-        $s_dim = TestResault::where('child_id', $this->child_id)
+        $s_dim = TestResault::where('child_id', $this->id)
             ->where('dim_id', PortageDimenssion::where('title', 'البعد الاجتماعي')->value('id'))
             ->orderBy('created_at', 'Desc')->take(2)->get();
 
@@ -261,7 +261,7 @@ class ReportResource extends JsonResource
             $i = 2;
         }
 
-        $m_dim = TestResault::where('child_id', $this->child_id)
+        $m_dim = TestResault::where('child_id', $this->id)
             ->where('dim_id', PortageDimenssion::where('title', 'البعد الحركي')->value('id'))
             ->orderBy('created_at', 'Desc')->take(2)->get();
 
@@ -274,7 +274,7 @@ class ReportResource extends JsonResource
             $i = 4;
         }
 
-        $c_dim = TestResault::where('child_id', $this->child_id)
+        $c_dim = TestResault::where('child_id', $this->id)
             ->where('dim_id', PortageDimenssion::where('title', 'بعد العناية الذاتية')->value('id'))
             ->orderBy('created_at', 'Desc')->take(2)->get();
 
@@ -286,7 +286,7 @@ class ReportResource extends JsonResource
             $i = 6;
         }
 
-        $com_dim = TestResault::where('child_id', $this->child_id)
+        $com_dim = TestResault::where('child_id', $this->id)
             ->where('dim_id', PortageDimenssion::where('title', 'البعد الاتصالي')->value('id'))
             ->orderBy('created_at', 'Desc')->take(2)->get();
 
@@ -300,7 +300,7 @@ class ReportResource extends JsonResource
         }
 
 
-        $k_dim = TestResault::where('child_id', $this->child_id)
+        $k_dim = TestResault::where('child_id', $this->id)
             ->where('dim_id', PortageDimenssion::where('title', 'البعد المعرفي')->value('id'))
             ->orderBy('created_at', 'Desc')->take(2)->get();
 
