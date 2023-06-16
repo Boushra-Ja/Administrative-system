@@ -19,10 +19,11 @@ class E_choiceResource extends JsonResource
 
              if($this->id == '4'||$this->id == '1'||$this->id == '2'||$this->id == '3'||$this->id == '5'||$this->id == '6' )
                 $choice=EductionalChoice::where('edu_id',$this->id)->get(['choice']);
-
-
         return [
-            'id'=>$this->id,'question'=>$this->question,'titel_id'=>$this->titel_id,
+            'id'=>$this->id,
+            'question'=>$this->question,
+            'titel_id'=>$this->titel_id,
+            'type'=>$this->type,
 
             'choice' => $choice,
 
