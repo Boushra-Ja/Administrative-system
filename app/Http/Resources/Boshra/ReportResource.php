@@ -252,8 +252,8 @@ class ReportResource extends JsonResource
         $child_dev[5] = ' ومشى بعمر ' . MedicalCondition::where('child_id', $this->id)
             ->where('ques_id', 36)->value('answer');
 
-        $child_dev[6] = ' وبدأ الكلام بعمر ' . MedicalCondition::where('child_id', $this->id)
-            ->where('ques_id', 39)->value('answer');
+        $child_dev[6] = ' وبدأ الكلام بعمر ' . ' ' . MedicalCondition::where('child_id', $this->id)
+            ->where('ques_id', 39)->value('answer') . '  ';
         $child_dev[7] = "وكان نموه السيكولوجي مقبولا";
 
         $child_info =  $child_dev[0] . $child_dev[1] . '،' . $child_dev[2] .
