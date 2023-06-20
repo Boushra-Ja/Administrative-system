@@ -55,7 +55,11 @@ Route::post('parent/login' , [ChildController::class , 'loginParent']) ;
 Route::resource('advice' , AdviceController::class)->except('edit' , 'show' , 'create' , 'update') ;
 Route::get('advice/child/{id}' , [AdviceController::class , 'myAdvice']) ;
 Route::post('Report/{id}' , [ChildController::class , 'Report']) ;
-    ////@batoul///
+Route::get('child/test/{id}' , [ChildController::class , 'child_tests']) ;
+
+
+
+////@batoul///
 
     Route::post('LoginAdmin' , [UserController::class , 'LoginAdmin']) ;
 

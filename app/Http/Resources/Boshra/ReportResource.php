@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Boshra;
 
+use App\Http\Controllers\TestResaultController;
 use App\Models\Child;
 use App\Models\EductionalCondition;
 use App\Models\EductionalQuestion;
@@ -341,79 +342,14 @@ class ReportResource extends JsonResource
         $educ_res = 'تم إحالة الطفل لإجراء اختبار البورتج والتقييم غلى المجالات الخمسة(اجتماعي - معرفي - اتصالي - عناية - حركي) وكانت النتائج كما هو موضح في المخطط البياني والجدول التالي';
 
         ///////////////////////////////////////////////
-        $ratio = array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+
         $age = Child::where('id', $this->id)->value('age');
-
-        $s_dim = TestResault::where('child_id', $this->id)
-            ->where('dim_id', PortageDimenssion::where('title', 'البعد الاجتماعي')->value('id'))
-            ->orderBy('created_at', 'Desc')->take(2)->get();
-
-        $i = 0;
-        foreach ($s_dim as $elem) {
-            $ratio[$i] = (($elem['basal'] + $elem['additional']) / $age) * 100;
-            $i++;
-        }
-        if ($i != 2) {
-            $i = 2;
-        }
-
-        $m_dim = TestResault::where('child_id', $this->id)
-            ->where('dim_id', PortageDimenssion::where('title', 'البعد الحركي')->value('id'))
-            ->orderBy('created_at', 'Desc')->take(2)->get();
-
-        foreach ($m_dim as $elem) {
-            $ratio[$i] = (($elem['basal'] + $elem['additional']) / $age) * 100;
-            $i++;
-        }
-
-        if ($i != 4) {
-            $i = 4;
-        }
-
-        $c_dim = TestResault::where('child_id', $this->id)
-            ->where('dim_id', PortageDimenssion::where('title', 'بعد العناية الذاتية')->value('id'))
-            ->orderBy('created_at', 'Desc')->take(2)->get();
-
-        foreach ($c_dim as $elem) {
-            $ratio[$i] = (($elem['basal'] + $elem['additional']) / $age) * 100;
-            $i++;
-        }
-        if ($i != 6) {
-            $i = 6;
-        }
-
-        $com_dim = TestResault::where('child_id', $this->id)
-            ->where('dim_id', PortageDimenssion::where('title', 'البعد الاتصالي')->value('id'))
-            ->orderBy('created_at', 'Desc')->take(2)->get();
-
-        foreach ($com_dim as $elem) {
-            $ratio[$i] = (($elem['basal'] + $elem['additional']) / $age) * 100;
-            $i++;
-        }
-
-        if ($i != 8) {
-            $i = 8;
-        }
-
-
-        $k_dim = TestResault::where('child_id', $this->id)
-            ->where('dim_id', PortageDimenssion::where('title', 'البعد المعرفي')->value('id'))
-            ->orderBy('created_at', 'Desc')->take(2)->get();
-
-        foreach ($k_dim as $elem) {
-            $ratio[$i] = (($elem['basal'] + $elem['additional']) / $age) * 100;
-            $i++;
-        }
-
+        $ratio = TestResaultController::graph_test($this->id) ;
         /////////////////////
 
         $string = "";
         $ratio4 = array(0, 0, 0, 0);
-
-
         $ratio0="أي الطفل ";
-
-
         $know_ratio_1=" يحدد مستوى أداء الطفل على المهارات المعرفيه الحاصه بمرحله ماقبل المدرسه وفي المرحله الاساسيه الأولى مثل الاشاره الى الألوان وتسميه الصور ومطابقه الأشكال الهندسيه. ";
         $know_ratio_2=" في البعد المعرفي مقارنه بأداء الأطفال الذين هم في نفس العمر الزمني ";
 

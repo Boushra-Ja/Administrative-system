@@ -8,6 +8,9 @@ use App\Http\Requests\StoreChildRequest;
 use App\Http\Requests\UpdateChildRequest;
 use App\Http\Resources\Boshra\ChildResourse;
 use App\Http\Resources\Boshra\ReportResource;
+use App\Http\Resources\Boshra\TestsChildResource;
+use App\Models\PortageDimenssion;
+use App\Models\TestResault;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -111,12 +114,6 @@ class ChildController extends BaseController
 
 
 
-    public function update(UpdateChildRequest $request, Child $child)
-    {
-        //
-    }
-
-
     public function destroy($id)
     {
         $child = Child::where('id', '=', $id)->delete();
@@ -146,5 +143,14 @@ class ChildController extends BaseController
 
         ]);
         return $res ;
+    }
+
+    public function child_tests($child_id)  {
+
+        $child = TestResault::where('child_id'  ,  $child_id)
+        ->orderby('created_at' , 'desc')->first() ;
+
+        $res = TestsChildResource::collection([$child]);
+        return $this->sendResponse($res , 'success')  ;
     }
 }
