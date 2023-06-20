@@ -26,49 +26,6 @@ class MedicalChoiceSeeder extends Seeder
 
         DB::table('medical_choices')->insert([
             'choice' => "نعم",
-<<<<<<< HEAD
-            'med_id'=>4
-        ]);
-        DB::table('medical_choices')->insert([
-            'choice' => "لا",
-            'med_id'=>4,
-        ]);
-        //
-        DB::table('medical_choices')->insert([
-            'choice' => "نعم",
-            'med_id'=> 9 ,
-        ]);
-        DB::table('medical_choices')->insert([
-            'choice' => "لا",
-            'med_id'=> 9,
-        ]);
-        ///
-        DB::table('medical_choices')->insert([
-            'choice' => "نعم",
-            'med_id'=>10
-        ]);
-        DB::table('medical_choices')->insert([
-            'choice' => "لا",
-            'med_id'=>10,
-        ]);
-        ///
-        DB::table('medical_choices')->insert([
-            'choice' => "نعم",
-            'med_id'=>17,
-        ]);
-        DB::table('medical_choices')->insert([
-            'choice' => "لا",
-            'med_id'=>17,
-        ]);
-        //
-        DB::table('medical_choices')->insert([
-            'choice' => "نعم",
-            'med_id'=>20,
-        ]);
-        DB::table('medical_choices')->insert([
-            'choice' => "لا",
-            'med_id'=>20,
-=======
             'med_id'=>"4",
         ]);
         DB::table('medical_choices')->insert([
@@ -111,7 +68,6 @@ class MedicalChoiceSeeder extends Seeder
         DB::table('medical_choices')->insert([
             'choice' => "لا",
             'med_id'=>"20",
->>>>>>> ceb50f274b8c2afec72986163d32434c62417796
         ]);
     }
 }
