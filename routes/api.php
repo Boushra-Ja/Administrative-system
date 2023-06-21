@@ -56,6 +56,9 @@ Route::resource('advice' , AdviceController::class)->except('edit' , 'show' , 'c
 Route::get('advice/child/{id}' , [AdviceController::class , 'myAdvice']) ;
 Route::post('Report/{id}' , [ChildController::class , 'Report']) ;
 Route::get('child/test/{id}' , [ChildController::class , 'child_tests']) ;
+Route::get('Employees/order/tasks' , [UserController::class , 'Employees_order_tasks']) ;
+Route::get('Employees/order/points' , [UserController::class , 'Employees_order_points']) ;
+Route::get('Employees/all' , [UserController::class , 'show_Employee']) ;
 
 
 
