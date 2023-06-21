@@ -126,4 +126,10 @@ class TestResaultController extends Controller
 
         return $ratio ;
     }
+
+    function table_test($child_id) {
+
+        
+
+    }
 }

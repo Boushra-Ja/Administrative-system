@@ -14,7 +14,7 @@ class TestsChildResource extends JsonResource
         $ratio = TestResaultController::graph_test($this->child_id) ;
 
         return [
-            'test_date' => $this->created_at,
+            'test_date' => $this->created_at->format('Y-m-d ') ,
             'new_social_ratio' => $ratio[0],
             'old_social_ratio' => $ratio[1],
             'new_montor_ratio' => $ratio[2],
