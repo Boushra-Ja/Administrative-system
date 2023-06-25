@@ -115,12 +115,8 @@ class UserController extends  BaseController
         {
             $token = $user->createToken('ProductsTolken')->plainTextToken;
 
-            return response()->json([
-                'message' => 'login '. $request->role. ' successfully',
-                 'user' => new EmployeeResource($user),
-                'token' => $token,
-            ]);
-          // return $this->sendResponse([new EmployeeResource($user)], "login " . $request->role . " successfuly") ;
+
+           return $this->sendResponse([new EmployeeResource($user)], "login " . $request->role . " successfuly") ;
         }
         return $this->sendErrors([] , ' login failed') ;
     }
