@@ -112,5 +112,12 @@ class TitelsSeeder extends Seeder
 
         ]);
 
+        DB::table('titels')->insert([
+            'id'=>"15",
+            'name' =>"no title",
+            'type'=>'e'
+
+        ]);
+
     }
 }

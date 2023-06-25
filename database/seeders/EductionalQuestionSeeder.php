@@ -183,26 +183,58 @@ class EductionalQuestionSeeder extends Seeder
 
         ]);
 
-
         DB::table('eductional_questions')->insert([
-            'question' => "متى اكتشف الوالدان لأول مرة أن حالة ابنهم غير طبيعية وكيف تم ذلك",
-            'titel_id'=>"9",
+            'question' => "مادية",
+            'titel_id'=>"13",
             'type'=>"0",
             'id'=>"25",
 
         ]);
+
         DB::table('eductional_questions')->insert([
-            'question' => "ملاحظات الفاحص",
-            'titel_id'=>"9",
+            'question' => "اجتماعية",
+            'titel_id'=>"13",
             'type'=>"0",
             'id'=>"26",
 
         ]);
+
         DB::table('eductional_questions')->insert([
-            'question' => "وصف المشكلة كما يراها ولي الأمر",
-            'titel_id'=>"9",
+            'question' => "نشاطية",
+            'titel_id'=>"13",
             'type'=>"0",
             'id'=>"27",
+
+        ]);
+
+        DB::table('eductional_questions')->insert([
+            'question' => "رمزية",
+            'titel_id'=>"13",
+            'type'=>"0",
+            'id'=>"28",
+
+        ]);
+
+
+        DB::table('eductional_questions')->insert([
+            'question' => "متى اكتشف الوالدان لأول مرة أن حالة ابنهم غير طبيعية وكيف تم ذلك",
+            'titel_id'=>"15",
+            'type'=>"0",
+            'id'=>"29",
+
+        ]);
+        DB::table('eductional_questions')->insert([
+            'question' => "ملاحظات الفاحص",
+            'titel_id'=>"15",
+            'type'=>"0",
+            'id'=>"30",
+
+        ]);
+        DB::table('eductional_questions')->insert([
+            'question' => "وصف المشكلة كما يراها ولي الأمر",
+            'titel_id'=>"15",
+            'type'=>"0",
+            'id'=>"31",
 
         ]);
     }

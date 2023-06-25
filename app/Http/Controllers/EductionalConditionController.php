@@ -35,6 +35,7 @@ class EductionalConditionController extends Controller
      */
     public function store(Request $request)
     {
+
         foreach ($request->ans as $item) {
 
             $answers = EductionalCondition::create([
@@ -43,6 +44,9 @@ class EductionalConditionController extends Controller
                 'answer'=>$item['answer']
                 ]
             );
+        }
+        if ($request->has('center')) {
+            $center = CenterController::store($request->center, $request->child_id);
         }
         if ($answers )
         return response()->json($answers, 200);
