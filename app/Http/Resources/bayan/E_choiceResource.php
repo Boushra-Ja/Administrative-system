@@ -24,7 +24,6 @@ class E_choiceResource extends JsonResource
             'question'=>$this->question,
             'titel_id'=>$this->titel_id,
             'type'=>$this->type,
-
             'choice' => $choice,
 
         ];
