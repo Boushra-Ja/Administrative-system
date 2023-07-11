@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\API\BaseController;
 use App\Models\TestResault;
 use App\Http\Requests\StoreTestResaultRequest;
 use App\Http\Requests\UpdateTestResaultRequest;
+use App\Http\Resources\Boshra\TableResource;
 use App\Models\Child;
 use App\Models\PortageDimenssion;
 
-class TestResaultController extends Controller
+class TestResaultController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -127,9 +129,11 @@ class TestResaultController extends Controller
         return $ratio ;
     }
 
-    function table_test($child_id) {
+    public function table_test($child_id) {
 
-        
+        $child = Child::where('id' , $child_id)->get() ;
+        return $this->sendResponse(TableResource::collection($child) , 'success') ;
+
 
     }
 }
