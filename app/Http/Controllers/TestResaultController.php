@@ -9,56 +9,22 @@ use App\Http\Requests\UpdateTestResaultRequest;
 use App\Http\Resources\Boshra\TableResource;
 use App\Models\Child;
 use App\Models\PortageDimenssion;
+use Illuminate\Http\Request;
 
 class TestResaultController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreTestResaultRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(TestResault $testResault)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(TestResault $testResault)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateTestResaultRequest $request, TestResault $testResault)
-    {
-        //
-    }
 
     public static function  graph_test($child_id) {
 
@@ -129,11 +95,49 @@ class TestResaultController extends BaseController
         return $ratio ;
     }
 
+    static function  table($child_id , $dim_id) {
+        $res=TestResault::where('child_id',$child_id)->where('dim_id',$dim_id)->latest('created_at')->first();
+        if($res){
+
+            $state="";
+
+            $age=Child::where('id',$child_id)->value('age');
+            $data=((($res->basal*12)+$res->additional)/$age)*100;
+
+            if($data <= 25)
+              $state="شديد جداً";
+            else if($data > 25 && $data<= 40)
+              $state="شديد ";
+            else if($data > 40 && $data<= 55)
+              $state="متوسط ";
+            else if($data > 55 && $data<= 70)
+              $state="بسيط ";
+            else if($data > 70 && $data<= 85)
+              $state="بسيط جداً";
+            else
+              $state=" طبيعي";
+
+
+
+            $total=($res->basal*12)+$res->additional;
+            $month=$total%12;
+            $year=($total-$month)/12;
+
+            return   [
+                'dimantion' => PortageDimenssion::where('id', $dim_id)->value('title'),
+                'performance' => $state,
+                'performance_ratio' => $data,
+                'year' => $year,
+                'month' => $month,
+
+            ];
+        }
+    }
+
     public function table_test($child_id) {
 
         $child = Child::where('id' , $child_id)->get() ;
         return $this->sendResponse(TableResource::collection($child) , 'success') ;
-
 
     }
 }
