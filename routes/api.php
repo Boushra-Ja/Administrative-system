@@ -6,11 +6,13 @@ use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\PersonalInformationController;
 use App\Http\Controllers\PersonalQuestionController;
     use App\Http\Controllers\TaskController;
-    use App\Http\Controllers\UserController;
+use App\Http\Controllers\TestResaultController;
+use App\Http\Controllers\UserController;
     use App\Models\PersonalInformation;
 use App\Models\PersonalQuestion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use PHPUnit\Logging\TestDox\TestResultCollector;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,7 +61,8 @@ Route::get('child/test/{id}' , [ChildController::class , 'child_tests']) ;
 Route::get('Employees/order/tasks' , [UserController::class , 'Employees_order_tasks']) ;
 Route::get('Employees/order/points' , [UserController::class , 'Employees_order_points']) ;
 Route::get('Employees/all' , [UserController::class , 'show_Employee']) ;
-
+Route::post('emp/setPassword' , [UserController::class , 'addPassword']) ;
+Route::get('emp/havePassword/{id}' , [UserController::class , 'havePassword']) ;
 
 
 ////@batoul///

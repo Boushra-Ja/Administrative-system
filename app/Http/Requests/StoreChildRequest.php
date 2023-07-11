@@ -16,9 +16,9 @@ class StoreChildRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string',
+            'name' => 'required|string|max:100',
             'phone_number' =>  'required|string',
-            'age' => 'required|string'
+            'age' => 'required|string|min:1'
         ];
     }
 }

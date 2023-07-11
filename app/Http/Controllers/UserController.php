@@ -8,6 +8,7 @@ use App\Http\Resources\AllUsersResource;
 use App\Http\Resources\Boshra\EmployeeResource;
 use App\Models\User;
 use Exception;
+use Illuminate\Http\Client\Request as ClientRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -115,8 +116,12 @@ class UserController extends  BaseController
         {
             $token = $user->createToken('ProductsTolken')->plainTextToken;
 
-
-           return $this->sendResponse([new EmployeeResource($user)], "login " . $request->role . " successfuly") ;
+            return response()->json([
+                'message' => 'login '. $request->role. ' successfully',
+                 'user' => [new EmployeeResource($user)],
+                'token' => $token,
+            ]);
+          // return $this->sendResponse([new EmployeeResource($user)], "login " . $request->role . " successfuly") ;
         }
         return $this->sendErrors([] , ' login failed') ;
     }
@@ -192,4 +197,34 @@ class UserController extends  BaseController
         return $this->sendResponse(EmployeeResource::collection($employees) , 'this is all employees ordered by points') ;
     }
 
+    public function havePassword($emp_id) {
+
+        $pass = User::where('id' , $emp_id)->where('role' , 'Employee')
+        ->value('password') ;
+
+        if($pass == null)
+        {
+            return 0 ;
+        }
+        return 1 ;
+    }
+
+    public function addPassword(Request $request)  {
+
+        $emp = User::where('id' , $request->emp_id)->where('role' , 'Employee') ;
+
+        $validatedData = $request->validate([
+            'password' => ['required', 'string' ,'min:6' ,'max:12']
+        ]);
+        $res = $emp->update([
+            'password' => $validatedData['password']
+        ]);
+
+        if($res)
+        {
+            return $this->sendResponse($emp , 'set password') ;
+        }
+        return $this->sendErrors(null , 'errror in set password') ;
+
+    }
 }

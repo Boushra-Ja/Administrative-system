@@ -16,6 +16,7 @@ return new class extends Migration
             $table->integer('phone_num') ;
             $table->string('infection')->nullable();
             $table->string('section')->nullable();
+            $table->string('password')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
