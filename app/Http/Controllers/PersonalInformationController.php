@@ -43,6 +43,7 @@ class PersonalInformationController extends BaseController
         $birth_date = null;
         $status_date = null;
         $order = 0;
+        $trans_date = null ;
 
         if ($request->has('child_info')) {
 
@@ -64,12 +65,20 @@ class PersonalInformationController extends BaseController
                     }
                 }
 
+                if ($item['ques_id'] == 11) {
+                    $trans_date = $item['answer'] ;
+                    if (strtotime($item['answer']) > time()) {
+                        $messages[$k] = 'لا يمكن أن يتجاوز تاريخ التحويل التاريخ الحالي';
+                        $k++;
+                    }
+                }
                 if ($item['ques_id'] == 16) {
                     if ($item['answer'] < 15) {
                         $messages[$k] = 'لا يمكن أن يكون عمر الأم أصغر من 15 سنة';
                         $k++;
                     }
                 }
+
                 if ($item['ques_id'] == 20) {
                     if ($item['answer'] < 20) {
                         $messages[$k] = 'لا يمكن أن يكون عمر الأب أصغر من 20 سنة';
@@ -99,6 +108,10 @@ class PersonalInformationController extends BaseController
                 $messages[$k] = 'تاريخ دراسة الحالة لا يمكن أن يسبق تاريخ ميلاد الطفل';
                 $k++;
             }
+            if ($trans_date < $birth_date) {
+                $messages[$k] = 'تاريخ التحويل لا يمكن أن يسبق تاريخ ميلاد الطفل';
+                $k++;
+            }
 
             if (empty($messages)) {
                 foreach ($personal_info as $item) {
@@ -120,7 +133,8 @@ class PersonalInformationController extends BaseController
                     $my_family  = $request->sister_info;
                     $family = MemberFamilyController::store($my_family, $child_id);
                 }
-                return $this->sendResponse($family, 'success in add all information ');
+                $messages[$k] = 'تمت إضافة معلومات الطفل بنجاح';
+                return $this->sendResponse($messages, 'success in add all information ');
             } else {
                 return $this->sendResponse($messages, 'error in some information');
             }
