@@ -25,6 +25,12 @@ class TestsChildResource extends JsonResource
             'old_comm_ratio' => $ratio[7],
             'new_know_ratio' => $ratio[8],
             'old_know_ratio' => $ratio[9],
+            'social' => TestResaultController ::table($this->id , 2) ,
+            'monotor' => TestResaultController ::table($this->id , 1) ,
+            'care' => TestResaultController ::table($this->id , 3) ,
+            'comm' => TestResaultController ::table($this->id , 4) ,
+            'know' => TestResaultController ::table($this->id , 5) ,
+
         ];
     }
 

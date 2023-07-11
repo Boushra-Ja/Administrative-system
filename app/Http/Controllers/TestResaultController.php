@@ -134,10 +134,5 @@ class TestResaultController extends BaseController
         }
     }
 
-    public function table_test($child_id) {
 
-        $child = Child::where('id' , $child_id)->get() ;
-        return $this->sendResponse(TableResource::collection($child) , 'success') ;
-
-    }
 }

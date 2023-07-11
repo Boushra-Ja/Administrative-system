@@ -15,7 +15,8 @@ class Child extends Model
         'infection',
         'section',
         'phone_num' ,
-        'unique_number'
+        'unique_number',
+        'password'
     ];
 
     public function members()

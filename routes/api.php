@@ -61,8 +61,8 @@ Route::get('child/test/{id}' , [ChildController::class , 'child_tests']) ;
 Route::get('Employees/order/tasks' , [UserController::class , 'Employees_order_tasks']) ;
 Route::get('Employees/order/points' , [UserController::class , 'Employees_order_points']) ;
 Route::get('Employees/all' , [UserController::class , 'show_Employee']) ;
-Route::get('table_test/{id}' , [TestResaultController::class , 'table_test']) ;
-
+Route::post('emp/setPassword' , [UserController::class , 'addPassword']) ;
+Route::get('emp/havePassword/{id}' , [UserController::class , 'havePassword']) ;
 
 
 ////@batoul///

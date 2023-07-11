@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('role');
             $table->string('email');
             $table->integer('points');
+            $table->string('password')->nullable();
             $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();
