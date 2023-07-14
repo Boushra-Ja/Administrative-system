@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('description');
             $table->string('title');
             $table->boolean('check');
+            $table->string('notes');
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->constrained()->onDelete('cascade');
             $table->integer('app_id')->unsigned();

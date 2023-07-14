@@ -19,7 +19,8 @@ class EmployeeResource extends JsonResource
             'name' => $this->name ,
             'email' => $this->email,
             'points' => $this->points,
-            'unique_number' => $this->unique_number
+            'unique_number' => $this->unique_number,
+            'password' => $this->password
         ] ;
     }
 }

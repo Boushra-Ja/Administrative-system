@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
-use App\Http\Middleware\AppMiddleware;
 use App\Http\Resources\TaskkResource;
 use App\Models\Appointment;
 use App\Models\Task;
 use Illuminate\Http\Request;
-use App\Http\Requests\UpdateTaskRequest;
 use App\Http\Resources\Boshra\TaskResource;
 
 class TaskController extends BaseController
@@ -93,11 +91,13 @@ class TaskController extends BaseController
         return $this->sendErrors([] , 'error in retrive your tasks') ;
     }
 
-    public function finish_task($task_id)
+    public function finish_task($task_id , Request $request)
     {
         $task = Task::where('id' , $task_id);
         $update = $task->update([
-            'check' => true
+            'check' => true ,
+            'notes' => $request->notes
+
         ]) ;
 
         if($update)

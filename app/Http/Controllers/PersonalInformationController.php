@@ -45,73 +45,159 @@ class PersonalInformationController extends BaseController
         $order = 0;
         $trans_date = null ;
 
+        $b1 = false ;
+        $b2 = false;
+        $b3 = false ;
+        $b4 = false;
+        $b5 = false ;
+        $b6 = false;
+        $b7 = false ;
+        $b8 = false;
         if ($request->has('child_info')) {
 
             $personal_info = $request->child_info;
             foreach ($personal_info as $item) {
 
                 if ($item['ques_id'] == 4) {
-                    $birth_date = $item['answer'];
-                    if (strtotime($item['answer']) > time()) {
-                        $messages[$k] = 'لا يمكن أن يكون تاريخ الميلاد أكبر من تاريخ اليوم';
-                        $k++;
-                    }
+                    $b1 = true ;
                 }
                 if ($item['ques_id'] == 3) {
-                    if (strtotime($item['answer']) > time()) {
-                        $messages[$k] = 'لا يمكن أن يكون تاريخ دراسة الحالة أكبر من التاريخ الحالي';
-                        $k++;
-                        $status_date = $item['answer'];
-                    }
+                    $b2 = true ;
+                }
+                if ($item['ques_id'] == 11)
+                {
+                    $b3 = true ;
                 }
 
-                if ($item['ques_id'] == 11) {
-                    $trans_date = $item['answer'] ;
-                    if (strtotime($item['answer']) > time()) {
-                        $messages[$k] = 'لا يمكن أن يتجاوز تاريخ التحويل التاريخ الحالي';
-                        $k++;
-                    }
-                }
                 if ($item['ques_id'] == 16) {
-                    if ($item['answer'] < 15) {
-                        $messages[$k] = 'لا يمكن أن يكون عمر الأم أصغر من 15 سنة';
-                        $k++;
-                    }
+                    $b4 = true ;
                 }
 
-                if ($item['ques_id'] == 20) {
-                    if ($item['answer'] < 20) {
-                        $messages[$k] = 'لا يمكن أن يكون عمر الأب أصغر من 20 سنة';
-                        $k++;
+                if ($item['ques_id'] == 20){
+                    $b5 = true ;
+                }
+                if ($item['ques_id'] == 25){
+                    $b6 = true ;
+                }
+
+                if ($item['ques_id'] == 30){
+                    $b7 = true ;
+                }
+                if ($item['ques_id'] == 31){
+                    $b8 = true ;
+                }
+            }
+            if($b1 == true && $b2 == true &&  $b3 == true && $b4 == true
+            && $b5 == true && $b6 == true)
+            {
+                foreach ($personal_info as $item) {
+
+                    if ($item['ques_id'] == 4) {
+                        $birth_date = $item['answer'];
+                        if (strtotime($item['answer']) > time()) {
+                            $messages[$k] = 'لا يمكن أن يكون تاريخ الميلاد أكبر من تاريخ اليوم';
+                            $k++;
+                        }
+                    }
+                    if ($item['ques_id'] == 3) {
+                        if (strtotime($item['answer']) > time()) {
+                            $messages[$k] = 'لا يمكن أن يكون تاريخ دراسة الحالة أكبر من التاريخ الحالي';
+                            $k++;
+                            $status_date = $item['answer'];
+                        }
+                    }
+
+                    if ($item['ques_id'] == 11) {
+                        $trans_date = $item['answer'] ;
+                        if (strtotime($item['answer']) > time()) {
+                            $messages[$k] = 'لا يمكن أن يتجاوز تاريخ التحويل التاريخ الحالي';
+                            $k++;
+                        }
+                    }
+                    if ($item['ques_id'] == 16) {
+                        if ($item['answer'] < 15) {
+                            $messages[$k] = 'لا يمكن أن يكون عمر الأم أصغر من 15 سنة';
+                            $k++;
+                        }
+                    }
+
+                    if ($item['ques_id'] == 20) {
+                        if ($item['answer'] < 20) {
+                            $messages[$k] = 'لا يمكن أن يكون عمر الأب أصغر من 20 سنة';
+                            $k++;
+                        }
+                    }
+                    if ($item['ques_id'] == 25) {
+                        if ($item['answer'] < 16) {
+                            $messages[$k] = 'عمر الأم عند إنجاب الطفل غير متناسب مع بقية المعلومات';
+                            $k++;
+                        }
+                    }
+                    if ($item['ques_id'] == 30) {
+                        $num_sister = $item['answer'];
+                    }
+                    if ($item['ques_id'] == 31) {
+                        $order = $item['answer'];
                     }
                 }
-                if ($item['ques_id'] == 25) {
-                    if ($item['answer'] < 16) {
-                        $messages[$k] = 'عمر الأم عند إنجاب الطفل غير متناسب مع بقية المعلومات';
-                        $k++;
-                    }
+                if ($order < 1 && $order > $num_sister) {
+                    $messages[$k] = 'ترتيب الطفل في الأسرة غير صحيح';
+                    $k++;
                 }
-                if ($item['ques_id'] == 30) {
-                    $num_sister = $item['answer'];
+
+                if ($status_date < $birth_date) {
+                    $messages[$k] = 'تاريخ دراسة الحالة لا يمكن أن يسبق تاريخ ميلاد الطفل';
+                    $k++;
                 }
-                if ($item['ques_id'] == 31) {
-                    $order = $item['answer'];
+                if ($trans_date < $birth_date) {
+                    $messages[$k] = 'تاريخ التحويل لا يمكن أن يسبق تاريخ ميلاد الطفل';
+                    $k++;
                 }
             }
 
-            if ($order < 1 && $order > $num_sister) {
-                $messages[$k] = 'ترتيب الطفل في الأسرة غير صحيح';
-                $k++;
-            }
+            else{
 
-            if ($status_date < $birth_date) {
-                $messages[$k] = 'تاريخ دراسة الحالة لا يمكن أن يسبق تاريخ ميلاد الطفل';
-                $k++;
-            }
-            if ($trans_date < $birth_date) {
-                $messages[$k] = 'تاريخ التحويل لا يمكن أن يسبق تاريخ ميلاد الطفل';
-                $k++;
-            }
+                if($b1 == false)
+                {
+                    $messages[$k] = 'تاريخ الميلاد مطلوب';
+                    $k++;
+                }
+                if($b2 == false)
+                {
+                    $messages[$k] = 'تاريخ دراسة الحالة مطلوب';
+                    $k++;
+                }
+                if($b3 == false)
+                {
+                    $messages[$k] = 'تاريخ التحويل مطلوب';
+                    $k++;
+                }
+                if($b4 == false)
+                {
+                    $messages[$k] = 'عمر الأم مطلوب';
+                    $k++;
+                }
+                if($b5 == false)
+                {
+                    $messages[$k] = 'عمر الأب مطلوب';
+                    $k++;
+                }
+                if($b6 == false)
+                {
+                    $messages[$k] = 'عمر الأم عند إنجاب الطفل مطلوب';
+                    $k++;
+                }
+                if($b7 == false)
+                {
+                    $messages[$k] = 'عدد الإخوة مطلوب';
+                    $k++;
+                }
+                if($b8 == false)
+                {
+                    $messages[$k] = 'ترتيب الطفل في الأسرة مطلوب';
+                    $k++;
+                }
+                }
 
             if (empty($messages)) {
                 foreach ($personal_info as $item) {

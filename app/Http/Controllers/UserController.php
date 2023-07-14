@@ -118,7 +118,7 @@ class UserController extends  BaseController
 
             return response()->json([
                 'message' => 'login '. $request->role. ' successfully',
-                 'user' => [new EmployeeResource($user)],
+                'user' => [new EmployeeResource($user)],
                 'token' => $token,
             ]);
           // return $this->sendResponse([new EmployeeResource($user)], "login " . $request->role . " successfuly") ;
@@ -131,7 +131,11 @@ class UserController extends  BaseController
     {
 
         $Emp= User::where('role', '=', 'Employee')->get();
-        return $this->sendResponse(EmployeeResource::collection($Emp) , 'this is all employees ordered by tasks') ;
+        return response()->json([
+            'message' =>' successfully',
+            'user' => EmployeeResource::collection($Emp),
+        ]);
+   //     return $this->sendResponse(EmployeeResource::collection($Emp) , 'this is all employees ordered by tasks') ;
     }
     ///عرض جميع الاخصائين في الجمعيه//
 
@@ -202,11 +206,7 @@ class UserController extends  BaseController
         $pass = User::where('id' , $emp_id)->where('role' , 'Employee')
         ->value('password') ;
 
-        if($pass == null)
-        {
-            return 0 ;
-        }
-        return 1 ;
+        return $pass;
     }
 
     public function addPassword(Request $request)  {
