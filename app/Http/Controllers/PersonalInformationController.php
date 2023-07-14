@@ -32,19 +32,13 @@ class PersonalInformationController extends BaseController
     public function store(StorePersonalInformationRequest $request)
     {
         $child_id = Child::orderBy('created_at', 'desc')->first()['id'];
-
-        $answers = null;
-        $family = null;
-
-        $messages = array();
-        $k = 0;
-
+        $answers = null; $family = null;
+        $messages = array();  $k = 0;
         $num_sister = 0;
         $birth_date = null;
         $status_date = null;
         $order = 0;
         $trans_date = null ;
-
         $b1 = false ;
         $b2 = false;
         $b3 = false ;
@@ -53,6 +47,8 @@ class PersonalInformationController extends BaseController
         $b6 = false;
         $b7 = false ;
         $b8 = false;
+
+        /////validation
         if ($request->has('child_info')) {
 
             $personal_info = $request->child_info;
@@ -199,6 +195,7 @@ class PersonalInformationController extends BaseController
                 }
                 }
 
+                //////////end validation
             if (empty($messages)) {
                 foreach ($personal_info as $item) {
 
