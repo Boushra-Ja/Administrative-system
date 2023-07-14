@@ -30,4 +30,13 @@ class CenterController extends Controller
          return $center;
 
     }
+
+
+    public Static function show($child_id)
+    {
+        $center = Center::where('child_id',$child_id)->get();
+
+         return $center;
+
+    }
 }
