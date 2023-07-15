@@ -52,6 +52,7 @@ class ChildController extends BaseController
         }
         return $this->sendErrors([], 'error in fetch all children');
     }
+
     public function store(StoreChildRequest $request)
     {
         $dateOfBirth = $request->age;

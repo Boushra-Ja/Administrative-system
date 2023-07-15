@@ -39,14 +39,9 @@ class PersonalInformationController extends BaseController
         $status_date = null;
         $order = 0;
         $trans_date = null ;
-        $b1 = false ;
-        $b2 = false;
-        $b3 = false ;
-        $b4 = false;
-        $b5 = false ;
-        $b6 = false;
-        $b7 = false ;
-        $b8 = false;
+        $b1 = false ;$b2 = false;$b3 = false ;
+        $b4 = false;$b5 = false ;$b6 = false;
+        $b7 = false ;$b8 = false;
 
         /////validation
         if ($request->has('child_info')) {
@@ -141,11 +136,11 @@ class PersonalInformationController extends BaseController
                     $k++;
                 }
 
-                if ($status_date < $birth_date) {
+                if (strtotime($status_date) < strtotime($birth_date)) {
                     $messages[$k] = 'تاريخ دراسة الحالة لا يمكن أن يسبق تاريخ ميلاد الطفل';
                     $k++;
                 }
-                if ($trans_date < $birth_date) {
+                if (strtotime($trans_date) < strtotime($birth_date)) {
                     $messages[$k] = 'تاريخ التحويل لا يمكن أن يسبق تاريخ ميلاد الطفل';
                     $k++;
                 }
