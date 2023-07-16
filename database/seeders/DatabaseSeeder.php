@@ -21,7 +21,11 @@ class DatabaseSeeder extends Seeder
             PersonalQuestionSeeder::class,
             PersonalChoiceSeeder::class,
             UserSeeder::class,
-            PortageDimenssionSeeder::class
+            PortageDimenssionSeeder::class,
+            DiseaseSeeder::class,
+            ViewSeeder::class,
+            InfectionSeeder::class,
+
 
         ]);
     }
