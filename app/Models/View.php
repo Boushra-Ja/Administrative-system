@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TestResault extends Model
+class View extends Model
 {
     use HasFactory;
     protected $fillable = [
         'id',
-        'basal',
-        'additional',
-        'child_id',
-         'dim_id'
+        'diseases_id',
+         'number',
+         'year',
     ];
+
 }

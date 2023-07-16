@@ -53,6 +53,10 @@ class TaskController extends BaseController
             'check' => $valid['check'],
 
         ]);
+// $result = (new  ViewController)->Store_row();
+
+        //dd($result) ;
+
         return response()->json([
             'message'=>'A Task has been booked successfully',
             'Task' => $tt,
