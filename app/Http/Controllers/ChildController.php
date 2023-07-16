@@ -53,9 +53,10 @@ class ChildController extends BaseController
         return $this->sendErrors([], 'error in fetch all children');
     }
 
-    public function store(StoreChildRequest $request)
+    static public function add_child( $age , $phone_number , $name)
     {
-        $dateOfBirth = $request->age;
+        $dateOfBirth = $age;
+
         $unique_num = random_int(100, 999999);
         $check  = Child::where('unique_number', $unique_num)->first();
         while ($check) {
@@ -91,8 +92,8 @@ class ChildController extends BaseController
         $age = ($y_diff * 12) + $m_diff;
 
         $child = Child::create([
-            'name' => $request->name,
-            'phone_num' => $request->phone_number,
+            'name' => $name,
+            'phone_num' => $phone_number,
             'age' => $age,
             'unique_number' => $unique_num
 
@@ -100,9 +101,9 @@ class ChildController extends BaseController
 
 
         if ($child) {
-            return $this->sendResponse($child, 'success in add a child');
+            return  true ;
         }
-        return $this->sendErrors([], 'failed in added child');
+        return false;
     }
 
 
