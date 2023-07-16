@@ -187,7 +187,7 @@ class ViewController extends Controller
 
     }
 
-    public function All_Infection($myArray)
+    public function All_Infections($myArray)
     {
         $myArray = explode(',', $myArray);
         $results22 = ['شديد جداً','شديد','متوسط','بسيط','بسيط جداً','طبيعي'];

@@ -6,7 +6,9 @@ use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\PersonalInformationController;
 use App\Http\Controllers\PersonalQuestionController;
     use App\Http\Controllers\TaskController;
+    use App\Http\Controllers\TestResaultController;
     use App\Http\Controllers\UserController;
+    use App\Http\Controllers\ViewController;
     use App\Models\PersonalInformation;
 use App\Models\PersonalQuestion;
 use Illuminate\Http\Request;
@@ -112,3 +114,8 @@ Route::get('Employees/all' , [UserController::class , 'show_Employee']) ;
     Route::delete('delete_SpecOrEmp/{id}', [UserController::class,'delete_SpecOrEmp']);
     Route::get('AllUser', [UserController::class,'AllUser']);
 
+
+    Route::get('All_Diseases/{myArray}', [ViewController::class,'All_Diseases']);
+    Route::get('All_Infections/{myArray}', [ViewController::class,'All_Infections']);
+    Route::get('MatchingList/{myArray}/{id}', [ViewController::class,'MatchingList']);
+    Route::post('store_test', [TestResaultController::class,'store_test']);
