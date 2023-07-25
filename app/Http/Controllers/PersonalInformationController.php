@@ -367,18 +367,18 @@ class PersonalInformationController extends BaseController
             }
 
             if ($child && $family)
-                return $this->sendResponse($family, 'success in update information of child');
+            {
+                $messages[0] = 'تم تعديل معلومات الطفل بنجاح';
+                return $this->sendResponse($messages, 'success in update all information ');
 
+            }
             return $this->sendErrors([], 'failed in update information of child');
 
         }else {
             return $this->sendResponse($messages, 'error in update some information');
         }
 
-
     }
-
-
 }
 
 /*
