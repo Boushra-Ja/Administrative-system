@@ -15,17 +15,8 @@ use Carbon\Carbon;
 class PersonalInformationController extends BaseController
 {
 
-    public function index()
-    {
-    }
-    public function show($child_id)
-    {
-    }
+    public function validationInput($request)  {
 
-
-    public function store(StorePersonalInformationRequest $request)
-    {
-        $answers = null; $family = null;
         $messages = array();  $k = 0;
         $num_sister = 0;
         $birth_date = null;
@@ -39,11 +30,7 @@ class PersonalInformationController extends BaseController
         $b11 = false ;$b12 = false;
         $b13 = false ;$b14 = false;
         $b15 = false ;$b16 = false; $b17 = false;
-
-        /////validation
-        if ($request->has('child_info')) {
-
-            $personal_info = $request->child_info;
+        $personal_info = $request->child_info;
             foreach ($personal_info as $item) {
 
                 if ($item['ques_id'] == 4) {
@@ -164,8 +151,6 @@ class PersonalInformationController extends BaseController
                     $k++;
                 }
 
-
-
                 $status_date = Carbon::createFromFormat('d/m/Y', $status_date);
                 $birth_date = Carbon::createFromFormat('d/m/Y', $birth_date);
                 $trans_date = Carbon::createFromFormat('d/m/Y', $trans_date);
@@ -270,10 +255,22 @@ class PersonalInformationController extends BaseController
                 }
 
             }
+            return $messages ;
+    }
 
-                //////////end validation
+    public function store(StorePersonalInformationRequest $request)
+    {
+        $answers = null; $family = null; $k =0 ;
+
+        $personal_info = $request->child_info;
+
+        if ($request->has('child_info')) {
+            /////validation
+            $messages = PersonalInformationController::validationInput($request) ;
+            //////////end validation
+
             if (empty($messages)) {
-                $res = ChildController::add_child($request->age , $request->phone_number , $request->name);
+                $res = ChildController::store($request->age , $request->phone_number , $request->name);
 
                 if($res == false)
                 {
@@ -319,67 +316,69 @@ class PersonalInformationController extends BaseController
         $my_family  = $request->sister_info;
         $age = Child::where('id', $request->child_id)->value('age');
 
-        foreach ($personal_info as $item) {
-            $found = PersonalInformation::where('child_id', '=', $request->child_id)->where('ques_id', $item['ques_id'])->get();
+        $messages = PersonalInformationController::validationInput($request) ;
 
-            if (!($found->isEmpty())) {
-                $child = PersonalInformation::where('child_id', '=', $request->child_id)->where('ques_id', $item['ques_id']);
+        if (empty($messages)) {
+            foreach ($personal_info as $item) {
+                $found = PersonalInformation::where('child_id', '=', $request->child_id)->where('ques_id', $item['ques_id'])->get();
 
-                if ($item['answer'] == '') {
-                    $child->delete();
-                } else {
-                    $child->update([
-                        'answer' => $item['answer'],
-                    ]);
-                }
-            } else {
-                if ($item['answer'] != '') {
-                    $child = PersonalInformation::create(
-                        [
+                if (!($found->isEmpty())) {
+                    $child = PersonalInformation::where('child_id', '=', $request->child_id)->where('ques_id', $item['ques_id']);
+
+                    if ($item['answer'] == '') {
+                        $child->delete();
+                    } else {
+                        $child->update([
                             'answer' => $item['answer'],
-                            'ques_id' => $item['ques_id'],
-                            'child_id' =>  $request->child_id
-                        ]
-                    );
+                        ]);
+                    }
                 } else {
-                    $child = true;
+                    if ($item['answer'] != '') {
+                        $child = PersonalInformation::create(
+                            [
+                                'answer' => $item['answer'],
+                                'ques_id' => $item['ques_id'],
+                                'child_id' =>  $request->child_id
+                            ]
+                        );
+                    } else {
+                        $child = true;
+                    }
+                }
+                if ($item['ques_id'] == 4) {
+                    $age = ChildController::calculateAge($item['answer']) ;
                 }
             }
-            if ($item['ques_id'] == 4) {
-                $years = (int)Carbon::parse($item['answer'])->diff(Carbon::now())->format('%y');
-                $months = (int)Carbon::parse($item['answer'])->diff(Carbon::now())->format('%m');
 
-                $age = ($years * 12) + $months;
+            $c = Child::where('id', $request->child_id);
+            if ($c) {
+                $c->update([
+                    'phone_num' => $request->phone_number,
+                    'name' => $request->name,
+                    'age' => $age
+                ]);
             }
+
+            $my_sister = MemberFamily::where('child_id', '=', $request->child_id);
+            $my_sister->delete();
+            if ($request->has('sister_info')) {
+                $my_family  = $request->sister_info;
+                $family = MemberFamilyController::store($my_family, $request->child_id);
+            }
+
+            if ($child && $family)
+                return $this->sendResponse($family, 'success in update information of child');
+
+            return $this->sendErrors([], 'failed in update information of child');
+
+        }else {
+            return $this->sendResponse($messages, 'error in update some information');
         }
-        $c = Child::where('id', $request->child_id);
-        if ($c) {
-            $c->update([
-                'phone_num' => $request->phone_number,
-                'name' => $request->name,
-                'age' => $age
-            ]);
-        }
-
-        $my_sister = MemberFamily::where('child_id', '=', $request->child_id);
-        $my_sister->delete();
-        if ($request->has('sister_info')) {
-            $my_family  = $request->sister_info;
-            $family = MemberFamilyController::store($my_family, $request->child_id);
-        }
 
 
-        if ($child && $family)
-            return $this->sendResponse($family, 'success in update information of child');
-
-        return $this->sendErrors([], 'failed in update information of child');
     }
 
 
-
-    public function destroy(PersonalInformation $personalInformation)
-    {
-    }
 }
 
 /*

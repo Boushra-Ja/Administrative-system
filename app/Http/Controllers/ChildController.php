@@ -53,17 +53,7 @@ class ChildController extends BaseController
         return $this->sendErrors([], 'error in fetch all children');
     }
 
-    static public function add_child( $age , $phone_number , $name)
-    {
-        $dateOfBirth = $age;
-
-        $unique_num = random_int(100, 999999);
-        $check  = Child::where('unique_number', $unique_num)->first();
-        while ($check) {
-            $unique_num = random_int(100, 999999);
-            $check  = Child::where('unique_number', $unique_num)->first();
-        }
-
+    static public function calculateAge($dateOfBirth)  {
         $d_now = (Carbon::now())->format('d');
         $m_now = (Carbon::now())->format('m');
         $y_now = (Carbon::now())->format('y');
@@ -90,6 +80,23 @@ class ChildController extends BaseController
         }
 
         $age = ($y_diff * 12) + $m_diff;
+
+        return  $age;
+    }
+
+
+    static public function store( $age , $phone_number , $name)
+    {
+        $dateOfBirth = $age;
+
+        $unique_num = random_int(100, 999999);
+        $check  = Child::where('unique_number', $unique_num)->first();
+        while ($check) {
+            $unique_num = random_int(100, 999999);
+            $check  = Child::where('unique_number', $unique_num)->first();
+        }
+
+        $age = ChildController::calculateAge($dateOfBirth);
 
         $child = Child::create([
             'name' => $name,
