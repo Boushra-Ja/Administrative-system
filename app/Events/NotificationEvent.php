@@ -31,9 +31,16 @@ class NotificationEvent implements  ShouldBroadcast
         return new Channel('public-channel.'.$this->user_id);
     }
 
-    public function  broadcastAs() :String{
+//    public function  broadcastAs() :String{
+//
+//        return 'NotificationEvent';
+//    }
+
+    public function broadcastAs() {
 
         return 'NotificationEvent';
+
     }
+
 
 }

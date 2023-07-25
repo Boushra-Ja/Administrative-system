@@ -10,7 +10,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('views', function (Blueprint $table) {
-            $table->increments('id');;
+            $table->increments('id');
             $table->integer('number');
             $table->integer('year');
             $table->unsignedBigInteger('diseases_id');

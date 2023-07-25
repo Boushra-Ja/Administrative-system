@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\Report;
-use App\Http\Resources\ReportInfection;
 use App\Models\Child;
 use App\Models\Diseases;
 use App\Models\Infection;
@@ -149,7 +148,6 @@ class ViewController extends Controller
                 ->value('number');
 
             if ($model !== null) {
-                echo $model;
                 Infection:: where('name', '=', $state)->
                 where('year', '=', $currentYear)->update(['number' => $model + 1]);
 

@@ -3,7 +3,8 @@
 use App\Http\Controllers\AdviceController;
 use App\Http\Controllers\AppointmentController;
     use App\Http\Controllers\ChildController;
-use App\Http\Controllers\PersonalInformationController;
+    use App\Http\Controllers\NotificationController;
+    use App\Http\Controllers\PersonalInformationController;
 use App\Http\Controllers\PersonalQuestionController;
     use App\Http\Controllers\TaskController;
     use App\Http\Controllers\TestResaultController;
@@ -119,3 +120,12 @@ Route::get('Employees/all' , [UserController::class , 'show_Employee']) ;
     Route::get('All_Infections/{myArray}', [ViewController::class,'All_Infections']);
     Route::get('MatchingList/{myArray}/{id}', [ViewController::class,'MatchingList']);
     Route::post('store_test', [TestResaultController::class,'store_test']);
+
+
+    Route::post('/alert', [NotificationController::class, 'alert']);
+
+
+    Route::get('test', function () {
+        event(new App\Events\NotificationEvent("rr","1","ddd"));
+        return "Event has been sent!";
+    });
