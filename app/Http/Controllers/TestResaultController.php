@@ -35,7 +35,8 @@ class TestResaultController extends Controller
     {
         foreach ($request->ans as $item) {
 
-            $answers = TestResault::create([
+            $answers = TestResault::create(
+                [
                     'child_id' => $request->child_id,
                     'basal' => $item['basal'],
                     'additional' => $item['additional'],
@@ -43,12 +44,10 @@ class TestResaultController extends Controller
                 ]
             );
 
-                (new  ViewController)->store_infection($request->child_id, $answers['dim_id']);
-
-
+            (new  ViewController)->store_infection($request->child_id, $answers['dim_id']);
         }
 
-        if ($answers )
+        if ($answers)
             return response()->json($answers, 200);
 
         return response()->json([], 201);
@@ -80,7 +79,8 @@ class TestResaultController extends Controller
         //
     }
 
-    public static function  graph_test($child_id) {
+    public static function  graph_test($child_id)
+    {
 
         $ratio = array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
         $age = Child::where('id', $child_id)->value('age');
@@ -146,6 +146,38 @@ class TestResaultController extends Controller
             $i++;
         }
 
-        return $ratio ;
+        return $ratio;
+    }
+
+    static function  table($child_id, $dim_id)
+    {
+        $res = TestResault::where('child_id', $child_id)->where('dim_id', $dim_id)->latest('created_at')->first();
+        if ($res) {
+            $state = "";
+            $age = Child::where('id', $child_id)->value('age');
+            $data = ((($res->basal * 12) + $res->additional) / $age) * 100;
+            if ($data <= 25)
+                $state = "شديد جداً";
+            else if ($data > 25 && $data <= 40)
+                $state = "شديد ";
+            else if ($data > 40 && $data <= 55)
+                $state = "متوسط ";
+            else if ($data > 55 && $data <= 70)
+                $state = "بسيط ";
+            else if ($data > 70 && $data <= 85)
+                $state = "بسيط جداً";
+            else
+                $state = " طبيعي";
+            $total = ($res->basal * 12) + $res->additional;
+            $month = $total % 12;
+            $year = ($total - $month) / 12;
+            return   [
+                'dimantion' => PortageDimenssion::where('id', $dim_id)->value('title'),
+                'performance' => $state,
+                'performance_ratio' => $data,
+                'year' => $year,
+                'month' => $month,
+            ];
+        }
     }
 }
