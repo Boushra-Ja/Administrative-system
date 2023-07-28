@@ -31,6 +31,7 @@ class PersonalInformationController extends BaseController
         $b15 = false ;$b16 = false; $b17 = false; $b18 = false ; $b19 = false ;
         $b20 = false ; $b21 = false ;
         $b22 = false ; $b23 = false ;$b24 = false ; $b25 = false ;
+        $b26 = false ; $b27 = false ;$b28 = false ; $b29 = false ;
         $mothor_age = 0 ; $birth_age = 0 ;
         $personal_info = $request->child_info;
             foreach ($personal_info as $item) {
@@ -68,16 +69,54 @@ class PersonalInformationController extends BaseController
                 {
                     $b3 = true ;
                 }
+                if ($item['ques_id'] == 12)
+                {
+                    $b25 = true ;
+                }
+                if ($item['ques_id'] == 13)
+                {
+                    $b26 = true ;
+                }
+
+                if ($item['ques_id'] == 15)
+                {
+                    $b27 = true ;
+                }
 
                 if ($item['ques_id'] == 16) {
                     $b4 = true ;
                 }
 
+                if ($item['ques_id'] == 17){
+                    $b11 = true ;
+                }
+                if ($item['ques_id'] == 18){
+                    $b12 = true ;
+                }
+                if ($item['ques_id'] == 19){
+                    $b28 = true ;
+                }
+
                 if ($item['ques_id'] == 20){
                     $b5 = true ;
                 }
+                if ($item['ques_id'] == 21){
+                    $b13 = true ;
+                }
+                if ($item['ques_id'] == 22){
+                    $b14 = true ;
+                }
+                if ($item['ques_id'] == 23){
+                    $b15 = true ;
+                }
                 if ($item['ques_id'] == 25){
                     $b6 = true ;
+                }
+                if ($item['ques_id'] == 26){
+                    $b16 = true ;
+                }
+                if ($item['ques_id'] == 28){
+                    $b17 = true ;
                 }
 
                 if ($item['ques_id'] == 30){
@@ -90,33 +129,16 @@ class PersonalInformationController extends BaseController
                 if ($item['ques_id'] == 34){
                     $b10 = true ;
                 }
-                if ($item['ques_id'] == 17){
-                    $b11 = true ;
-                }
-                if ($item['ques_id'] == 18){
-                    $b12 = true ;
-                }
-                if ($item['ques_id'] == 21){
-                    $b13 = true ;
-                }
-                if ($item['ques_id'] == 22){
-                    $b14 = true ;
-                }
-                if ($item['ques_id'] == 23){
-                    $b15 = true ;
-                }
-                if ($item['ques_id'] == 26){
-                    $b16 = true ;
-                }
-                if ($item['ques_id'] == 28){
-                    $b17 = true ;
-                }
+
+
+
             }
             if($b1 == true && $b2 == true &&  $b3 == true && $b4 == true
             && $b5 == true && $b6 == true && $b9 == true && $b10 == true
             && $b11 == true && $b12 == true && $b13 == true && $b14 == true
             && $b15 == true && $b16 == true && $b17 == true && $b18
-            && $b19 && $b20 && $b21 && $b22 && $b23 && $b24  )
+            && $b19 && $b20 && $b21 && $b22 && $b23 && $b24  && $b25
+            && $b26 && $b27 && $b28)
             {
                 foreach ($personal_info as $item) {
 
@@ -323,6 +345,26 @@ class PersonalInformationController extends BaseController
                 if($b24 == false)
                 {
                     $messages[$k] = 'العنوان مطلوب';
+                    $k++;
+                }
+                if($b25 == false)
+                {
+                    $messages[$k] = 'تشخيص المحول مطلوب';
+                    $k++;
+                }
+                if($b26 == false)
+                {
+                    $messages[$k] = 'هاتف الجهة المحولة مطلوب';
+                    $k++;
+                }
+                if($b27 == false)
+                {
+                    $messages[$k] = 'اسم الأم مطلوب';
+                    $k++;
+                }
+                if($b28 == false)
+                {
+                    $messages[$k] = 'اسم الأب مطلوب';
                     $k++;
                 }
 
