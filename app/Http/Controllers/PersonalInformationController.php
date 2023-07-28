@@ -6,7 +6,6 @@ use App\Http\Controllers\API\BaseController;
 use App\Models\PersonalInformation;
 use App\Http\Requests\StorePersonalInformationRequest;
 use App\Http\Requests\UpdatePersonalInformationRequest;
-use App\Http\Resources\Boshra\PersonalInfoResourse;
 use App\Models\Child;
 use App\Models\MemberFamily;
 use Carbon\Carbon;
@@ -31,6 +30,7 @@ class PersonalInformationController extends BaseController
         $b13 = false ;$b14 = false;
         $b15 = false ;$b16 = false; $b17 = false; $b18 = false ; $b19 = false ;
         $b20 = false ; $b21 = false ;
+        $b22 = false ; $b23 = false ;$b24 = false ; $b25 = false ;
         $mothor_age = 0 ; $birth_age = 0 ;
         $personal_info = $request->child_info;
             foreach ($personal_info as $item) {
@@ -51,6 +51,18 @@ class PersonalInformationController extends BaseController
                 }
                 if ($item['ques_id'] == 6) {
                     $b21 = true ;
+                }
+                if ($item['ques_id'] == 7) {
+                    $b22 = true ;
+                }
+                if ($item['ques_id'] == 8) {
+                    $b23 = true ;
+                }
+                if ($item['ques_id'] == 9) {
+                    $b24 = true ;
+                }
+                if ($item['ques_id'] == 10) {
+                    $b9 = true ;
                 }
                 if ($item['ques_id'] == 11)
                 {
@@ -74,9 +86,7 @@ class PersonalInformationController extends BaseController
                 if ($item['ques_id'] == 31){
                     $b8 = true ;
                 }
-                if ($item['ques_id'] == 10){
-                    $b9 = true ;
-                }
+
                 if ($item['ques_id'] == 34){
                     $b10 = true ;
                 }
@@ -105,7 +115,8 @@ class PersonalInformationController extends BaseController
             if($b1 == true && $b2 == true &&  $b3 == true && $b4 == true
             && $b5 == true && $b6 == true && $b9 == true && $b10 == true
             && $b11 == true && $b12 == true && $b13 == true && $b14 == true
-            && $b15 == true && $b16 == true && $b17 == true && $b18 && $b19 && $b20 && $b21)
+            && $b15 == true && $b16 == true && $b17 == true && $b18
+            && $b19 && $b20 && $b21 && $b22 && $b23 && $b24  )
             {
                 foreach ($personal_info as $item) {
 
@@ -134,11 +145,11 @@ class PersonalInformationController extends BaseController
                         }
                     }
                     if ($item['ques_id'] == 16) {
+                        $mothor_age = $item['answer'] ;
                         if (intval($item['answer']) < 15) {
                             $messages[$k] = 'لا يمكن أن يكون عمر الأم أصغر من 15 سنة';
                             $k++;
                         }
-                        $mothor_age = $item['ques_id'] ;
                     }
 
                     if ($item['ques_id'] == 20) {
@@ -148,11 +159,11 @@ class PersonalInformationController extends BaseController
                         }
                     }
                     if ($item['ques_id'] == 25) {
+                        $birth_age = $item['answer'] ;
                         if (intval($item['answer']) < 16) {
                             $messages[$k] = 'عمر الأم عند إنجاب الطفل غير متناسب مع بقية المعلومات';
                             $k++;
                         }
-                        $birth_age = $item['ques_id'] ;
                     }
                     if ($item['ques_id'] == 30) {
                         $num_sister = intval($item['answer']);
@@ -166,14 +177,16 @@ class PersonalInformationController extends BaseController
                     $k++;
                 }
 
-                if($mothor_age->lt($birth_age) )
+
+                $status_date = Carbon::createFromFormat('d/m/Y', $status_date);
+                $birth_date = Carbon::createFromFormat('d/m/Y', $birth_date);
+                $trans_date = Carbon::createFromFormat('d/m/Y', $trans_date);
+
+                if($mothor_age <  $birth_age)
                 {
                     $messages[$k] = 'لا يمكن أن يكون عمر الأم عند إنجاب الطفل أكبر من عمرها الحالي';
                     $k++;
                 }
-                $status_date = Carbon::createFromFormat('d/m/Y', $status_date);
-                $birth_date = Carbon::createFromFormat('d/m/Y', $birth_date);
-                $trans_date = Carbon::createFromFormat('d/m/Y', $trans_date);
 
                 if ($status_date->lt($birth_date)) {
                     $messages[$k] = 'تاريخ دراسة الحالة لا يمكن أن يسبق تاريخ ميلاد الطفل';
@@ -297,6 +310,22 @@ class PersonalInformationController extends BaseController
                     $messages[$k] = 'الجنس مطلوب';
                     $k++;
                 }
+                if($b22 == false)
+                {
+                    $messages[$k] = 'الجنسية مطلوبة';
+                    $k++;
+                }
+                if($b23 == false)
+                {
+                    $messages[$k] = 'رقم الهاتف مطلوب';
+                    $k++;
+                }
+                if($b24 == false)
+                {
+                    $messages[$k] = 'العنوان مطلوب';
+                    $k++;
+                }
+
             }
             return $messages ;
     }
@@ -407,6 +436,9 @@ class PersonalInformationController extends BaseController
             if ($request->has('sister_info')) {
                 $my_family  = $request->sister_info;
                 $family = MemberFamilyController::store($my_family, $request->child_id);
+            }
+            else{
+                $family = true ;
             }
 
             if ($child && $family)

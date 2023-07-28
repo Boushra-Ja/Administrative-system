@@ -20,7 +20,6 @@ class UpdatePersonalInformationRequest extends FormRequest
             'name' => 'required|string' ,
             'phone_number' => 'required' ,
             'child_info' => 'required',
-            'sister_info' => 'required'
         ];
     }
 }
