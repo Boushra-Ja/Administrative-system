@@ -6,7 +6,6 @@ use App\Http\Controllers\API\BaseController;
 use App\Models\PersonalInformation;
 use App\Http\Requests\StorePersonalInformationRequest;
 use App\Http\Requests\UpdatePersonalInformationRequest;
-use App\Http\Resources\Boshra\PersonalInfoResourse;
 use App\Models\Child;
 use App\Models\MemberFamily;
 use Carbon\Carbon;
@@ -29,49 +28,73 @@ class PersonalInformationController extends BaseController
         $b9 = false ;$b10 = false;
         $b11 = false ;$b12 = false;
         $b13 = false ;$b14 = false;
-        $b15 = false ;$b16 = false; $b17 = false;
+        $b15 = false ;$b16 = false; $b17 = false ; $b19 = false ;
+        $b20 = false ; $b21 = false ;
+        $b22 = false ; $b24 = false ; $b25 = false ;
+        $b26 = false ; $b27 = false ;$b28 = false ; $b29 = false ;
+        $mothor_age = 0 ; $birth_age = 0 ;
         $personal_info = $request->child_info;
             foreach ($personal_info as $item) {
 
+                if ($item['ques_id'] == 2) {
+                    $b19 = true ;
+                }
                 if ($item['ques_id'] == 4) {
                     $b1 = true ;
                 }
                 if ($item['ques_id'] == 3) {
                     $b2 = true ;
                 }
+                if ($item['ques_id'] == 5) {
+                    $b20 = true ;
+                }
+                if ($item['ques_id'] == 6) {
+                    $b21 = true ;
+                }
+                if ($item['ques_id'] == 7) {
+                    $b22 = true ;
+                }
+
+                if ($item['ques_id'] == 9) {
+                    $b24 = true ;
+                }
+                if ($item['ques_id'] == 10) {
+                    $b9 = true ;
+                }
                 if ($item['ques_id'] == 11)
                 {
                     $b3 = true ;
+                }
+                if ($item['ques_id'] == 12)
+                {
+                    $b25 = true ;
+                }
+                if ($item['ques_id'] == 13)
+                {
+                    $b26 = true ;
+                }
+
+                if ($item['ques_id'] == 15)
+                {
+                    $b27 = true ;
                 }
 
                 if ($item['ques_id'] == 16) {
                     $b4 = true ;
                 }
 
-                if ($item['ques_id'] == 20){
-                    $b5 = true ;
-                }
-                if ($item['ques_id'] == 25){
-                    $b6 = true ;
-                }
-
-                if ($item['ques_id'] == 30){
-                    $b7 = true ;
-                }
-                if ($item['ques_id'] == 31){
-                    $b8 = true ;
-                }
-                if ($item['ques_id'] == 10){
-                    $b9 = true ;
-                }
-                if ($item['ques_id'] == 34){
-                    $b10 = true ;
-                }
                 if ($item['ques_id'] == 17){
                     $b11 = true ;
                 }
                 if ($item['ques_id'] == 18){
                     $b12 = true ;
+                }
+                if ($item['ques_id'] == 19){
+                    $b28 = true ;
+                }
+
+                if ($item['ques_id'] == 20){
+                    $b5 = true ;
                 }
                 if ($item['ques_id'] == 21){
                     $b13 = true ;
@@ -82,17 +105,36 @@ class PersonalInformationController extends BaseController
                 if ($item['ques_id'] == 23){
                     $b15 = true ;
                 }
+                if ($item['ques_id'] == 25){
+                    $b6 = true ;
+                }
                 if ($item['ques_id'] == 26){
                     $b16 = true ;
                 }
                 if ($item['ques_id'] == 28){
                     $b17 = true ;
                 }
+
+                if ($item['ques_id'] == 30){
+                    $b7 = true ;
+                }
+                if ($item['ques_id'] == 31){
+                    $b8 = true ;
+                }
+
+                if ($item['ques_id'] == 34){
+                    $b10 = true ;
+                }
+
+
+
             }
             if($b1 == true && $b2 == true &&  $b3 == true && $b4 == true
             && $b5 == true && $b6 == true && $b9 == true && $b10 == true
             && $b11 == true && $b12 == true && $b13 == true && $b14 == true
-            && $b15 == true && $b16 == true && $b17 == true)
+            && $b15 == true && $b16 == true && $b17 == true
+            && $b19 && $b20 && $b21 && $b22  && $b24  && $b25
+            && $b26 && $b27 && $b28)
             {
                 foreach ($personal_info as $item) {
 
@@ -121,6 +163,7 @@ class PersonalInformationController extends BaseController
                         }
                     }
                     if ($item['ques_id'] == 16) {
+                        $mothor_age = $item['answer'] ;
                         if (intval($item['answer']) < 15) {
                             $messages[$k] = 'لا يمكن أن يكون عمر الأم أصغر من 15 سنة';
                             $k++;
@@ -134,6 +177,7 @@ class PersonalInformationController extends BaseController
                         }
                     }
                     if ($item['ques_id'] == 25) {
+                        $birth_age = $item['answer'] ;
                         if (intval($item['answer']) < 16) {
                             $messages[$k] = 'عمر الأم عند إنجاب الطفل غير متناسب مع بقية المعلومات';
                             $k++;
@@ -151,9 +195,16 @@ class PersonalInformationController extends BaseController
                     $k++;
                 }
 
+
                 $status_date = Carbon::createFromFormat('d/m/Y', $status_date);
                 $birth_date = Carbon::createFromFormat('d/m/Y', $birth_date);
                 $trans_date = Carbon::createFromFormat('d/m/Y', $trans_date);
+
+                if($mothor_age <  $birth_age)
+                {
+                    $messages[$k] = 'لا يمكن أن يكون عمر الأم عند إنجاب الطفل أكبر من عمرها الحالي';
+                    $k++;
+                }
 
                 if ($status_date->lt($birth_date)) {
                     $messages[$k] = 'تاريخ دراسة الحالة لا يمكن أن يسبق تاريخ ميلاد الطفل';
@@ -161,6 +212,10 @@ class PersonalInformationController extends BaseController
                 }
                 if ($trans_date->lt($birth_date)) {
                     $messages[$k] = 'تاريخ التحويل لا يمكن أن يسبق تاريخ ميلاد الطفل';
+                    $k++;
+                }
+                if ($status_date->lt($trans_date)) {
+                    $messages[$k] = 'تاريخ دراسة الحالة لا يمكن أن يسبق تاريخ التحويل';
                     $k++;
                 }
 
@@ -251,6 +306,53 @@ class PersonalInformationController extends BaseController
                 if($b17 == false)
                 {
                     $messages[$k] = 'هل يوجد حالة اعاقة في العائلة؟';
+                    $k++;
+                }
+
+                if($b19 == false)
+                {
+                    $messages[$k] = 'رقم دراسة الحالة مطلوب';
+                    $k++;
+                }
+                if($b20 == false)
+                {
+                    $messages[$k] = 'مكان الميلاد مطلوب';
+                    $k++;
+                }
+                if($b21 == false)
+                {
+                    $messages[$k] = 'الجنس مطلوب';
+                    $k++;
+                }
+                if($b22 == false)
+                {
+                    $messages[$k] = 'الجنسية مطلوبة';
+                    $k++;
+                }
+
+                if($b24 == false)
+                {
+                    $messages[$k] = 'العنوان مطلوب';
+                    $k++;
+                }
+                if($b25 == false)
+                {
+                    $messages[$k] = 'تشخيص المحول مطلوب';
+                    $k++;
+                }
+                if($b26 == false)
+                {
+                    $messages[$k] = 'هاتف الجهة المحولة مطلوب';
+                    $k++;
+                }
+                if($b27 == false)
+                {
+                    $messages[$k] = 'اسم الأم مطلوب';
+                    $k++;
+                }
+                if($b28 == false)
+                {
+                    $messages[$k] = 'اسم الأب مطلوب';
                     $k++;
                 }
 
@@ -365,6 +467,9 @@ class PersonalInformationController extends BaseController
                 $my_family  = $request->sister_info;
                 $family = MemberFamilyController::store($my_family, $request->child_id);
             }
+            else{
+                $family = true ;
+            }
 
             if ($child && $family)
             {
@@ -372,7 +477,10 @@ class PersonalInformationController extends BaseController
                 return $this->sendResponse($messages, 'success in update all information ');
 
             }
-            return $this->sendErrors([], 'failed in update information of child');
+            else
+            {
+                return $this->sendErrors([], 'failed in update information of child');
+            }
 
         }else {
             return $this->sendResponse($messages, 'error in update some information');
@@ -381,20 +489,3 @@ class PersonalInformationController extends BaseController
     }
 }
 
-/*
-     foreach ($my_family as $indivual) {
-            $family = MemberFamily::where('id', '=', $indivual['id']);
-
-            if ($family) {
-                $family->create(
-                    [
-                        'child_id' => $request->child_id,
-                        'age' => $indivual['age'],
-                        'name' => $indivual['name'],
-                        'gender' => $indivual['gender'],
-                        'Educ_level' => $indivual['Educ_level']
-                    ]
-                );
-            }
-        }
-*/

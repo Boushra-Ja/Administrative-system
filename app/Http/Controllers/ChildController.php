@@ -159,7 +159,12 @@ class ChildController extends BaseController
         $child = TestResault::where('child_id'  ,  $child_id)
         ->orderby('created_at' , 'desc')->first() ;
 
-        $res = TestsChildResource::collection([$child]);
-        return $this->sendResponse($res , 'success')  ;
+        if($child)
+            $res =new  TestsChildResource($child);
+
+        else
+            $res = 'لم يقم هذا الطفل باختبارات لجميع المجالات' ;
+
+        return response()->json($res);
     }
 }

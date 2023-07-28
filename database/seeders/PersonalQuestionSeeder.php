@@ -56,16 +56,12 @@ class PersonalQuestionSeeder extends Seeder
             'type' => 0,
             'id' => 7
 
-
-
         ]);
         PersonalQuestion::create([
             'question' => ' رقم الهاتف',
             'title_id' => 11,
             'type' => 0,
             'id' => 8
-
-
 
         ]);
         PersonalQuestion::create([
@@ -89,23 +85,19 @@ class PersonalQuestionSeeder extends Seeder
             'type' => 0,
             'id' => 11
 
-
-
         ]);
         PersonalQuestion::create([
             'question' => ' تشخيص المحوّل',
             'title_id' => 11,
             'type' => 0,
             'id' => 12
-
-
         ]);
+
         PersonalQuestion::create([
             'question' => ' هاتف الجهة المحولة',
             'title_id' => 11,
             'type' => 0,
             'id' => 13
-
 
         ]);
         PersonalQuestion::create([
