@@ -498,20 +498,3 @@ class PersonalInformationController extends BaseController
     }
 }
 
-/*
-     foreach ($my_family as $indivual) {
-            $family = MemberFamily::where('id', '=', $indivual['id']);
-
-            if ($family) {
-                $family->create(
-                    [
-                        'child_id' => $request->child_id,
-                        'age' => $indivual['age'],
-                        'name' => $indivual['name'],
-                        'gender' => $indivual['gender'],
-                        'Educ_level' => $indivual['Educ_level']
-                    ]
-                );
-            }
-        }
-*/
