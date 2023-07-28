@@ -15,20 +15,22 @@ class NotificationEvent implements  ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $message;
-    public $user_id;
+    public $receiver_id;
     public $title;
+    public $id;
 
-    public function __construct($message,$user_id,$title)
+    public function __construct($title,$message,$receiver_id,$id)
     {
         $this->message=$message;
-        $this->user_id=$user_id;
+        $this->receiver_id=$receiver_id;
         $this->title=$title;
+        $this->id=$id;
     }
 
 
     public function broadcastOn()
     {
-        return new Channel('public-channel.'.$this->user_id);
+        return new Channel('public-channel.'.$this->receiver_id);
     }
 
 //    public function  broadcastAs() :String{

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NotificationEvent;
 use App\Http\Controllers\API\BaseController;
 use App\Http\Resources\TaskkResource;
 use App\Models\Appointment;
+use App\Models\Notification;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use App\Http\Resources\Boshra\TaskResource;
@@ -27,6 +29,7 @@ class TaskController extends BaseController
 
 
     }
+
 
 
 
@@ -105,7 +108,18 @@ class TaskController extends BaseController
         ]) ;
 
         if($update)
-        {
+        {    $task_name = Task::where('id' , $task_id)->value("title");
+
+            broadcast(new NotificationEvent("انهاء مهمه",  "${task_name}  تم انهاء المهمه بنجاح ",1,$task_id));
+            $realTime = Notification::create([
+                'title' => "انهاء مهمه",
+                'receiver_id' =>1,
+                'message' => "${task_name}  تم انهاء المهمه بنجاح ",
+
+            ]);
+
+            $realTime->save();
+
             return $this->sendResponse($task , 'finish the task...');
         }
 

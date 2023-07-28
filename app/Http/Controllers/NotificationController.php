@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Events\NotificationEvent;
 use App\Models\Notification;
-use App\Http\Requests\StoreNotificationRequest;
-use App\Http\Requests\UpdateNotificationRequest;
 use Illuminate\Http\Request;
 
 class NotificationController extends Controller
@@ -14,10 +12,6 @@ class NotificationController extends Controller
     public function alert(Request $request)
     {
 
-        $message = $request->message;
-        $sender_id = $request->sender_id;
-        $receiver_id = $request->receiver_id;
-        $title = $request->title;
 
         $valid = $request->validate([
             'title' => 'required',
@@ -36,7 +30,7 @@ class NotificationController extends Controller
 
         $realTime->save();
 
-        broadcast(new NotificationEvent($message, $receiver_id, $title));
+       // broadcast(new NotificationEvent($message, $receiver_id, $title,9));
 
 
         return $realTime;
