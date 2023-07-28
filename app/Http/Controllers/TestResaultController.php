@@ -174,9 +174,19 @@ class TestResaultController extends Controller
             return   [
                 'dimantion' => PortageDimenssion::where('id', $dim_id)->value('title'),
                 'performance' => $state,
-                'performance_ratio' => $data,
+                'performance_ratio' => number_format($data, 2),
                 'year' => $year,
                 'month' => $month,
+            ];
+        }
+        else{
+
+            return   [
+                'dimantion' => PortageDimenssion::where('id', $dim_id)->value('title'),
+                'performance' => 0,
+                'performance_ratio' => 0.0,
+                'year' => 0,
+                'month' => 0,
             ];
         }
     }

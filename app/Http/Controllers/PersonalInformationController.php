@@ -29,15 +29,28 @@ class PersonalInformationController extends BaseController
         $b9 = false ;$b10 = false;
         $b11 = false ;$b12 = false;
         $b13 = false ;$b14 = false;
-        $b15 = false ;$b16 = false; $b17 = false;
+        $b15 = false ;$b16 = false; $b17 = false; $b18 = false ; $b19 = false ;
+        $b20 = false ; $b21 = false ;
+        $mothor_age = 0 ; $birth_age = 0 ;
         $personal_info = $request->child_info;
             foreach ($personal_info as $item) {
-
+                if ($item['ques_id'] == 1) {
+                    $b18 = true ;
+                }
+                if ($item['ques_id'] == 2) {
+                    $b19 = true ;
+                }
                 if ($item['ques_id'] == 4) {
                     $b1 = true ;
                 }
                 if ($item['ques_id'] == 3) {
                     $b2 = true ;
+                }
+                if ($item['ques_id'] == 5) {
+                    $b20 = true ;
+                }
+                if ($item['ques_id'] == 6) {
+                    $b21 = true ;
                 }
                 if ($item['ques_id'] == 11)
                 {
@@ -92,7 +105,7 @@ class PersonalInformationController extends BaseController
             if($b1 == true && $b2 == true &&  $b3 == true && $b4 == true
             && $b5 == true && $b6 == true && $b9 == true && $b10 == true
             && $b11 == true && $b12 == true && $b13 == true && $b14 == true
-            && $b15 == true && $b16 == true && $b17 == true)
+            && $b15 == true && $b16 == true && $b17 == true && $b18 && $b19 && $b20 && $b21)
             {
                 foreach ($personal_info as $item) {
 
@@ -125,6 +138,7 @@ class PersonalInformationController extends BaseController
                             $messages[$k] = 'لا يمكن أن يكون عمر الأم أصغر من 15 سنة';
                             $k++;
                         }
+                        $mothor_age = $item['ques_id'] ;
                     }
 
                     if ($item['ques_id'] == 20) {
@@ -138,6 +152,7 @@ class PersonalInformationController extends BaseController
                             $messages[$k] = 'عمر الأم عند إنجاب الطفل غير متناسب مع بقية المعلومات';
                             $k++;
                         }
+                        $birth_age = $item['ques_id'] ;
                     }
                     if ($item['ques_id'] == 30) {
                         $num_sister = intval($item['answer']);
@@ -151,6 +166,11 @@ class PersonalInformationController extends BaseController
                     $k++;
                 }
 
+                if($mothor_age->lt($birth_age) )
+                {
+                    $messages[$k] = 'لا يمكن أن يكون عمر الأم عند إنجاب الطفل أكبر من عمرها الحالي';
+                    $k++;
+                }
                 $status_date = Carbon::createFromFormat('d/m/Y', $status_date);
                 $birth_date = Carbon::createFromFormat('d/m/Y', $birth_date);
                 $trans_date = Carbon::createFromFormat('d/m/Y', $trans_date);
@@ -161,6 +181,10 @@ class PersonalInformationController extends BaseController
                 }
                 if ($trans_date->lt($birth_date)) {
                     $messages[$k] = 'تاريخ التحويل لا يمكن أن يسبق تاريخ ميلاد الطفل';
+                    $k++;
+                }
+                if ($status_date->lt($trans_date)) {
+                    $messages[$k] = 'تاريخ دراسة الحالة لا يمكن أن يسبق تاريخ التحويل';
                     $k++;
                 }
 
@@ -253,7 +277,26 @@ class PersonalInformationController extends BaseController
                     $messages[$k] = 'هل يوجد حالة اعاقة في العائلة؟';
                     $k++;
                 }
-
+                if($b18 == false)
+                {
+                    $messages[$k] = 'اسم الطفل مطلوب';
+                    $k++;
+                }
+                if($b19 == false)
+                {
+                    $messages[$k] = 'رقم دراسة الحالة مطلوب';
+                    $k++;
+                }
+                if($b20 == false)
+                {
+                    $messages[$k] = 'مكان الميلاد مطلوب';
+                    $k++;
+                }
+                if($b21 == false)
+                {
+                    $messages[$k] = 'الجنس مطلوب';
+                    $k++;
+                }
             }
             return $messages ;
     }
