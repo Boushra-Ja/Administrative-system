@@ -28,16 +28,14 @@ class PersonalInformationController extends BaseController
         $b9 = false ;$b10 = false;
         $b11 = false ;$b12 = false;
         $b13 = false ;$b14 = false;
-        $b15 = false ;$b16 = false; $b17 = false; $b18 = false ; $b19 = false ;
+        $b15 = false ;$b16 = false; $b17 = false ; $b19 = false ;
         $b20 = false ; $b21 = false ;
-        $b22 = false ; $b23 = false ;$b24 = false ; $b25 = false ;
+        $b22 = false ; $b24 = false ; $b25 = false ;
         $b26 = false ; $b27 = false ;$b28 = false ; $b29 = false ;
         $mothor_age = 0 ; $birth_age = 0 ;
         $personal_info = $request->child_info;
             foreach ($personal_info as $item) {
-                if ($item['ques_id'] == 1) {
-                    $b18 = true ;
-                }
+
                 if ($item['ques_id'] == 2) {
                     $b19 = true ;
                 }
@@ -56,9 +54,7 @@ class PersonalInformationController extends BaseController
                 if ($item['ques_id'] == 7) {
                     $b22 = true ;
                 }
-                if ($item['ques_id'] == 8) {
-                    $b23 = true ;
-                }
+
                 if ($item['ques_id'] == 9) {
                     $b24 = true ;
                 }
@@ -136,8 +132,8 @@ class PersonalInformationController extends BaseController
             if($b1 == true && $b2 == true &&  $b3 == true && $b4 == true
             && $b5 == true && $b6 == true && $b9 == true && $b10 == true
             && $b11 == true && $b12 == true && $b13 == true && $b14 == true
-            && $b15 == true && $b16 == true && $b17 == true && $b18
-            && $b19 && $b20 && $b21 && $b22 && $b23 && $b24  && $b25
+            && $b15 == true && $b16 == true && $b17 == true
+            && $b19 && $b20 && $b21 && $b22  && $b24  && $b25
             && $b26 && $b27 && $b28)
             {
                 foreach ($personal_info as $item) {
@@ -312,11 +308,7 @@ class PersonalInformationController extends BaseController
                     $messages[$k] = 'هل يوجد حالة اعاقة في العائلة؟';
                     $k++;
                 }
-                if($b18 == false)
-                {
-                    $messages[$k] = 'اسم الطفل مطلوب';
-                    $k++;
-                }
+
                 if($b19 == false)
                 {
                     $messages[$k] = 'رقم دراسة الحالة مطلوب';
@@ -337,11 +329,7 @@ class PersonalInformationController extends BaseController
                     $messages[$k] = 'الجنسية مطلوبة';
                     $k++;
                 }
-                if($b23 == false)
-                {
-                    $messages[$k] = 'رقم الهاتف مطلوب';
-                    $k++;
-                }
+
                 if($b24 == false)
                 {
                     $messages[$k] = 'العنوان مطلوب';
@@ -489,7 +477,10 @@ class PersonalInformationController extends BaseController
                 return $this->sendResponse($messages, 'success in update all information ');
 
             }
-            return $this->sendErrors([], 'failed in update information of child');
+            else
+            {
+                return $this->sendErrors([], 'failed in update information of child');
+            }
 
         }else {
             return $this->sendResponse($messages, 'error in update some information');
