@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Events\NotificationEvent;
+use App\Http\Controllers\API\BaseController;
+use App\Models\ChildNotification;
 use App\Models\Notification;
+use App\Models\User;
 use Illuminate\Http\Request;
 
-class NotificationController extends Controller
+class NotificationController extends BaseController
 {
 
     public function alert(Request $request)
@@ -36,25 +39,20 @@ class NotificationController extends Controller
         return $realTime;
     }
 
-    // bayan
-    public static function alertBayan($message, $sender_id, $receiver_id, $title)
-    {
+    public function all_parent_notifications($child_id) {
+        $notifications = ChildNotification::where('receiver_id' , $child_id)->get() ;
+        return $this->sendResponse($notifications , 'success in get all notifications') ;
 
-
-        $realTime = Notification::create([
-            'title' => $title,
-            'sender_id' => $sender_id,
-            'receiver_id' => $receiver_id,
-            'message' => $message,
-
-        ]);
-
-        $realTime->save();
-
-        broadcast(new NotificationEvent($message, $receiver_id, $title));
-
-
-        return $realTime;
     }
 
+    public function all_employee_notifications($emp_id) {
+
+        $notifications = Notification::where('receiver_id' , $emp_id)->get() ;
+        return $this->sendResponse($notifications , 'success in get all notifications') ;
+    }
+    public function all_admin_notifications($admin_id) {
+
+        $notifications = Notification::where('receiver_id' , $admin_id)->get() ;
+        return $this->sendResponse($notifications , 'success in get all notifications') ;
+    }
 }
