@@ -8,6 +8,7 @@ use App\Http\Resources\TaskkResource;
 use App\Models\Appointment;
 use App\Models\Notification;
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\Boshra\TaskResource;
 
@@ -42,6 +43,7 @@ class TaskController extends BaseController
             'description' => 'required ',
             'title' => 'required ',
             'check' => 'required ',
+            'notes' => 'required ',
 
 
 
@@ -51,14 +53,24 @@ class TaskController extends BaseController
             'user_id' => $valid['user_id'],
             'app_id' => $valid['app_id'],
             'hours' => $valid['hours'],
+            'notes' => $valid['notes'],
             'description' => $valid['description'],
             'title' => $valid['title'],
             'check' => $valid['check'],
 
         ]);
-// $result = (new  ViewController)->Store_row();
 
-        //dd($result) ;
+        $task_id = Task::where('title' , $valid['title'])->value("id");
+        $user_name = User::where('id' , $valid['user_id'])->value("name");
+
+        broadcast(new NotificationEvent(" اسناد مهمه",  " تم اسناد مهه لك  ",$valid['user_id'],$task_id));
+        $realTime = Notification::create([
+            'title' => "اسناد مهمه",
+            'receiver_id' =>$valid['user_id'],
+            'message' => " {$user_name} تم اسناد مهه لك  ",
+
+        ]);
+        $realTime->save();
 
         return response()->json([
             'message'=>'A Task has been booked successfully',
@@ -151,6 +163,12 @@ class TaskController extends BaseController
 
 
     }
+
+    public function details_task($task_id )
+    {
+
+    }
+
 
 
     public function destroy(Task $task)
