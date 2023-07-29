@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdviceController;
 use App\Http\Controllers\AppointmentController;
+    use App\Http\Controllers\BounsController;
     use App\Http\Controllers\ChildController;
     use App\Http\Controllers\NotificationController;
     use App\Http\Controllers\PersonalInformationController;
@@ -124,8 +125,8 @@ Route::get('Employees/all' , [UserController::class , 'show_Employee']) ;
 
     Route::post('/alert', [NotificationController::class, 'alert']);
 
-
-    Route::get('test', function () {
-        event(new App\Events\NotificationEvent("rr","1","ddd"));
-        return "Event has been sent!";
-    });
+    Route::get('details_task/{id}', [TaskController::class,'details_task']);
+    Route::get('details_ِApp/{id}', [AppointmentController::class,'details_ِApp']);
+    Route::get('details_advice/{id}', [AdviceController::class,'details_advice']);
+    Route::get('details_ِbouns/{id}', [BounsController::class,'details_ِbouns']);
+    Route::post('storeBouns', [BounsController::class,'storeBouns']);
