@@ -17,7 +17,9 @@ class LoginOtherRequest extends FormRequest
     {
         return [
             'unique_number' => 'required|numeric' ,
-            'role' => 'required'
+            'role' => 'required',
+            'password' => 'required' ,
+
         ];
     }
 }

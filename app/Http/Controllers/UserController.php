@@ -55,10 +55,6 @@ class UserController extends  BaseController
     function AddEmployee(Request $request)
     {
 
-
-
-
-
         $userEmp =  User::create([
             'name' => $request->name,
             'unique_number' => random_int(100000, 999999),
@@ -110,7 +106,7 @@ class UserController extends  BaseController
     ///  تسجيل دخول موظف او اخصائي  او الأهل///
     function  LoginEmployeeOrSpecialist(LoginOtherRequest $request)
     {
-        $user = User::where('unique_number', $request->unique_number)->where('role' , $request->role )->first();
+        $user = User::where('unique_number', $request->unique_number)->where('role' , $request->role )->where('password'  , $request->password)->first();
 
         if($user)
         {
@@ -131,11 +127,8 @@ class UserController extends  BaseController
     {
 
         $Emp= User::where('role', '=', 'Employee')->get();
-        return response()->json([
-            'message' =>' successfully',
-            'user' => EmployeeResource::collection($Emp),
-        ]);
-      //  return $this->sendResponse(EmployeeResource::collection($Emp) , 'this is all employees ordered by tasks') ;
+       
+       return $this->sendResponse(EmployeeResource::collection($Emp) , 'this is all employees ordered by tasks') ;
     }
     ///عرض جميع الاخصائين في الجمعيه//
 
@@ -167,7 +160,7 @@ class UserController extends  BaseController
         $employees = DB::table('users')
         ->join('tasks', 'tasks.user_id', '=', 'users.id')
         ->select('users.id as id', DB::raw("count(tasks.user_id) as count" , 'tasks.check') )
-        ->where('tasks.check' , 0)
+        ->where('tasks.check' , 1)
         ->groupBy('users.id')
         ->orderBy('count' , 'Desc')
         ->get();
@@ -201,30 +194,48 @@ class UserController extends  BaseController
         return $this->sendResponse(EmployeeResource::collection($employees) , 'this is all employees ordered by points') ;
     }
 
-    public function havePassword($emp_id) {
 
-        $pass = User::where('id' , $emp_id)->where('role' , 'Employee')
-        ->value('password') ;
 
-        return $pass;
-    }
+    public function employee_register(Request $request)  {
 
-    public function addPassword(Request $request)  {
+        $emp = User::where('email' , $request->email)->where('role' , 'Employee')->first() ;
 
-        $emp = User::where('id' , $request->emp_id)->where('role' , 'Employee') ;
+        if(!$emp)
+        {
+            return $this->sendErrors([] , 'هذا الايميل غير مسجل مسبقاً') ;
+
+        }
 
         $validatedData = $request->validate([
             'password' => ['required', 'string' ,'min:6' ,'max:12']
         ]);
-        $res = $emp->update([
+
+
+        $emp2 = User::where('email' , $request->email)->where('role' , 'Employee') ;
+
+        $res = $emp2->update([
             'password' => $validatedData['password']
         ]);
 
         if($res)
         {
-            return $this->sendResponse($emp , 'set password') ;
+            return $this->sendResponse(new EmployeeResource($emp ), 'register success') ;
         }
-        return $this->sendErrors(null , 'errror in set password') ;
+        return $this->sendErrors([] , 'errror in register employee') ;
 
     }
+
+    public function employee_login(Request $request)  {
+
+        $emp = User::where('email' , $request->email)
+        ->where('password'  ,$request->password )
+        ->where('role' , 'Employee')->first() ;
+
+        if($emp)
+        {
+            return $this->sendResponse(new EmployeeResource($emp) , 'login success') ;
+        }
+        return $this->sendErrors([] , 'errror in login employee') ;
+    }
+
 }

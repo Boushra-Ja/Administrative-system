@@ -65,7 +65,8 @@
     Route::get('employee/notifications/{id}', [NotificationController::class, 'all_employee_notifications']);
     Route::get('parent/notifications/{id}', [NotificationController::class, 'all_parent_notifications']);
     Route::get('admin/notifications/{id}', [NotificationController::class, 'all_admin_notifications']);
-
+    Route::post('emp/register', [UserController::class, 'employee_register']);
+    Route::post('emp/login', [UserController::class, 'employee_login']);
 
 
     ////@batoul///
@@ -123,7 +124,4 @@
     Route::post('/alert', [NotificationController::class, 'alert']);
 
 
-    Route::get('test', function () {
-        event(new App\Events\NotificationEvent("rr", "1", "ddd"));
-        return "Event has been sent!";
-    });
+
