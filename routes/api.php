@@ -1,21 +1,22 @@
     <?php
 
-    use App\Http\Controllers\AdviceController;
-    use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\AdviceController;
+use App\Http\Controllers\AppointmentController;
+    use App\Http\Controllers\BounsController;
     use App\Http\Controllers\ChildController;
     use App\Http\Controllers\NotificationController;
     use App\Http\Controllers\PersonalInformationController;
-    use App\Http\Controllers\PersonalQuestionController;
+use App\Http\Controllers\PersonalQuestionController;
     use App\Http\Controllers\TaskController;
     use App\Http\Controllers\TestResaultController;
     use App\Http\Controllers\UserController;
     use App\Http\Controllers\ViewController;
     use App\Models\PersonalInformation;
-    use App\Models\PersonalQuestion;
-    use Illuminate\Http\Request;
-    use Illuminate\Support\Facades\Route;
+use App\Models\PersonalQuestion;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
-    /*
+/*
 |--------------------------------------------------------------------------
 | API Routes
 |--------------------------------------------------------------------------
@@ -26,24 +27,24 @@
 |
 */
 
-    Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-        return $request->user();
-    });
-    Route::get('index_by_age', [App\Http\Controllers\ChildController::class, 'index_by_age']);
-    Route::get('index_by_section/{section}', [App\Http\Controllers\ChildController::class, 'index_by_section']);
-    Route::get('index_by_infection/{infection}', [App\Http\Controllers\ChildController::class, 'index_by_infection']);
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+Route::get('index_by_age', [App\Http\Controllers\ChildController::class, 'index_by_age']);
+Route::get('index_by_section/{section}', [App\Http\Controllers\ChildController::class, 'index_by_section']);
+Route::get('index_by_infection/{infection}', [App\Http\Controllers\ChildController::class, 'index_by_infection']);
 
-    Route::get('educational_title_index', [App\Http\Controllers\TitelsController::class, 'educational_title_index']);
-    Route::get('medical_title_index', [App\Http\Controllers\TitelsController::class, 'medical_title_index']);
-    Route::post('medical_store', [App\Http\Controllers\MedicalConditionController::class, 'store']);
-    Route::post('educational_store', [App\Http\Controllers\EductionalConditionController::class, 'store']);
+Route::get('educational_title_index', [App\Http\Controllers\TitelsController::class, 'educational_title_index']);
+Route::get('medical_title_index', [App\Http\Controllers\TitelsController::class, 'medical_title_index']);
+Route::post('medical_store', [App\Http\Controllers\MedicalConditionController::class, 'store']);
+Route::post('educational_store', [App\Http\Controllers\EductionalConditionController::class, 'store']);
 
-    Route::put('educational_answer', [App\Http\Controllers\EductionalConditionController::class, 'show']);
-    Route::put('medical_answer', [App\Http\Controllers\MedicalConditionController::class, 'show']);
+Route::put('educational_answer', [App\Http\Controllers\EductionalConditionController::class, 'show']);
+Route::put('medical_answer', [App\Http\Controllers\MedicalConditionController::class, 'show']);
 
-    Route::post('done_Education_Medical', [App\Http\Controllers\TitelsController::class, 'done_Education_Medical']);
+Route::post('done_Education_Medical', [App\Http\Controllers\TitelsController::class, 'done_Education_Medical']);
 
-    ///////////////////
+///////////////////
 
     Route::resource('child', ChildController::class);
     Route::get('personal_question/all', [PersonalQuestionController::class, 'index']);
@@ -69,59 +70,68 @@
     Route::post('emp/login', [UserController::class, 'employee_login']);
 
 
-    ////@batoul///
+////@batoul///
 
-    Route::post('LoginAdmin', [UserController::class, 'LoginAdmin']);
+    Route::post('LoginAdmin' , [UserController::class , 'LoginAdmin']) ;
 
-    Route::post('Login_Other', [UserController::class, 'LoginEmployeeOrSpecialist']);
+    Route::post('Login_Other' , [UserController::class , 'LoginEmployeeOrSpecialist']) ;
 
 
     Route::group(['middleware' => ['auth:sanctum']], function () {
 
-        Route::post('AddEmployee', [UserController::class, 'AddEmployee'])
+        Route::post('AddEmployee' , [UserController::class , 'AddEmployee'])
             ->middleware('Role');
 
-        Route::post('AddSpecialist', [UserController::class, 'AddSpecialist'])
+        Route::post('AddSpecialist' , [UserController::class , 'AddSpecialist'])
             ->middleware('Role');
 
 
-        Route::post('Store_Appointment', [AppointmentController::class, 'Store_Appointment'])
+        Route::post('Store_Appointment', [AppointmentController::class,'Store_Appointment'])
+          ->middleware('Role');
+
+        Route::post('Store_Task', [TaskController::class,'Store_Task'])
             ->middleware('Role');
 
-        Route::post('Store_Task', [TaskController::class, 'Store_Task'])
+        Route::get('show_MyTasks', [TaskController::class,'show_MyTasks']);
+
+        Route::post('update_Task/{id}', [TaskController::class,'update_Task'])
             ->middleware('Role');
 
-        Route::get('show_MyTasks', [TaskController::class, 'show_MyTasks']);
-
-        Route::post('update_Task/{id}', [TaskController::class, 'update_Task'])
+        Route::get('Show_appointment', [AppointmentController::class,'Show_appointment'])
             ->middleware('Role');
 
-        Route::get('Show_appointment', [AppointmentController::class, 'Show_appointment'])
+        Route::get('Show_Phones', [AppointmentController::class,'Show_Phones'])
             ->middleware('Role');
 
-        Route::get('Show_Phones', [AppointmentController::class, 'Show_Phones'])
+        Route::get('show_Employee', [UserController::class,'show_Employee'])
             ->middleware('Role');
 
-        Route::get('show_Employee', [UserController::class, 'show_Employee'])
+        Route::get('show_Specialist', [UserController::class,'show_Specialist'])
             ->middleware('Role');
 
-        Route::get('show_Specialist', [UserController::class, 'show_Specialist'])
-            ->middleware('Role');
+
+
+
+
     });
 
-    Route::get('show_MyTasks_id/{id}', [TaskController::class, 'show_MyTasks_id']);
-    Route::post('delete_appointment/{id}', [TaskController::class, 'delete_appointment']);
-    Route::delete('delete_SpecOrEmp/{id}', [UserController::class, 'delete_SpecOrEmp']);
-    Route::get('AllUser', [UserController::class, 'AllUser']);
+    Route::get('show_MyTasks_id/{id}', [TaskController::class,'show_MyTasks_id']);
+    Route::post('delete_appointment/{id}', [TaskController::class,'delete_appointment']);
+    Route::delete('delete_SpecOrEmp/{id}', [UserController::class,'delete_SpecOrEmp']);
+    Route::get('AllUser', [UserController::class,'AllUser']);
 
 
-    Route::get('All_Diseases/{myArray}', [ViewController::class, 'All_Diseases']);
-    Route::get('All_Infections/{myArray}', [ViewController::class, 'All_Infections']);
-    Route::get('MatchingList/{myArray}/{id}', [ViewController::class, 'MatchingList']);
-    Route::post('store_test', [TestResaultController::class, 'store_test']);
+    Route::get('All_Diseases/{myArray}', [ViewController::class,'All_Diseases']);
+    Route::get('All_Infections/{myArray}', [ViewController::class,'All_Infections']);
+    Route::get('MatchingList/{myArray}/{id}', [ViewController::class,'MatchingList']);
+    Route::post('store_test', [TestResaultController::class,'store_test']);
 
 
     Route::post('/alert', [NotificationController::class, 'alert']);
 
 
-
+    Route::get('details_task/{id}', [TaskController::class,'details_task']);
+    Route::get('details_ِApp/{id}', [AppointmentController::class,'details_ِApp']);
+    Route::get('details_advice/{id}', [AdviceController::class,'details_advice']);
+    Route::get('details_ِbouns/{id}', [BounsController::class,'details_ِbouns']);
+    Route::post('storeBouns', [BounsController::class,'storeBouns']);

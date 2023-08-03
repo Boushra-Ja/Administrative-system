@@ -8,6 +8,7 @@ use App\Models\Advice;
 use App\Http\Requests\StoreAdviceRequest;
 use App\Http\Requests\UpdateAdviceRequest;
 use App\Http\Resources\Boshra\AdviceResource;
+use App\Models\Child;
 use App\Models\Notification;
 
 class AdviceController extends BaseController
@@ -55,6 +56,28 @@ class AdviceController extends BaseController
         }
         return $this->sendErrors([] , 'error in added advice' ) ;
     }
+
+    public function details_advice($advice_id )
+    {
+
+
+        $text=Advice::where('id' , $advice_id)->value('text');
+
+        $child_name=Child::where ( 'id',Advice::where('id' , $advice_id)->value('child_id'))->value('name');
+
+
+        $one= "تم ارسال النصائح التاليه لطفلكم  ";
+        $tow="  نرجو الاستفاده منها ونأمل لكم شفاء سريعا";
+
+
+        return response()->json([
+            'message'=>$one.$child_name."  (".$text.") ".$tow,
+        ]);
+
+
+    }
+
+
 
     public function destroy($id)
     {

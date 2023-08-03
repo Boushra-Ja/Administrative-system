@@ -6,6 +6,7 @@ use App\Events\NotificationEvent;
 use App\Http\Controllers\API\BaseController;
 use App\Http\Resources\TaskkResource;
 use App\Models\Appointment;
+use App\Models\Child;
 use App\Models\Notification;
 use App\Models\Task;
 use App\Models\User;
@@ -166,6 +167,29 @@ class TaskController extends BaseController
 
     public function details_task($task_id )
     {
+
+        //'user_name'=>User::where('id' , $this->user_id)->value('name'),
+
+          $date_task=Appointment::where('id' , Task::where('id' , $task_id)->value('app_id'))->value('app_date');
+          $title=Task::where('id' , $task_id)->value('title');
+          $description= Task::where('id' , $task_id)->value('description');
+          $hours=Task::where('id' , $task_id)->value('hours');
+          $child_name=Child::where ( 'id',Appointment::where('id' , Task::where('id' , $task_id)->value('app_id'))->value('child_id'))->value('name');
+          $child_section=Child::where ( 'id',Appointment::where('id' , Task::where('id' , $task_id)->value('app_id'))->value('child_id'))->value('section');
+
+
+         $one= "تم اسناد مهمه لك بتاريخ ";
+         $tow="وعنوانها ";
+         $three=" ومحتواها هو ";
+         $four=" وعليك انجازها بفتره معينه اقصاها";
+         $five=" ساعه بدءا من وصولها اليك";
+         $six="  اذ يتوجب عليك معاينه الطفل   ";
+         $seven="  التابع للقسم ";
+
+        return response()->json([
+            'message'=>$one.$date_task.$tow.$title.$three.$description.$four.$hours.$five.$six.$child_name.$seven.$child_section,
+        ]);
+
 
     }
 

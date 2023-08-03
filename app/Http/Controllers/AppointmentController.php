@@ -72,6 +72,28 @@ class AppointmentController extends Controller
 
     }
 
+    public function details_ِApp($app_id )
+    {
+
+
+        $date_app=Appointment::where('id' ,$app_id )->value('app_date');
+        $child_name=Child::where ( 'id',Appointment::where('id' , $app_id)->value('child_id'))->value('name');
+
+
+        $one= "تم ارسال موعد لطفلكم ";
+        $tow=" وذلك بتاريخ ";
+        $three=" يرجى التقيد بالموعد والالتزام ";
+        $four=" شاكرين تعاونكم";
+
+
+        return response()->json([
+            'message'=>$one.$child_name.$tow.$date_app.$three.$four,
+        ]);
+
+
+    }
+
+
 
     public function Show_appointment(Request $request)
     {

@@ -44,6 +44,7 @@ class TestResaultController extends Controller
                 ]
             );
 
+
             (new  ViewController)->store_infection($request->child_id, $answers['dim_id']);
         }
 
