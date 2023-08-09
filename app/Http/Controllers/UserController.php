@@ -23,7 +23,7 @@ class UserController extends  BaseController
         $Email2 = 'razi@gmail.com';
         $valid = $request->validate([
             'email' => 'required',
-            'unique_number' => 'required',
+            'password' => 'required',
             'role' => 'required',
 
         ]);
@@ -34,7 +34,7 @@ class UserController extends  BaseController
 
 
 
-            if ($valid['unique_number'] == 1111 && $valid['role'] == 'admin')
+            if ($valid['password'] == 1111 && $valid['role'] == 'admin')
                 if ($valid['email'] == $Email1 || $valid['email'] == $Email2)
                     $check = true;
             if (!$check) {
@@ -55,11 +55,19 @@ class UserController extends  BaseController
     function AddEmployee(Request $request)
     {
 
+        $valid = $request->validate([
+            'email' =>'required|email|unique:users',
+            'name' => 'required',
+            'scientific_level'=> 'required',
+
+
+        ]);
+
         $userEmp =  User::create([
-            'name' => $request->name,
-            'unique_number' => random_int(100000, 999999),
+            'name' => $valid['name'],
             'role' => 'Employee',
-            'email' => '-',
+            'scientific_level'=> $valid['scientific_level'],
+            'email' => $valid['email'],
             'points' => 0
 
 
@@ -80,12 +88,19 @@ class UserController extends  BaseController
     ///اضافة اخصائي///
     function AddSpecialist(Request $request)
     {
+        $valid = $request->validate([
+            'email' =>'required|email|unique:users',
+            'name' => 'required',
+        ]);
+
+
 
         $userSpecialist =  User::create([
-            'name' => $request->name,
-            'unique_number' => random_int(100000, 999999),
+            'name' => $valid['name'],
             'role' => 'Specialist',
-            'email' => '-',
+            'scientific_level'=> 'اخصائي',
+
+            'email' => $valid['email'],
             'points' => 0
 
 
@@ -106,7 +121,7 @@ class UserController extends  BaseController
     ///  تسجيل دخول موظف او اخصائي  او الأهل///
     function  LoginEmployeeOrSpecialist(LoginOtherRequest $request)
     {
-        $user = User::where('unique_number', $request->unique_number)->where('role' , $request->role )->where('password'  , $request->password)->first();
+        $user = User::where('email', $request->email)->where('role' , $request->role )->where('password'  , $request->password)->first();
 
         if($user)
         {
@@ -127,7 +142,7 @@ class UserController extends  BaseController
     {
 
         $Emp= User::where('role', '=', 'Employee')->get();
-       
+
        return $this->sendResponse(EmployeeResource::collection($Emp) , 'this is all employees ordered by tasks') ;
     }
     ///عرض جميع الاخصائين في الجمعيه//

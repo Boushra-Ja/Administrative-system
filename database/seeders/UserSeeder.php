@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
     {
         User::create([
              'name' => 'amira' ,
-             'unique_number'=>1111,
+             'password'=>1111,
              'role'=>'admin',
               'email'=>'amira@gmail.com',
               'points'=>0
@@ -23,7 +23,7 @@ class UserSeeder extends Seeder
 
         ]);  User::create([
              'name' => 'razi' ,
-             'unique_number'=>1111,
+             'password'=>1111,
              'role'=>'admin',
               'email'=>'razi@gmail.com',
               'points'=>0
