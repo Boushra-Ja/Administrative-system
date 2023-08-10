@@ -27,6 +27,8 @@ class appointmentResource extends JsonResource
             'section'=>  Child::where('id' , $this->child_id)->value('section'),
             'number'=>  Child::where('id' , $this->child_id)->value('phone_num'),
             'age'=>  Child::where('id' , $this->child_id)->value('age'),
-            ];
+            'check'=>Task::where('app_id',$this->id)->value('check'),
+
+        ];
     }
 }
