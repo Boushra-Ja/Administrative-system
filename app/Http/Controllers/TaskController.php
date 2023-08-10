@@ -44,7 +44,6 @@ class TaskController extends BaseController
             'description' => 'required ',
             'title' => 'required ',
             'check' => 'required ',
-            'notes' => 'required ',
 
 
 
@@ -54,7 +53,6 @@ class TaskController extends BaseController
             'user_id' => $valid['user_id'],
             'app_id' => $valid['app_id'],
             'hours' => $valid['hours'],
-            'notes' => $valid['notes'],
             'description' => $valid['description'],
             'title' => $valid['title'],
             'check' => $valid['check'],
