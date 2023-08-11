@@ -213,7 +213,7 @@ class UserController extends  BaseController
 
     public function employee_register(Request $request)  {
 
-        $emp = User::where('email' , $request->email)->where('role' , 'Employee')->first() ;
+        $emp = User::where('email' , $request->email)->where('role' , $request->role)->first() ;
 
         if(!$emp)
         {
@@ -244,7 +244,7 @@ class UserController extends  BaseController
 
         $emp = User::where('email' , $request->email)
         ->where('password'  ,$request->password )
-        ->where('role' , 'Employee')->first() ;
+        ->where('role' , $request->role)->first() ;
 
         if($emp)
         {
