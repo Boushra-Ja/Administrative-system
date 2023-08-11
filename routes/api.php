@@ -131,7 +131,6 @@ Route::post('done_Education_Medical', [App\Http\Controllers\TitelsController::cl
     Route::post('/alert', [NotificationController::class, 'alert']);
 
 
-    Route::get('details_task/{id}', [TaskController::class,'details_task']);
     Route::get('details_ِApp/{id}', [AppointmentController::class,'details_ِApp']);
     Route::get('details_advice/{id}', [AdviceController::class,'details_advice']);
     Route::get('details_ِbouns/{id}', [BounsController::class,'details_ِbouns']);
