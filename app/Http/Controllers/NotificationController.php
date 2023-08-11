@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Events\NotificationEvent;
 use App\Http\Controllers\API\BaseController;
+use App\Http\Resources\Boshra\NotificationRsource;
 use App\Models\ChildNotification;
 use App\Models\Notification;
+use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -52,7 +54,11 @@ class NotificationController extends BaseController
     }
     public function all_admin_notifications($admin_id) {
 
-        $notifications = Notification::where('receiver_id' , $admin_id)->get() ;
-        return $this->sendResponse($notifications , 'success in get all notifications') ;
+
+        $notifications = Task::where('check' , 1)
+        ->orderby('updated_at' , 'desc')->get() ;
+
+
+        return $this->sendResponse(NotificationRsource::collection($notifications), 'success in get all notifications') ;
     }
 }

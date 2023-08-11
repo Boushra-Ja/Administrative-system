@@ -12,7 +12,7 @@ return new class extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('hours') ;
-            $table->integer('start') ;
+            $table->time('start') ;
             $table->string('description');
             $table->string('title');
             $table->boolean('check');
