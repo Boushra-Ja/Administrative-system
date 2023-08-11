@@ -226,7 +226,7 @@ class UserController extends  BaseController
         ]);
 
 
-        $emp2 = User::where('email' , $request->email)->where('role' , 'Employee') ;
+        $emp2 = User::where('email' , $request->email)->where('role' , $request->role) ;
 
         $res = $emp2->update([
             'password' => $validatedData['password']
