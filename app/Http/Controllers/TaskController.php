@@ -70,8 +70,7 @@ class TaskController extends BaseController
             'description' => 'required ',
             'title' => 'required ',
             'check' => 'required ',
-
-
+            'start' => 'required'
 
         ]);
 
@@ -83,13 +82,9 @@ class TaskController extends BaseController
             'title' => $valid['title'],
             'start' => $valid['start'],
             'check' => $valid['check'],
+            'start' => $valid['start'],
 
         ]);
-
-
-
-
-
 
         $task_id = Task::where('title' , $valid['title'])->value("id");
         $user_name = User::where('id' , $valid['user_id'])->value("name");
