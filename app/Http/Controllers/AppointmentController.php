@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\NotificationEvent;
+use App\Http\Controllers\API\BaseController;
 use App\Http\Middleware\AppMiddleware;
 
 use App\Http\Resources\appointmentResource;
@@ -14,27 +15,24 @@ use App\Models\Task;
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdateAppointmentRequest;
 
-class AppointmentController extends Controller
+class AppointmentController extends BaseController
 {
 
     public function __construct()
     {
-        $this->middleware(AppMiddleware::class);
+        $this->middleware(AppMiddleware::class)->except([
+            'my_appinments',
+
+        ]);
     }
 
-    public function home(){
+    public function home()
+    {
 
         dd('You are active');
     }
 
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function Store_Appointment(Request $request)
     {
 
@@ -53,44 +51,41 @@ class AppointmentController extends Controller
 
         ]);
 
-        $Appointment_id = Appointment::where('child_id' , $valid['child_id'])->value("id");
-        $child_name = Child::where('id' , $valid['child_id'])->value("name");
+        $Appointment_id = Appointment::where('child_id', $valid['child_id'])->value("id");
+        $child_name = Child::where('id', $valid['child_id'])->value("name");
 
-        broadcast(new NotificationEvent("ارسال موعد",  "{$child_name} تم ارسال موعد الى طفلكم ",$valid['child_id'],$Appointment_id));
+        broadcast(new NotificationEvent("ارسال موعد",  "{$child_name} تم ارسال موعد الى طفلكم ", $valid['child_id'], $Appointment_id));
         $realTime = Notification::create([
             'title' => "ارسال موعد",
-            'receiver_id' =>$valid['child_id'],
+            'receiver_id' => $valid['child_id'],
             'message' => "{$child_name} تم ارسال موعد الى طفلكم ",
 
         ]);
-//
+        //
         $realTime->save();
         return response()->json([
-            'message'=>'An Appointment has been booked successfully',
+            'message' => 'An Appointment has been booked successfully',
             'Appointment' => $pp,
         ]);
-
     }
 
-    public function details_ِApp($app_id )
+    public function details_ِApp($app_id)
     {
 
 
-        $date_app=Appointment::where('id' ,$app_id )->value('app_date');
-        $child_name=Child::where ( 'id',Appointment::where('id' , $app_id)->value('child_id'))->value('name');
+        $date_app = Appointment::where('id', $app_id)->value('app_date');
+        $child_name = Child::where('id', Appointment::where('id', $app_id)->value('child_id'))->value('name');
 
 
-        $one= "تم ارسال موعد لطفلكم ";
-        $tow=" وذلك بتاريخ ";
-        $three=" يرجى التقيد بالموعد والالتزام ";
-        $four=" شاكرين تعاونكم";
+        $one = "تم ارسال موعد لطفلكم ";
+        $tow = " وذلك بتاريخ ";
+        $three = " يرجى التقيد بالموعد والالتزام ";
+        $four = " شاكرين تعاونكم";
 
 
         return response()->json([
-            'message'=>$one.$child_name.$tow.$date_app.$three.$four,
+            'message' => $one . $child_name . $tow . $date_app . $three . $four,
         ]);
-
-
     }
 
 
@@ -103,8 +98,6 @@ class AppointmentController extends Controller
         return response()->json([
             'Appointment' => AppointmentResource::collection($AppModel),
         ]);
-
-
     }
 
 
@@ -116,10 +109,12 @@ class AppointmentController extends Controller
         return response()->json([
             'phones' => PhoneResource::collection($child),
         ]);
-
-
     }
 
+    public function my_appinments($child_id)
+    {
 
-
+        $appointments = Appointment::where('child_id', $child_id)->get();
+        return $this->sendResponse(appointmentResource::collection($appointments), 'success in get all my appointments');
+    }
 }

@@ -19,7 +19,7 @@ class appointmentResource extends JsonResource
     {
         return [
 
-             'id'=>$this->id,
+            'id'=>$this->id,
             'app_date' => $this->app_date ,
             'user_name'=>User::where ('id',Task::where('app_id',$this->id)->value('user_id'))->value('name'),
             'child_name'=>  Child::where('id' , $this->child_id)->value('name'),
@@ -28,6 +28,9 @@ class appointmentResource extends JsonResource
             'number'=>  Child::where('id' , $this->child_id)->value('phone_num'),
             'age'=>  Child::where('id' , $this->child_id)->value('age'),
             'check'=>Task::where('app_id',$this->id)->value('check'),
+            'hours' => Task::where('app_id',$this->id)->value('hours'),
+            'start' => Task::where('app_id',$this->id)->value('start'),
+
 
         ];
     }

@@ -120,24 +120,7 @@ class UserController extends  BaseController
         }
     }
 
-    ///  تسجيل دخول موظف او اخصائي  او الأهل///
-    function  LoginEmployeeOrSpecialist(LoginOtherRequest $request)
-    {
-        $user = User::where('email', $request->email)->where('role' , $request->role )->where('password'  , $request->password)->first();
 
-        if($user)
-        {
-            $token = $user->createToken('ProductsTolken')->plainTextToken;
-
-            return response()->json([
-                'message' => 'login '. $request->role. ' successfully',
-                'user' => [new EmployeeResource($user)],
-                'token' => $token,
-            ]);
-          // return $this->sendResponse([new EmployeeResource($user)], "login " . $request->role . " successfuly") ;
-        }
-        return $this->sendErrors([] , ' login failed') ;
-    }
 
     ///عرض جميع الموظفين في الجمعيه//
     public function show_Employee()

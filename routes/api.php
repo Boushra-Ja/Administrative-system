@@ -69,13 +69,12 @@ Route::post('done_Education_Medical', [App\Http\Controllers\TitelsController::cl
     Route::post('emp/register', [UserController::class, 'employee_register']);
     Route::post('emp/login', [UserController::class, 'employee_login']);
     Route::post('store/resault', [TestResaultController::class, 'store_res']);
+    Route::get('child/appoinments/{id}', [AppointmentController::class, 'my_appinments']);
 
 
 ////@batoul///
 
     Route::post('LoginAdmin' , [UserController::class , 'LoginAdmin']) ;
-
-    Route::post('Login_Other' , [UserController::class , 'LoginEmployeeOrSpecialist']) ;
 
 
     Route::group(['middleware' => ['auth:sanctum']], function () {
@@ -104,17 +103,13 @@ Route::post('done_Education_Medical', [App\Http\Controllers\TitelsController::cl
         Route::get('Show_Phones', [AppointmentController::class,'Show_Phones'])
             ->middleware('Role');
 
-        Route::get('show_Employee', [UserController::class,'show_Employee'])
-            ->middleware('Role');
 
         Route::get('show_Specialist', [UserController::class,'show_Specialist'])
             ->middleware('Role');
-
-
-
-
-
+        Route::get('show_Employee', [UserController::class,'show_Employee']);
     });
+
+
 
     Route::get('show_MyTasks_id/{id}', [TaskController::class,'show_MyTasks_id']);
     Route::post('delete_appointment/{id}', [TaskController::class,'delete_appointment']);
