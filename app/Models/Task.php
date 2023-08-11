@@ -15,7 +15,8 @@ class Task extends Model
         'check',
         'user_id',
         'app_id',
-         'notes'
+         'notes',
+         'start'
     ];
 
     public function bouns()

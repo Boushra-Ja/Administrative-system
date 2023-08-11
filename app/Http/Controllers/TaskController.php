@@ -1,5 +1,5 @@
 <?php
-
+///INSERT INTO `children` (`id`, `name`, `age`, `phone_num`, `infection`, `section`, `password`, `created_at`, `updated_at`, `deleted_at`, `unique_number`) VALUES ('1', 'nnn', '11', '444', 'kmkmlkm', 'lkkm', '000', '2023-08-15 18:06:54', NULL, NULL, '111');
 namespace App\Http\Controllers;
 
 use App\Events\NotificationEvent;
@@ -33,7 +33,32 @@ class TaskController extends BaseController
     }
 
 
+    public function checkTask($userid,$start,$date,$hours,$new)
+    {
 
+        $h=[];
+
+       $id= Task::where('user_id','=',$userid)
+                ->where('check','=',0)->value('id');
+
+
+           $mdate=   Appointment::where('id','=',Task::where('user_id','=',$userid)
+                  ->where('check','=',0)->value('app_id'))->value('app_date');
+        if($mdate==$date)
+        {
+            $h=$start+$hours;
+
+            if($h>12)
+                $g=$h-12;
+
+
+          //  if(<$start<)
+
+        }
+
+
+
+    }
 
     public function Store_Task(Request $request)
     {
@@ -41,6 +66,7 @@ class TaskController extends BaseController
             'user_id' => 'required ',
             'app_id' => 'required ',
             'hours' => 'required ',
+            'start' => 'required ',
             'description' => 'required ',
             'title' => 'required ',
             'check' => 'required ',
@@ -55,9 +81,15 @@ class TaskController extends BaseController
             'hours' => $valid['hours'],
             'description' => $valid['description'],
             'title' => $valid['title'],
+            'start' => $valid['start'],
             'check' => $valid['check'],
 
         ]);
+
+
+
+
+
 
         $task_id = Task::where('title' , $valid['title'])->value("id");
         $user_name = User::where('id' , $valid['user_id'])->value("name");
@@ -186,6 +218,29 @@ class TaskController extends BaseController
 
         return response()->json([
             'message'=>$one.$date_task.$tow.$title.$three.$description.$four.$hours.$five.$six.$child_name.$seven.$child_section,
+        ]);
+
+
+    }
+
+
+    public function details_task_Admin($task_id )
+    {
+
+        //'user_name'=>User::where('id' , $this->user_id)->value('name'),
+
+        $date_task=Appointment::where('id' , Task::where('id' , $task_id)->value('app_id'))->value('app_date');
+        $title=Task::where('id' , $task_id)->value('title');
+        $notes=Task::where('id' , $task_id)->value('notes');
+        $description= Task::where('id' , $task_id)->value('description');
+        $child_name=Child::where ( 'id',Appointment::where('id' , Task::where('id' , $task_id)->value('app_id'))->value('child_id'))->value('name');
+
+
+
+
+        return response()->json([
+            'message'=>""
+
         ]);
 
 
