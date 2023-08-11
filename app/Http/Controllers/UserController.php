@@ -6,6 +6,8 @@ use App\Http\Controllers\API\BaseController;
 use App\Http\Requests\LoginOtherRequest;
 use App\Http\Resources\AllUsersResource;
 use App\Http\Resources\Boshra\EmployeeResource;
+use App\Models\Appointment;
+use App\Models\Task;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Client\Request as ClientRequest;
@@ -163,10 +165,18 @@ class UserController extends  BaseController
             ]);
         }
         else
-        {User::where('id', '=', $id)->delete();
+        {
+            $tasks = Task::where('user_id',  $id)->get() ;
+            foreach ($tasks as $task) {
+                Appointment::where('id' , $task['app_id'])->delete() ;
+            }
+
+            User::where('id', '=', $id)->delete();
+
             return response()->json([
                 'message'=>'This user has been deleted successfully',
-            ]);}
+            ]);
+        }
 
     }
 
