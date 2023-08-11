@@ -25,7 +25,9 @@ class EmployeeResource extends JsonResource
             'points' => $this->points,
             'unique_number' => $this->unique_number,
             'password' => $this->password,
-            'token' => $token
+            'token' => $token,
+            'scientific_level' => $this->scientific_level
+
         ] ;
     }
 }
