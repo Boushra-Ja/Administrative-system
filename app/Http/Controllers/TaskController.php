@@ -19,8 +19,6 @@ class TaskController extends BaseController
 
     public function delete_appointment($id)
     {
-
-
         $AppModel = Task::query()->where('app_id', '=', $id)
             ->where('check', '=', '0')->delete();
         $ap = Appointment::query()->where('id', '=', $id)->delete();

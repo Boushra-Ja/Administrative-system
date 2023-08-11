@@ -195,7 +195,7 @@ class PersonalInformationController extends BaseController
                         $order = intval($item['answer']);
                     }
                 }
-                if ($order < 1 || $order > $num_sister) {
+                if ($order < 1 || $order > $num_sister + 1) {
                     $messages[$k] = 'ترتيب الطفل في الأسرة غير صحيح';
                     $k++;
                 }
