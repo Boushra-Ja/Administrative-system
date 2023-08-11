@@ -68,6 +68,7 @@ Route::post('done_Education_Medical', [App\Http\Controllers\TitelsController::cl
     Route::get('admin/notifications/{id}', [NotificationController::class, 'all_admin_notifications']);
     Route::post('emp/register', [UserController::class, 'employee_register']);
     Route::post('emp/login', [UserController::class, 'employee_login']);
+    Route::post('store/resault', [TestResaultController::class, 'store_res']);
 
 
 ////@batoul///

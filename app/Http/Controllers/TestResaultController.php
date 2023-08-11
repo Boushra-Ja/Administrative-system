@@ -2,34 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TestResault;
-use App\Http\Requests\StoreTestResaultRequest;
-use App\Http\Requests\UpdateTestResaultRequest;
+use App\Http\Controllers\API\BaseController;
 use App\Models\Child;
 use App\Models\PortageDimenssion;
+use App\Models\TestResault;
 use Illuminate\Http\Request;
 
-class TestResaultController extends Controller
+class TestResaultController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function store_res(Request $request)
     {
-        //
-    }
+        $res = TestResault::create([
+            'child_id' => $request->child_id,
+            'basal' => $request->basal,
+            'additional' => $request->additional,
+            'dim_id' => $request->dim_id
+        ]);
 
-    /**
-     * Store a newly created resource in storage.
-     */
+        if($res)
+        {
+            return $this->sendResponse($res , 'success in store resault') ;
+
+        }
+        return $this->sendError([] , 'error in store the resault') ;
+    }
 
     public function store_test(Request $request)
     {
@@ -55,30 +52,6 @@ class TestResaultController extends Controller
     }
 
 
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(TestResault $testResault)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(TestResault $testResault)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateTestResaultRequest $request, TestResault $testResault)
-    {
-        //
-    }
 
     public static function  graph_test($child_id)
     {

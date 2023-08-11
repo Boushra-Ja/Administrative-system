@@ -12,6 +12,10 @@ class EmployeeResource extends JsonResource
 
     public function toArray(Request $request): array
     {
+        $user = User::where('id', $this->id)->first();
+
+        $token = $user->createToken('ProductsTolken')->plainTextToken;
+
         return [
 
             'count' => Task::where('user_id'  , $this->id)->where('tasks.check' , 0)->count() ,
@@ -20,7 +24,10 @@ class EmployeeResource extends JsonResource
             'email' => $this->email,
             'points' => $this->points,
             'unique_number' => $this->unique_number,
-            'password' => $this->password
+            'password' => $this->password,
+            'token' => $token,
+            'scientific_level' => $this->scientific_level
+
         ] ;
     }
 }
