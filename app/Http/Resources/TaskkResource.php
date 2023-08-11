@@ -26,7 +26,8 @@ class TaskkResource extends JsonResource
             'hours'=>$this->hours,
             'child_name'=>Child::where ( 'id',Appointment::where('id' , $this->app_id)->value('child_id'))->value('name'),
             'child_section'=>Child::where ( 'id',Appointment::where('id' , $this->app_id)->value('child_id'))->value('section'),
-
+            'start' => $this->start,
+            'notes' => $this->notes
         ];
     }
 }

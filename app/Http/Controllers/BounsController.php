@@ -47,6 +47,10 @@ class BounsController extends Controller
         $bouns_id =$tt['id'];
         $user_id = User::where('id' , Task::where('id' , $valid['task_id'])->value("user_id"))->value("id");
 
+        User::where('id' , $user_id)->update([
+            'points' => User::where('id' , $user_id)->value('points') + $valid['points']
+        ]) ;
+
         broadcast(new NotificationEvent("رساله تحفيز",  "تم منحك بعض النقاط ",$user_id,$bouns_id));
         $realTime = Notification::create([
             'title' => "رساله تحفيز",
@@ -73,8 +77,8 @@ class BounsController extends Controller
 
 
         $one= "تم منحك  ";
-        $tow="  نقاط وذلك لاتقانك للمهمه  ";
-        $three=" حيث وصلنا نتائج مرضيه من الاهل ";
+        $tow="  نقطة وذلك لاتقانك لمهمة  ";
+        $three=" حيث تم ملاحظة تحسن واضح على الطفل في هذاالمجال... ";
 
 
         return response()->json([

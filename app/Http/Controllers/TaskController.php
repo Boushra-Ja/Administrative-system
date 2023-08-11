@@ -21,43 +21,37 @@ class TaskController extends BaseController
     {
 
 
-        $AppModel = Task::query()->where('app_id','=',$id)
-            ->where('check','=','0')->delete();
-        $ap=Appointment::query()->where('id','=', $id)->delete();
+        $AppModel = Task::query()->where('app_id', '=', $id)
+            ->where('check', '=', '0')->delete();
+        $ap = Appointment::query()->where('id', '=', $id)->delete();
 
         return response()->json([
-            'message' =>"this appointment has deleted",
+            'message' => "this appointment has deleted",
         ]);
-
-
     }
 
 
-    public function checkTask($userid,$start,$date,$hours,$new)
+    public function checkTask($userid, $start, $date, $hours, $new)
     {
 
-        $h=[];
+        $h = [];
 
-       $id= Task::where('user_id','=',$userid)
-                ->where('check','=',0)->value('id');
-
-
-           $mdate=   Appointment::where('id','=',Task::where('user_id','=',$userid)
-                  ->where('check','=',0)->value('app_id'))->value('app_date');
-        if($mdate==$date)
-        {
-            $h=$start+$hours;
-
-            if($h>12)
-                $g=$h-12;
+        $id = Task::where('user_id', '=', $userid)
+            ->where('check', '=', 0)->value('id');
 
 
-          //  if(<$start<)
+        $mdate =   Appointment::where('id', '=', Task::where('user_id', '=', $userid)
+            ->where('check', '=', 0)->value('app_id'))->value('app_date');
+        if ($mdate == $date) {
+            $h = $start + $hours;
+
+            if ($h > 12)
+                $g = $h - 12;
+
+
+            //  if(<$start<)
 
         }
-
-
-
     }
 
     public function Store_Task(Request $request)
@@ -70,7 +64,6 @@ class TaskController extends BaseController
             'description' => 'required ',
             'title' => 'required ',
             'check' => 'required ',
-            'start' => 'required'
 
         ]);
 
@@ -82,34 +75,31 @@ class TaskController extends BaseController
             'title' => $valid['title'],
             'start' => $valid['start'],
             'check' => $valid['check'],
-            'start' => $valid['start'],
 
         ]);
 
-        $task_id = Task::where('title' , $valid['title'])->value("id");
-        $user_name = User::where('id' , $valid['user_id'])->value("name");
+        $task_id = Task::where('title', $valid['title'])->value("id");
+        $user_name = User::where('id', $valid['user_id'])->value("name");
 
-        broadcast(new NotificationEvent(" اسناد مهمه",  " تم اسناد مهه لك  ",$valid['user_id'],$task_id));
+        broadcast(new NotificationEvent(" اسناد مهمه",  " تم اسناد مهه لك  ", $valid['user_id'], $task_id));
         $realTime = Notification::create([
             'title' => "اسناد مهمه",
-            'receiver_id' =>$valid['user_id'],
+            'receiver_id' => $valid['user_id'],
             'message' => " {$user_name} تم اسناد مهه لك  ",
 
         ]);
         $realTime->save();
 
         return response()->json([
-            'message'=>'A Task has been booked successfully',
+            'message' => 'A Task has been booked successfully',
             'Task' => $tt,
         ]);
-
-
     }
 
     public function show_MyTasks()
     {
 
-        $Tasks= Task::where('user_id', '=', auth()->user()->id)->get();
+        $Tasks = Task::where('user_id', '=', auth()->user()->id)->get();
         return response()->json($Tasks, 200);
     }
 
@@ -125,126 +115,74 @@ class TaskController extends BaseController
 
     public function tasks_Employee($id)
     {
-        $tasks= Task::where('user_id', '=', $id)
-        ->where('check' , false)->get();
+        $tasks = Task::where('user_id', '=', $id)
+            ->where('check', false)->get();
 
-        if($tasks)
-        {
-            return $this->sendResponse(TaskResource::collection($tasks) , 'this is all tasks for you') ;
+        if ($tasks) {
+            return $this->sendResponse(TaskResource::collection($tasks), 'this is all tasks for you');
         }
 
-        return $this->sendErrors([] , 'error in retrive your tasks') ;
+        return $this->sendErrors([], 'error in retrive your tasks');
     }
 
-    public function finish_task($task_id , Request $request)
+    public function finish_task($task_id, Request $request)
     {
-        $task = Task::where('id' , $task_id);
+        $task = Task::where('id', $task_id);
         $update = $task->update([
-            'check' => true ,
+            'check' => true,
             'notes' => $request->notes
 
-        ]) ;
+        ]);
 
-        if($update)
-        {    $task_name = Task::where('id' , $task_id)->value("title");
+        if ($update) {
+            $task_name = Task::where('id', $task_id)->value("title");
 
-            broadcast(new NotificationEvent("انهاء مهمه",  "${task_name}  تم انهاء المهمه بنجاح ",1,$task_id));
+            broadcast(new NotificationEvent("انهاء مهمه",  "${task_name}  تم انهاء المهمه بنجاح ", 1, $task_id));
             $realTime = Notification::create([
                 'title' => "انهاء مهمه",
-                'receiver_id' =>1,
+                'receiver_id' => 1,
                 'message' => "${task_name}  تم انهاء المهمه بنجاح ",
 
             ]);
 
             $realTime->save();
 
-            return $this->sendResponse($task , 'finish the task...');
+            return $this->sendResponse($task, 'finish the task...');
         }
 
-        return $this->sendErrors([ ] , 'error in the finish the task...') ;
-
+        return $this->sendErrors([], 'error in the finish the task...');
     }
 
-    public function update_Task(Request $request,$id)
+    public function update_Task(Request $request, $id)
     {
-        $tt= Task::find($id);
+        $tt = Task::find($id);
 
-        if($tt->check==0) {
-            $tt->app_id=$request->app_id;
-            $tt->user_id=$request->user_id;
-            $tt->hours=$request->hours;
-            $tt->description=$request->description;
-            $tt->title=$request->title;
+        if ($tt->check == 0) {
+            $tt->app_id = $request->app_id;
+            $tt->user_id = $request->user_id;
+            $tt->hours = $request->hours;
+            $tt->description = $request->description;
+            $tt->title = $request->title;
 
             $tt->save();
             return response()->json([
-                'message'=>'This Task  edit successfully',
+                'message' => 'This Task  edit successfully',
             ]);
-
-        }
-        else
+        } else
             return response()->json([
-                'message'=>'This Task cannot you edit',
+                'message' => 'This Task cannot you edit',
             ]);
-
-
     }
 
-    public function details_task($task_id )
+
+
+    public function details_task($task_id)
     {
 
-        //'user_name'=>User::where('id' , $this->user_id)->value('name'),
-
-          $date_task=Appointment::where('id' , Task::where('id' , $task_id)->value('app_id'))->value('app_date');
-          $title=Task::where('id' , $task_id)->value('title');
-          $description= Task::where('id' , $task_id)->value('description');
-          $hours=Task::where('id' , $task_id)->value('hours');
-          $child_name=Child::where ( 'id',Appointment::where('id' , Task::where('id' , $task_id)->value('app_id'))->value('child_id'))->value('name');
-          $child_section=Child::where ( 'id',Appointment::where('id' , Task::where('id' , $task_id)->value('app_id'))->value('child_id'))->value('section');
-
-
-         $one= "تم اسناد مهمه لك بتاريخ ";
-         $tow="وعنوانها ";
-         $three=" ومحتواها هو ";
-         $four=" وعليك انجازها بفتره معينه اقصاها";
-         $five=" ساعه بدءا من وصولها اليك";
-         $six="  اذ يتوجب عليك معاينه الطفل   ";
-         $seven="  التابع للقسم ";
-
-        return response()->json([
-            'message'=>$one.$date_task.$tow.$title.$three.$description.$four.$hours.$five.$six.$child_name.$seven.$child_section,
-        ]);
-
+        $task = Task::where('id' , $task_id)->first() ;
+        return $this->sendResponse(new TaskkResource($task) , 'success');
 
     }
 
 
-    public function details_task_Admin($task_id )
-    {
-
-        //'user_name'=>User::where('id' , $this->user_id)->value('name'),
-
-        $date_task=Appointment::where('id' , Task::where('id' , $task_id)->value('app_id'))->value('app_date');
-        $title=Task::where('id' , $task_id)->value('title');
-        $notes=Task::where('id' , $task_id)->value('notes');
-        $description= Task::where('id' , $task_id)->value('description');
-        $child_name=Child::where ( 'id',Appointment::where('id' , Task::where('id' , $task_id)->value('app_id'))->value('child_id'))->value('name');
-
-
-
-
-        return response()->json([
-            'message'=>""
-
-        ]);
-
-
-    }
-
-
-
-    public function destroy(Task $task)
-    {
-
-    }
 }
