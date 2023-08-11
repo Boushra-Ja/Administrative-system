@@ -16,6 +16,7 @@ class PersonalInformationController extends BaseController
 
     public function validationInput($request)  {
 
+        $currentDate = Carbon::now()->format('d/m/Y');
         $messages = array();  $k = 0;
         $num_sister = 0;
         $birth_date = null;
@@ -140,15 +141,17 @@ class PersonalInformationController extends BaseController
 
                     if ($item['ques_id'] == 4) {
                         $birth_date = $item['answer'];
-                        if (strtotime($item['answer']) > time()) {
+                        $specificDate = Carbon::createFromFormat('d/m/Y', $birth_date);
+                        if ($specificDate->greaterThan(Carbon::now())) {
                             $messages[$k] = 'لا يمكن أن يكون تاريخ الميلاد أكبر من تاريخ اليوم';
                             $k++;
                         }
                     }
                     if ($item['ques_id'] == 3) {
                         $status_date = $item['answer'];
+                        $specificDate = Carbon::createFromFormat('d/m/Y', $status_date);
 
-                        if (strtotime($item['answer']) > time()) {
+                        if ($specificDate->greaterThan(Carbon::now())) {
                             $messages[$k] = 'لا يمكن أن يكون تاريخ دراسة الحالة أكبر من التاريخ الحالي';
                             $k++;
                         }
@@ -157,7 +160,9 @@ class PersonalInformationController extends BaseController
 
                     if ($item['ques_id'] == 11) {
                         $trans_date = $item['answer'] ;
-                        if (strtotime($item['answer']) > time()) {
+                        $specificDate = Carbon::createFromFormat('d/m/Y', $trans_date);
+
+                        if ($specificDate->greaterThan(Carbon::now())) {
                             $messages[$k] = 'لا يمكن أن يتجاوز تاريخ التحويل التاريخ الحالي';
                             $k++;
                         }
@@ -200,21 +205,22 @@ class PersonalInformationController extends BaseController
                 $birth_date = Carbon::createFromFormat('d/m/Y', $birth_date);
                 $trans_date = Carbon::createFromFormat('d/m/Y', $trans_date);
 
+
                 if($mothor_age <  $birth_age)
                 {
                     $messages[$k] = 'لا يمكن أن يكون عمر الأم عند إنجاب الطفل أكبر من عمرها الحالي';
                     $k++;
                 }
 
-                if ($status_date->lt($birth_date)) {
+                if($birth_date->greaterThan($status_date)) {
                     $messages[$k] = 'تاريخ دراسة الحالة لا يمكن أن يسبق تاريخ ميلاد الطفل';
                     $k++;
                 }
-                if ($trans_date->lt($birth_date)) {
+                if($birth_date->greaterThan($trans_date)) {
                     $messages[$k] = 'تاريخ التحويل لا يمكن أن يسبق تاريخ ميلاد الطفل';
                     $k++;
                 }
-                if ($status_date->lt($trans_date)) {
+                if($trans_date->greaterThan($status_date)){
                     $messages[$k] = 'تاريخ دراسة الحالة لا يمكن أن يسبق تاريخ التحويل';
                     $k++;
                 }
