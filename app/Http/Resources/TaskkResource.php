@@ -30,7 +30,8 @@ class TaskkResource extends JsonResource
             'start' => $this->start,
             'notes' => $this->notes,
             'child_section' => Child::where ( 'id',Appointment::where('id' , $this->app_id)->value('child_id'))->value('section'),
-            'points'=>Bouns::where('task_id' , $this->id)->value('points')
+            'points'=>Bouns::where('task_id' , $this->id)->value('points'),
+            'created_at' => $this->created_at->format('Y-m-d ')
 
         ];
     }
