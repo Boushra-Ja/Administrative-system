@@ -40,7 +40,7 @@ class ChildController extends BaseController
     public function index()
     {
         $child = Child::all();
-        return response()->json($child, 200);
+        return response()->json(ChildResourse::collection($child), 200);
     }
 
     public function child_names()
@@ -172,5 +172,5 @@ class ChildController extends BaseController
 
     }
 
-    
+
 }
