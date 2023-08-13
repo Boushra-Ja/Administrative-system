@@ -59,21 +59,8 @@ class AdviceController extends BaseController
 
     public function details_advice($advice_id )
     {
-
-
-        $text=Advice::where('id' , $advice_id)->value('text');
-
-        $child_name=Child::where ( 'id',Advice::where('id' , $advice_id)->value('child_id'))->value('name');
-
-
-        $one= "تم ارسال النصائح التاليه لطفلكم  ";
-        $tow="  نرجو الاستفاده منها ونأمل لكم شفاء سريعا";
-
-
-        return response()->json([
-            'message'=>$one.$child_name."  (".$text.") ".$tow,
-        ]);
-
+        $text=Advice::where('id' , $advice_id)->get();
+        return $this->sendResponse(AdviceResource::collection($text) , 'success in get advice info') ;
 
     }
 

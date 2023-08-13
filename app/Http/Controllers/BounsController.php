@@ -59,7 +59,7 @@ class BounsController extends Controller
 
         return response()->json([
             'task_name'=> $task_name ,
-            'points'=> $points
+            'points'=> $points,
         ]);
 
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Boshra;
 
 use App\Http\Controllers\TestResaultController;
+use App\Models\Child;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -14,6 +15,8 @@ class TestsChildResource extends JsonResource
         $ratio = TestResaultController::graph_test($this->child_id) ;
 
         return [
+            'section' =>Child::where('id' , $this->child_id)->value('section') ,
+            'infection' => Child::where('id' , $this->child_id)->value('infection') ,
             'test_date' => $this->created_at->format('Y-m-d ') ,
             'new_social_ratio' => $ratio[0],
             'old_social_ratio' => $ratio[1],
