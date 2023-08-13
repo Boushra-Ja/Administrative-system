@@ -21,6 +21,7 @@ class ChildResourse extends JsonResource
 
         return [
             'child_id' => $this->id ,
+            'father_name' => PersonalInformation::where('child_id' , $this->id)->where('ques_id' , 19)->value('answer'),
             'name' => $this->name ,
             'age' =>$this->age ,
             'phone' => '0' . $this->phone_num ,
@@ -30,7 +31,8 @@ class ChildResourse extends JsonResource
             'medical_info' => MedicalInfoResourse::collection($medical_answers) ,
             'eductional_info' => EducationInfoResourse::collection($eductional_answers),
             //////later
-            'appoinment' => []
+            'appoinment' => [],
+
 
         ];
     }

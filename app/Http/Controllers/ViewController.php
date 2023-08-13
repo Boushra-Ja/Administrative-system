@@ -2,18 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\API\BaseController;
 use App\Http\Resources\Report;
 use App\Models\Child;
 use App\Models\Diseases;
 use App\Models\Infection;
+use App\Models\Task;
 use Database\Seeders\InfectionSeeder;
 use Illuminate\Http\Request;
 use App\Models\View;
 use App\Models\TestResault;
+use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 
-class ViewController extends Controller
+class ViewController extends BaseController
 {
 
 
@@ -21,42 +24,28 @@ class ViewController extends Controller
     {
 
         $currentYear = date('Y');
-        $model = View::query()->
-        where('diseases_id', '=', $g)->
-        where('year', '=', $currentYear)
+        $model = View::query()->where('diseases_id', '=', $g)->where('year', '=', $currentYear)
             ->value('number');
         if ($model !== null) {
-            View::where('diseases_id', '=', $g)->
-            where('year', '=', $currentYear)->update(['number' => $model + 1]);
-
+            View::where('diseases_id', '=', $g)->where('year', '=', $currentYear)->update(['number' => $model + 1]);
         } else {
-//
-//
-            $model2 = View::query()->
-            where('diseases_id', '=', $g)->
-            where('year', '=', $currentYear)->
-            value('number');
+            //
+            //
+            $model2 = View::query()->where('diseases_id', '=', $g)->where('year', '=', $currentYear)->value('number');
             //dd($model2) ;
             if ($model2 !== null) {
                 View::where('diseases_id', '=', $g)->where('year', '=', $currentYear)->update(['number' => $model + 1]);
-
             } else {
 
                 Artisan::call('db:seed', [
                     '--class' => 'ViewSeeder'
                 ]);
 
-                $model2 = View::query()->
-                where('diseases_id', '=', $g)->
-                where('year', '=', $currentYear)->
-                value('number');
+                $model2 = View::query()->where('diseases_id', '=', $g)->where('year', '=', $currentYear)->value('number');
                 if ($model2 !== null) {
                     View::where('diseases_id', '=', $g)->where('year', '=', $currentYear)->update(['number' => $model + 1]);
-
                 }
             }
-
-
         }
     }
 
@@ -84,7 +73,6 @@ class ViewController extends Controller
                 ->where('id', '=', $value)
                 ->get()->value('name');
             $results2[$value] = [$sum, $name];
-
         }
 
         return response()->json(
@@ -142,63 +130,47 @@ class ViewController extends Controller
 
 
             $currentYear = date('Y');
-            $model = Infection::query()->
-            where('name', '=', $state)
+            $model = Infection::query()->where('name', '=', $state)
                 ->where('year', '=', $currentYear)
                 ->value('number');
 
             if ($model !== null) {
-                Infection:: where('name', '=', $state)->
-                where('year', '=', $currentYear)->update(['number' => $model + 1]);
-
+                Infection::where('name', '=', $state)->where('year', '=', $currentYear)->update(['number' => $model + 1]);
             } else {
 
-                $model2 = Infection::query()->
-                where('name', '=', $state)->
-                where('year', '=', $currentYear)->
-                value('number');
+                $model2 = Infection::query()->where('name', '=', $state)->where('year', '=', $currentYear)->value('number');
                 //dd($model2) ;
                 if ($model2 !== null) {
                     Infection::where('name', '=', $state)->where('year', '=', $currentYear)->update(['number' => $model + 1]);
-
                 } else {
 
                     Artisan::call('db:seed', [
                         '--class' => 'InfectionSeeder'
                     ]);
 
-                    $model2 = Infection::query()->
-                    where('name', '=', $state)->
-                    where('year', '=', $currentYear)->
-                    value('number');
+                    $model2 = Infection::query()->where('name', '=', $state)->where('year', '=', $currentYear)->value('number');
                     if ($model2 !== null) {
                         Infection::where('name', '=', $state)->where('year', '=', $currentYear)->update(['number' => $model + 1]);
-
                     }
                 }
-
             }
-
-
         }
-
-
     }
 
     public function All_Infections($myArray)
     {
         $myArray = explode(',', $myArray);
-        $results22 = ['شديد جداً','شديد','متوسط','بسيط','بسيط جداً','طبيعي'];
-        $data=[];
+        $results22 = ['شديد جداً', 'شديد', 'متوسط', 'بسيط', 'بسيط جداً', 'طبيعي'];
+        $data = [];
         foreach ($results22 as $value) {
 
-                $data[$value] = DB::table('infections')
+            $data[$value] = DB::table('infections')
                 ->whereIn('year', $myArray)
                 ->where('name', '=', $value)
-                ->get(['number', 'name' ]);
+                ->get(['number', 'name']);
 
-                $sum =  $data[$value]->sum('number');
-                $data[$value] = $sum;
+            $sum =  $data[$value]->sum('number');
+            $data[$value] = $sum;
         }
 
         return response()->json(
@@ -207,6 +179,23 @@ class ViewController extends Controller
     }
 
 
+    public function report_numbers()
+    {
+        $child_numbers = Child::whereNull('deleted_at')->count();
+        $emp_numbers = User::where('role', 'Employee')->whereNull('deleted_at')->count();
+        $specific_numbers = User::where('role', 'Specialist')->whereNull('deleted_at')->count();
+        $task_numbers = Task::where('check', '0')->count();
+
+
+
+        return $this->sendResponse( [
+            'child_numbers' => $child_numbers,
+            'emp_numbers' => $emp_numbers,
+            'specific_numbers' => $specific_numbers,
+            'task_numbers' => $task_numbers,
+
+        ] , 'success') ;
+    }
 }
 
 
