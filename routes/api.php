@@ -70,6 +70,7 @@ Route::post('done_Education_Medical', [App\Http\Controllers\TitelsController::cl
     Route::post('emp/login', [UserController::class, 'employee_login']);
     Route::post('store/resault', [TestResaultController::class, 'store_res']);
     Route::get('child/appoinments/{id}', [AppointmentController::class, 'my_appinments']);
+    Route::post('connect/between/sys3', [TestResaultController::class,'connect_between_sys3']);
 
 
 ////@batoul///

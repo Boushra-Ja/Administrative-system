@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
 use App\Models\Child;
+use App\Models\PersonalInformation;
 use App\Models\PortageDimenssion;
 use App\Models\TestResault;
 use Illuminate\Http\Request;
@@ -13,8 +14,12 @@ class TestResaultController extends BaseController
 
     public function store_res(Request $request)
     {
+        $f_name = $request->father_name ;
+        $child_name = $request->child_name ;
+        $child_id = Child::where('name' , $child_name )->get()->value('id') ;
+
         $res = TestResault::create([
-            'child_id' => $request->child_id,
+            'child_id' => $request->name,
             'basal' => $request->basal,
             'additional' => $request->additional,
             'dim_id' => $request->dim_id
@@ -164,4 +169,36 @@ class TestResaultController extends BaseController
             ];
         }
     }
+
+
+    static public function connect_between_sys3(Request $request)  {
+
+        $childs = Child::where('name' , $request->child_name)->get() ;
+        foreach ($childs as $child ) {
+            $f_name = PersonalInformation::where('child_id',$child['id'])
+            ->where('ques_id' , 19)->value('answer') ;
+
+            if($f_name == $request->father_name)
+            {
+                $child_id = $child['id'] ;
+            }
+        }
+
+        $dim_id = PortageDimenssion::where('title' , $request->diminssion)->value('id') ;
+
+        $answers = TestResault::create(
+            [
+                'child_id' => $child_id,
+                'basal' => $request->basal,
+                'additional' => $request->additional,
+                'dim_id' => $dim_id
+            ]
+        );
+
+        (new  ViewController)->store_infection($child_id, $dim_id);
+
+        return $answers;
+    }
+
+
 }

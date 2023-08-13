@@ -21,7 +21,8 @@ class TaskResource extends JsonResource
             'app_id' => $this->app_id ,
             'notes' => $this->notes ,
             'child_name' => Child::where('id' , Appointment::where('id' , $this->app_id)->value('child_id'))->value('name'),
-            'created_at' => $this->created_at->format('Y-m-d ')
+            'created_at' => $this->created_at->format('Y-m-d '),
+            'start' =>$this->start
         ];
     }
 }
