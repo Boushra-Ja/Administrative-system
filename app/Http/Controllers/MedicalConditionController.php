@@ -46,7 +46,7 @@ class MedicalConditionController extends Controller
                 ]
             );
 
-            echo $answers;
+            //echo $answers;
             $g = Diseases::query()->where('name', '=', $answers['answer'])->value('id');
             if ($answers['ques_id'] == 32) {
                 (new  ViewController)->Store_row($g);

@@ -25,6 +25,8 @@ class DatabaseSeeder extends Seeder
             DiseaseSeeder::class,
             ViewSeeder::class,
             InfectionSeeder::class,
+            LevelSeeder::class,
+            ReportUserSeeder::class,
 
 
         ]);

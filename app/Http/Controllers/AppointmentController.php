@@ -18,13 +18,13 @@ use App\Http\Requests\UpdateAppointmentRequest;
 class AppointmentController extends BaseController
 {
 
-    public function __construct()
-    {
-        $this->middleware(AppMiddleware::class)->except([
-            'my_appinments',
-
-        ]);
-    }
+//    public function __construct()
+//    {
+//        $this->middleware(AppMiddleware::class)->except([
+//            'my_appinments',
+//
+//        ]);
+//    }
 
     public function home()
     {

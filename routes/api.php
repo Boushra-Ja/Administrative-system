@@ -4,6 +4,8 @@ use App\Http\Controllers\AdviceController;
 use App\Http\Controllers\AppointmentController;
     use App\Http\Controllers\BounsController;
     use App\Http\Controllers\ChildController;
+    use App\Http\Controllers\DiseasesController;
+    use App\Http\Controllers\LevelController;
     use App\Http\Controllers\NotificationController;
     use App\Http\Controllers\PersonalInformationController;
 use App\Http\Controllers\PersonalQuestionController;
@@ -88,22 +90,22 @@ Route::post('done_Education_Medical', [App\Http\Controllers\TitelsController::cl
             ->middleware('Role');
 
 
-        Route::post('Store_Appointment', [AppointmentController::class,'Store_Appointment'])
-          ->middleware('Role');
+        Route::post('Store_Appointment', [AppointmentController::class,'Store_Appointment']);
+         // ->middleware('Role');
 
-        Route::post('Store_Task', [TaskController::class,'Store_Task'])
-            ->middleware('Role');
+        Route::post('Store_Task', [TaskController::class,'Store_Task']);
+           // ->middleware('Role');
 
         Route::get('show_MyTasks', [TaskController::class,'show_MyTasks']);
 
-        Route::post('update_Task/{id}', [TaskController::class,'update_Task'])
-            ->middleware('Role');
+        Route::post('update_Task/{id}', [TaskController::class,'update_Task']);
+          //  ->middleware('Role');
 
-        Route::get('Show_appointment', [AppointmentController::class,'Show_appointment'])
-            ->middleware('Role');
+        Route::get('Show_appointment', [AppointmentController::class,'Show_appointment']);
+         //   ->middleware('Role');
 
-        Route::get('Show_Phones', [AppointmentController::class,'Show_Phones'])
-            ->middleware('Role');
+        Route::get('Show_Phones', [AppointmentController::class,'Show_Phones']);
+           // ->middleware('Role');
 
 
         Route::get('show_Specialist', [UserController::class,'show_Specialist'])
@@ -120,6 +122,8 @@ Route::post('done_Education_Medical', [App\Http\Controllers\TitelsController::cl
 
 
     Route::get('All_Diseases/{myArray}', [ViewController::class,'All_Diseases']);
+    Route::get('All_level/{myArray}', [ViewController::class,'All_level']);
+    Route::post('add_Diseases', [DiseasesController::class,'add_Diseases']);
     Route::get('All_Infections/{myArray}', [ViewController::class,'All_Infections']);
     Route::get('MatchingList/{myArray}/{id}', [ViewController::class,'MatchingList']);
     Route::post('store_test', [TestResaultController::class,'store_test']);
@@ -129,6 +133,8 @@ Route::post('done_Education_Medical', [App\Http\Controllers\TitelsController::cl
 
 
     Route::get('details_ِApp/{id}', [AppointmentController::class,'details_ِApp']);
+    Route::get('ShowLevel', [LevelController::class,'index']);
+    Route::get('ShowDiseases', [DiseasesController::class,'index']);
     Route::get('details_advice/{id}', [AdviceController::class,'details_advice']);
     Route::get('details_ِbouns/{id}', [BounsController::class,'details_ِbouns']);
     Route::post('storeBouns', [BounsController::class,'storeBouns']);

@@ -7,6 +7,7 @@ use App\Http\Requests\LoginOtherRequest;
 use App\Http\Resources\AllUsersResource;
 use App\Http\Resources\Boshra\EmployeeResource;
 use App\Models\Appointment;
+use App\Models\Level;
 use App\Models\Task;
 use App\Models\User;
 use Exception;
@@ -75,12 +76,18 @@ class UserController extends  BaseController
 
         ]);
         $token = $userEmp->createToken('ProductsTolken')->plainTextToken;
-        if ($userEmp)
+        if ($userEmp){
+            $g = Level::query()->where('name', '=', $valid['scientific_level'])->value('id');
+                (new  ViewController)->Store_repot($g);
+
+
             return response()->json([
                 'message' => 'Store employee successfully',
                 'user' => $userEmp,
                 'token' => $token,
             ]);
+
+        }
 
         else {
             return $this->sendErrors('failed in Store user', ['error' => 'not true']);

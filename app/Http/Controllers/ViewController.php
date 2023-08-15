@@ -7,6 +7,8 @@ use App\Http\Resources\Report;
 use App\Models\Child;
 use App\Models\Diseases;
 use App\Models\Infection;
+use App\Models\Level;
+use App\Models\ReportUser;
 use App\Models\Task;
 use Database\Seeders\InfectionSeeder;
 use Illuminate\Http\Request;
@@ -196,6 +198,84 @@ class ViewController extends BaseController
 
         ] , 'success') ;
     }
+
+
+
+
+
+
+    public function All_level($myArray)
+    {
+        $ids = DB::table('levels')->pluck('id')->toArray();
+        $ids = array_map('intval', $ids); // Convert the values to integers
+        $myArray = explode(',', $myArray);
+
+        $results = [];
+        $results2 = [];
+
+        foreach ($ids as $value) {
+            $data = DB::table('report_users')
+                ->whereIn('year', $myArray)
+                ->where('level_id', '=', $value)
+                ->get(['number', 'level_id', 'year']);
+
+            $sum = $data->sum('number');
+
+            $name = DB::table('levels')
+                ->where('id', '=', $value)
+                ->get()->value('name');
+            $results2[$value] = [$sum, $name];
+        }
+
+        return response()->json(
+            $results2
+        );
+    }
+
+
+
+
+
+
+    function Store_repot($g)
+    {
+
+        $currentYear = date('Y');
+        $model = ReportUser::query()->where('level_id', '=', $g)->where('year', '=', $currentYear)
+            ->value('number');
+        if ($model !== null) {
+            ReportUser::where('level_id', '=', $g)->where('year', '=', $currentYear)->update(['number' => $model + 1]);
+        } else {
+            //
+            //
+            $model2 = ReportUser::query()->where('level_id', '=', $g)->where('year', '=', $currentYear)->value('number');
+            //dd($model2) ;
+            if ($model2 !== null) {
+                ReportUser::where('level_id', '=', $g)->where('year', '=', $currentYear)->update(['number' => $model + 1]);
+            } else {
+
+                Artisan::call('db:seed', [
+                    '--class' => 'ReportUserSeeder'
+                ]);
+
+                $model2 = ReportUser::query()->where('level_id', '=', $g)
+                    ->where('year', '=', $currentYear)->value('number');
+                if ($model2 !== null) {
+                    ReportUser::where('level_id', '=', $g)->where('year', '=', $currentYear)
+                        ->update(['number' => $model + 1]);
+                }
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
 }
 
 

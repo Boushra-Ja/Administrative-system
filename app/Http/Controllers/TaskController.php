@@ -1,7 +1,7 @@
 <?php
 ///INSERT INTO `children` (`id`, `name`, `age`, `phone_num`, `infection`, `section`, `password`, `created_at`, `updated_at`, `deleted_at`, `unique_number`) VALUES ('1', 'nnn', '11', '444', 'kmkmlkm', 'lkkm', '000', '2023-08-15 18:06:54', NULL, NULL, '111');
 namespace App\Http\Controllers;
-
+///INSERT INTO `tasks` (`id`, `hours`, `start`, `description`, `title`, `check`, `notes`, `user_id`, `app_id`, `created_at`, `updated_at`) VALUES ('1', '3', '10', 'nnnn', 'nnn', '0', NULL, '3', '1', '2023-08-15 03:25:30', NULL);
 use App\Events\NotificationEvent;
 use App\Http\Controllers\API\BaseController;
 use App\Http\Resources\TaskkResource;
@@ -29,31 +29,43 @@ class TaskController extends BaseController
     }
 
 
-    public function checkTask($userid, $start, $date, $hours, $new)
+    public function checkTask($userid, $new_start,$new_app_id)
     {
 
-        $h = [];
 
-        $id = Task::where('user_id', '=', $userid)
-            ->where('check', '=', 0)->value('id');
+        $hours = Task::where('user_id', '=', $userid)->where('check', '=', 0)->value('hours');
+
+        $start = Task::where('user_id', '=', $userid)->where('check', '=', 0)->value('start');
+
+        $app_id = Task::where('user_id', '=', $userid)->where('check', '=', 0)->value('app_id');
+      echo $hours->hour;
+      echo $start;
+
+       if($hours!=null)
+       {
+           if ($app_id == $new_app_id) {
+
+               $sum1 = $start->addHours($hours->hour)->addMinutes($hours->minute);
+//               $sum2 = $start->addSeconds($hours->second);
+               $h =$sum1;
 
 
-        $mdate =   Appointment::where('id', '=', Task::where('user_id', '=', $userid)
-            ->where('check', '=', 0)->value('app_id'))->value('app_date');
-        if ($mdate == $date) {
-            $h = $start + $hours;
 
-            if ($h > 12)
-                $g = $h - 12;
+//               if ($h > 12)
+//               {$g = $h - 12;
+//                   if($start<$new_start && $new_start<$g)
+//                       echo"noooooo";
+//
+//               }
 
-
-            //  if(<$start<)
-
-        }
+           }
+       }
     }
 
     public function Store_Task(Request $request)
     {
+//$userid, $start, $date, $hours, $newstart
+
         $valid = $request->validate([
             'user_id' => 'required ',
             'app_id' => 'required ',
@@ -64,6 +76,9 @@ class TaskController extends BaseController
             'check' => 'required ',
 
         ]);
+
+       $this->checkTask($valid['user_id'], $valid['start'], $valid['app_id']);
+
 
         $tt = Task::create([
             'user_id' => $valid['user_id'],
