@@ -38,8 +38,7 @@ class TaskController extends BaseController
         $start = Task::where('user_id', '=', $userid)->where('check', '=', 0)->value('start');
 
         $app_id = Task::where('user_id', '=', $userid)->where('check', '=', 0)->value('app_id');
-      echo $hours->hour;
-      echo $start;
+
 
        if($hours!=null)
        {
