@@ -10,6 +10,7 @@ use App\Http\Requests\UpdateAdviceRequest;
 use App\Http\Resources\Boshra\AdviceResource;
 use App\Models\Child;
 use App\Models\Notification;
+use Illuminate\Http\Request;
 
 class AdviceController extends BaseController
 {
@@ -34,7 +35,7 @@ class AdviceController extends BaseController
         return $this->sendErrors([] , 'error in retrived all advice' ) ;
     }
 
-    public function store(StoreAdviceRequest $request)
+    public function store(Request $request)
     {
         $advice = Advice::create([
 
