@@ -168,10 +168,10 @@ class TaskController extends BaseController
         if ($update) {
             $task_name = Task::where('id', $task_id)->value("title");
 
-            broadcast(new NotificationEvent("انهاء مهمه",  "${task_name}  تم انهاء المهمه بنجاح ", 1, $task_id));
+            broadcast(new NotificationEvent("انهاء مهمه",  "${task_name}  تم انهاء المهمه بنجاح ", 1.5, $task_id));
             $realTime = Notification::create([
                 'title' => "انهاء مهمه",
-                'receiver_id' => 1,
+                'receiver_id' => 1.5,
                 'message' => "${task_name}  تم انهاء المهمه بنجاح ",
 
             ]);
