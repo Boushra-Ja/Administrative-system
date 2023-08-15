@@ -93,7 +93,6 @@ Route::post('done_Education_Medical', [App\Http\Controllers\TitelsController::cl
         Route::post('Store_Appointment', [AppointmentController::class,'Store_Appointment']);
          // ->middleware('Role');
 
-        Route::post('Store_Task', [TaskController::class,'Store_Task']);
            // ->middleware('Role');
 
         Route::get('show_MyTasks', [TaskController::class,'show_MyTasks']);
@@ -104,7 +103,6 @@ Route::post('done_Education_Medical', [App\Http\Controllers\TitelsController::cl
         Route::get('Show_appointment', [AppointmentController::class,'Show_appointment']);
          //   ->middleware('Role');
 
-        Route::get('Show_Phones', [AppointmentController::class,'Show_Phones']);
            // ->middleware('Role');
 
 
@@ -139,3 +137,8 @@ Route::post('done_Education_Medical', [App\Http\Controllers\TitelsController::cl
     Route::get('details_ِbouns/{id}', [BounsController::class,'details_ِbouns']);
     Route::post('storeBouns', [BounsController::class,'storeBouns']);
     Route::get('task/details/{id}', [TaskController::class,'details_task']);
+
+
+
+    Route::post('Store_Task', [TaskController::class,'Store_Task']);
+    Route::get('Show_Phones', [AppointmentController::class,'Show_Phones']);

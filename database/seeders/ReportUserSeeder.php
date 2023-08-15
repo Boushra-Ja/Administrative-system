@@ -10,9 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class ReportUserSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
+
     public function run(): void
     {
         $request = Level::orderByDesc('id')->get();
