@@ -19,9 +19,26 @@ class TaskController extends BaseController
 
     public function delete_appointment($id)
     {
-        $AppModel = Task::query()->where('app_id', '=', $id)
+
+        $idtask = Task::query()->where('app_id', '=', $id)
+            ->where('check', '=', '0')->value('id');
+        $user_id = Task::query()->where('app_id', '=', $id)
+            ->where('check', '=', '0')->value('user_id');
+
+
+         Task::query()->where('app_id', '=', $id)
             ->where('check', '=', '0')->delete();
-        $ap = Appointment::query()->where('id', '=', $id)->delete();
+         Appointment::query()->where('id', '=', $id)->delete();
+
+        broadcast(new NotificationEvent(" حذف مهمه",  " تم حذف مهه   ", $user_id, $idtask));
+        $realTime = Notification::create([
+            'title' => "حذف مهمه",
+            'receiver_id' => $user_id,
+            'message' => "  تم حذف مهه  ",
+
+        ]);
+        $realTime->save();
+
 
         return response()->json([
             'message' => "this appointment has deleted",
@@ -38,34 +55,35 @@ class TaskController extends BaseController
         $start = Task::where('user_id', '=', $userid)->where('check', '=', 0)->value('start');
 
         $app_id = Task::where('user_id', '=', $userid)->where('check', '=', 0)->value('app_id');
-      echo $hours->hour;
-      echo $start;
-
-       if($hours!=null)
-       {
-           if ($app_id == $new_app_id) {
-
-               $sum1 = $start->addHours($hours->hour)->addMinutes($hours->minute);
-//               $sum2 = $start->addSeconds($hours->second);
-               $h =$sum1;
 
 
+        if($hours!=null)
+        {
+            if ($app_id == $new_app_id) {
+                $stime = explode(':',$start);
 
-//               if ($h > 12)
-//               {$g = $h - 12;
-//                   if($start<$new_start && $new_start<$g)
-//                       echo"noooooo";
-//
-//               }
+                $h=$stime[0]+$new_start;
+                echo $h;
+                if ($h > 12)
+                {$g = $h - 12;
+                    if($start<$new_start && $new_start<$g)
+                        echo"i am busy";
 
-           }
-       }
+                }
+                else
+                {
+                    if($start<$new_start && $new_start<$h)
+                        echo"i am busy";
+                }
+
+            }
+        }
     }
 
     public function Store_Task(Request $request)
     {
-//$userid, $start, $date, $hours, $newstart
-
+        //$userid, $start, $date, $hours, $newstart
+        //dd("kkk");
         $valid = $request->validate([
             'user_id' => 'required ',
             'app_id' => 'required ',
@@ -77,7 +95,7 @@ class TaskController extends BaseController
 
         ]);
 
-       $this->checkTask($valid['user_id'], $valid['start'], $valid['app_id']);
+        //   $this->checkTask($valid['user_id'], $valid['hours'], $valid['app_id']);
 
 
         $tt = Task::create([
@@ -94,7 +112,7 @@ class TaskController extends BaseController
         $task_id = Task::where('title', $valid['title'])->value("id");
         $user_name = User::where('id', $valid['user_id'])->value("name");
 
-        broadcast(new NotificationEvent(" اسناد مهمه",  " تم اسناد مهه لك  ", $valid['user_id'], $task_id));
+        broadcast(new NotificationEvent(" اسناد مهمه",  " تم اسناد مهه لك  ", $valid['user_id'], $tt['id']));
         $realTime = Notification::create([
             'title' => "اسناد مهمه",
             'receiver_id' => $valid['user_id'],
