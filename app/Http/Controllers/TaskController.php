@@ -29,11 +29,11 @@ class TaskController extends BaseController
 
          Appointment::query()->where('id', '=', $id)->delete();
 
-        broadcast(new NotificationEvent(" حذف مهمه",  " تم حذف مهه   ", $user_id, $idtask));
+        broadcast(new NotificationEvent(" حذف مهمه",  "  تم حذف مهمة مسندة لك مسبقاً   ", $user_id, $idtask));
         $realTime = Notification::create([
             'title' => "حذف مهمه",
             'receiver_id' => $user_id,
-            'message' => "  تم حذف مهه  ",
+            'message' => "  تم حذف مهمة مسندة لك مسبقاً  ",
             'type' => 'حذف مهمة',
             'need_id' => $idtask
 

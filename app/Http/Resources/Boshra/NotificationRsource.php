@@ -15,7 +15,9 @@ class NotificationRsource extends JsonResource
             'id' => $this->id ,
             'title' => $this->title ,
             'user_name' => User::where('id' , $this->user_id)->value('name') ,
-            'terminate_date' => $this->updated_at
+            'terminate_date' => $this->updated_at ,
+            'type' => $this->type ,
+            'need_id'=> $this->need_id
 
         ];
     }
