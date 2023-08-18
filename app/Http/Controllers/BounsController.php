@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\NotificationEvent;
+use App\Http\Controllers\API\BaseController;
 use App\Models\Bouns;
 use App\Models\Notification;
 use App\Models\Task;
@@ -10,7 +11,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdateBounsRequest;
 
-class BounsController extends Controller
+class BounsController extends BaseController
 {
 
 
@@ -57,12 +58,14 @@ class BounsController extends Controller
     {
 
         $task_name = Task::where('id' , Bouns::where('id' ,$bouns_id )->value('task_id'))->value("title");
-        $points=Bouns::where('id' ,$bouns_id )->value('task_id');
+        $points=Bouns::where('id' ,$bouns_id )->value('points');
+        $task_id=Bouns::where('id' ,$bouns_id )->value('task_id');
 
-        return response()->json([
+        return $this->sendResponse([
             'task_name'=> $task_name ,
             'points'=> $points,
-        ]);
+            'task_id' => $task_id
+        ] , 'success');
 
     }
 

@@ -17,7 +17,7 @@ class AdviceResource extends JsonResource
             'text' => $this->text ,
             'child_id' => $this->child_id ,
             'child_name' => Child::where('id'  ,$this->child_id )->value('name'),
-            'created_at' => $this->created_at
+            'created_at' =>$this->created_at->format('Y-m-d ')
 
         ];
     }
