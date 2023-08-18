@@ -7,11 +7,14 @@ use App\Http\Controllers\API\BaseController;
 use App\Http\Resources\TaskkResource;
 use App\Models\Appointment;
 use App\Models\Child;
+use App\Models\ChildNotification;
 use App\Models\Notification;
 use App\Models\Task;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Resources\Boshra\TaskResource;
+use Illuminate\Support\Facades\DB;
 
 class TaskController extends BaseController
 {
@@ -26,10 +29,9 @@ class TaskController extends BaseController
             ->where('check', '=', '0')->value('user_id');
 
 
+        Appointment::query()->where('id', '=', $id)->delete();
 
-         Appointment::query()->where('id', '=', $id)->delete();
-
-        broadcast(new NotificationEvent("حذف مهمه",  "  تم حذف مهمة مسندة لك مسبقاً   ", $user_id, $idtask));
+        broadcast(new NotificationEvent("حذف مهمه", "  تم حذف مهمة مسندة لك مسبقاً   ", $user_id, $idtask));
         $realTime = Notification::create([
             'title' => "حذف مهمه",
             'receiver_id' => $user_id,
@@ -47,47 +49,77 @@ class TaskController extends BaseController
     }
 
 
-    public function checkTask($userid, $new_start,$new_app_id)
-    {
+//    public function checkTask($userid, $new_start,$new_app_id)
+//    {
+//
+//
+//        $group =
+//            DB::table('appointments')
+//                ->join('tasks', 'appointments.id', '=', 'tasks.app_id')
+//               // ->where('tasks.user_id','=', $userid)
+//              //  ->where('tasks.check', '=', '0')
+//
+//         ->select(
+//             'appointments.*',
+//             'tasks.*'
+//         )
+//                ->get();
+//
+////        ->select(
+////             'appointments.app_date',
+////             'tasks.hours','tasks.start','tasks.user_id'
+////         )->get();
+//        return response()->json([
+//
+//            'Task' => $group,
+//        ]);
+//
+////        if($hours!=null)
+////        {
+////            if ($app_id == $new_app_id) {
+////                $stime = explode(':',$start);
+////
+////                $h=$stime[0]+$new_start;
+////                echo $h;
+////                if ($h > 12)
+////                {$g = $h - 12;
+////                    if($start<$new_start && $new_start<$g)
+////                        echo"i am busy";
+////
+////                }
+////                else
+////                {
+////                    if($start<$new_start && $new_start<$h)
+////                        echo"i am busy";
+////                }
+////
+////            }
+////        }
+//    }
 
 
-        $hours = Task::where('user_id', '=', $userid)->where('check', '=', 0)->value('hours');
-
-        $start = Task::where('user_id', '=', $userid)->where('check', '=', 0)->value('start');
-
-        $app_id = Task::where('user_id', '=', $userid)->where('check', '=', 0)->value('app_id');
 
 
-        if($hours!=null)
-        {
-            if ($app_id == $new_app_id) {
-                $stime = explode(':',$start);
 
-                $h=$stime[0]+$new_start;
-                echo $h;
-                if ($h > 12)
-                {$g = $h - 12;
-                    if($start<$new_start && $new_start<$g)
-                        echo"i am busy";
-
-                }
-                else
-                {
-                    if($start<$new_start && $new_start<$h)
-                        echo"i am busy";
-                }
-
-            }
-        }
-    }
 
     public function Store_Task(Request $request)
     {
-        //$userid, $start, $date, $hours, $newstart
-        //dd("kkk");
+
+         $c=false;
         $valid = $request->validate([
+            'child_id' => 'required ',
+            'app_date' => 'required ',
+        ]);
+        $pp= Appointment::create([
+            'child_id' => $valid['child_id'],
+            'app_date' => $valid['app_date'],
+
+        ]);
+        $Appointment_id = $pp->id;
+
+         $valid = $request->validate([
             'user_id' => 'required ',
-            'app_id' => 'required ',
+             'app_id'=>'require' ,
             'hours' => 'required ',
             'start' => 'required ',
             'description' => 'required ',
@@ -96,12 +128,123 @@ class TaskController extends BaseController
 
         ]);
 
-        //   $this->checkTask($valid['user_id'], $valid['hours'], $valid['app_id']);
 
 
-        $tt = Task::create([
+
+            $appdate = Appointment::where('id', '=', $Appointment_id)->value("app_date");
+            $group = DB::table('appointments')
+                ->join('tasks', 'appointments.id', '=', 'tasks.app_id')
+                ->where('appointments.app_date', '=', $appdate)
+                ->where('tasks.user_id', '=', $valid['user_id'])
+                ->where('tasks.check', '=', '0')
+                ->select('appointments.app_date', 'tasks.hours', 'tasks.start', 'tasks.user_id')->get();
+
+
+            foreach ($group as $row) {
+
+                $hours = $row->hours;
+                $minutes = 0;
+                $seconds = 0;
+
+
+                $row_start = Carbon::createFromTimeString($row->start);
+                $row_hours = Carbon::createFromTime($hours, $minutes, $seconds);
+                $valid_start = Carbon::createFromTimeString($valid['start']);
+                $valid_hours = Carbon::createFromTimeString($valid['hours']);
+                $end = Carbon::createFromTimeString('20:00:00');
+                $start= Carbon::createFromTimeString('8:00:00');
+
+                $row_s = clone $row_start;
+                $row_h = clone $row_hours;
+                $row_s->addHours($row_h->hour);
+                $row_s->addMinutes($row_h->minute);
+                $row_s->addSeconds($row_h->second);
+                $valid_s = clone $valid_start;
+                $valid_h = clone $valid_hours;
+                $valid_s->addHours($valid_h->hour);
+                $valid_s->addMinutes($valid_h->minute);
+                $valid_s->addSeconds($valid_h->second);
+
+                if($valid_s->greaterThanOrEqualTo($end) || $start->greaterThanOrEqualTo($valid_start))
+                { return response()->json([
+                    'message' => 'This Time is out ',
+                ]);}
+
+//                  echo $valid_s;
+//                  echo "+++++++++++++++++++++++++++++++++++\n";
+//                  echo $row_start;
+//                  echo "+++++++++++++++++++++++++++++++++++\n";
+//                  echo $valid_start;
+//                  echo "+++++++++++++++++++++++++++++++++++\n";
+//                  echo $row_s;
+//                  echo "+++++++++++++++++++++++++++++++++++\n";
+                if ($valid_start->greaterThanOrEqualTo($row_s))
+                    $c=true;
+                    else if($row_start ->greaterThanOrEqualTo($valid_s))
+                        $c=true;
+
+
+
+                if($c==true)
+                {
+
+
+                    $tt = Task::create([
+                        'user_id' => $valid['user_id'],
+                        'app_id' => $Appointment_id,
+                        'hours' => $valid['hours'],
+                        'description' => $valid['description'],
+                        'title' => $valid['title'],
+                        'start' => $valid['start'],
+                        'check' => $valid['check'],
+                    ]);
+                    $child_name = Child::where('id', Appointment::where('id','=',$Appointment_id)->value('child_id'))->value("name");
+                    broadcast(new NotificationEvent("ارسال موعد",  "{$child_name} تم ارسال موعد الى طفلكم ", Appointment::where('id','=',$Appointment_id)->value('child_id'), $Appointment_id));
+                    $realTime = ChildNotification::create([
+                        'title' => "ارسال موعد",
+                        'receiver_id' => Appointment::where('id','=',$Appointment_id)->value('child_id'),
+                        'message' => "{$child_name} تم ارسال موعد الى طفلكم ",
+                        'type' => 'ارسال موعد',
+                        'need_id' => $Appointment_id
+                    ]);
+
+                    $realTime->save();
+
+                    $task_id = $tt->id;
+                    $user_name = User::where('id', $valid['user_id'])->value("name");
+                    broadcast(new NotificationEvent(" اسناد مهمه", " تم اسناد مهه لك  ", $valid['user_id'], $tt['id']));
+                    $realTime = Notification::create([
+                        'title' => "اسناد مهمه",
+                        'receiver_id' => $valid['user_id'],
+                        'message' => " {$user_name} تم اسناد مهه لك  ",
+                        'type' => 'اسناد مهمة',
+                        'need_id' => $task_id
+
+                    ]);
+                    $realTime->save();
+
+
+
+                    return response()->json([
+                        'message' => 'A Task has been booked successfully',
+                        'Task' => $tt,
+                    ]);
+
+
+                }
+                else {
+                    return response()->json([
+                        'message' => 'This user is busy in this time',
+                    ]);
+                }
+            }
+
+
+
+        if($group->isEmpty()){
+            $tt = Task::create([
             'user_id' => $valid['user_id'],
-            'app_id' => $valid['app_id'],
+            'app_id' => $Appointment_id,
             'hours' => $valid['hours'],
             'description' => $valid['description'],
             'title' => $valid['title'],
@@ -110,24 +253,26 @@ class TaskController extends BaseController
 
         ]);
 
-        $task_id = $tt->id;
-        $user_name = User::where('id', $valid['user_id'])->value("name");
 
-        broadcast(new NotificationEvent(" اسناد مهمه",  " تم اسناد مهه لك  ", $valid['user_id'], $tt['id']));
-        $realTime = Notification::create([
-            'title' => "اسناد مهمه",
-            'receiver_id' => $valid['user_id'],
-            'message' => " {$user_name} تم اسناد مهه لك  ",
-            'type' => 'اسناد مهمة',
-            'need_id' => $task_id
+            $task_id = $tt->id;
+            $user_name = User::where('id', $valid['user_id'])->value("name");
 
-        ]);
-        $realTime->save();
+            broadcast(new NotificationEvent(" اسناد مهمه", " تم اسناد مهه لك  ", $valid['user_id'], $tt['id']));
+            $realTime = Notification::create([
+                'title' => "اسناد مهمه",
+                'receiver_id' => $valid['user_id'],
+                'message' => " {$user_name} تم اسناد مهه لك  ",
+                'type' => 'اسناد مهمة',
+                'need_id' => $task_id
 
-        return response()->json([
-            'message' => 'A Task has been booked successfully',
-            'Task' => $tt,
-        ]);
+            ]);
+            $realTime->save();
+
+            return response()->json([
+                'message' => 'A Task has been booked successfully',
+                'Task' => $tt,
+            ]);}
+
     }
 
     public function show_MyTasks()
@@ -171,11 +316,11 @@ class TaskController extends BaseController
         if ($update) {
             $task_name = Task::where('id', $task_id)->value("title");
 
-            broadcast(new NotificationEvent("انهاء مهمه",  $task_name ."  تم انهاء المهمه بنجاح ", 1.5, $task_id));
+            broadcast(new NotificationEvent("انهاء مهمه", $task_name . "  تم انهاء المهمه بنجاح ", 1.5, $task_id));
             $realTime = Notification::create([
                 'title' => "انهاء مهمه",
                 'receiver_id' => 1.5,
-                'message' => $task_name."  تم انهاء المهمه بنجاح ",
+                'message' => $task_name . "  تم انهاء المهمه بنجاح ",
                 'type' => 'انهاء مهمة',
                 'need_id' => $task_id
 
@@ -211,12 +356,11 @@ class TaskController extends BaseController
     }
 
 
-
     public function details_task($task_id)
     {
 
-        $task = Task::where('id' , $task_id)->first() ;
-        return $this->sendResponse(new TaskkResource($task) , 'success');
+        $task = Task::where('id', $task_id)->first();
+        return $this->sendResponse(new TaskkResource($task), 'success');
 
     }
 
