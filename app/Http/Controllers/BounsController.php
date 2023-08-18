@@ -39,6 +39,8 @@ class BounsController extends Controller
             'title' => "رساله تحفيز",
             'receiver_id' =>$user_id,
             'message' =>  "تم منحك بعض النقاط ",
+            'type' => 'اسناد نقاط',
+            'need_id' => $tt->id
 
         ]);
         $realTime->save();
