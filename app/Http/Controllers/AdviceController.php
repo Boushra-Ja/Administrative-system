@@ -50,7 +50,7 @@ class AdviceController extends BaseController
         {
             broadcast(new NotificationEvent("إرسال توجيه من المركز",  "تم ارسال بعض التوجيهات والنصائح لطفلكم",$request->child_id,$id));
             $realTime = ChildNotification::create([
-                'title' => "إرسال توجيه من المركز",
+                'title' => "إرسال توجيه",
                 'receiver_id' =>$request->child_id,
                 'message' => "تم إرسال بعض التوجيهات والنصائح لطفلكم",
                 'type' => 'ارسال توجيه',
