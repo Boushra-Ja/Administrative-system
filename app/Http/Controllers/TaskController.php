@@ -26,8 +26,7 @@ class TaskController extends BaseController
             ->where('check', '=', '0')->value('user_id');
 
 
-         Task::query()->where('app_id', '=', $id)
-            ->where('check', '=', '0')->delete();
+
          Appointment::query()->where('id', '=', $id)->delete();
 
         broadcast(new NotificationEvent(" حذف مهمه",  " تم حذف مهه   ", $user_id, $idtask));
@@ -35,6 +34,8 @@ class TaskController extends BaseController
             'title' => "حذف مهمه",
             'receiver_id' => $user_id,
             'message' => "  تم حذف مهه  ",
+            'type' => 'حذف مهمة',
+            'need_id' => $idtask
 
         ]);
         $realTime->save();
@@ -109,7 +110,7 @@ class TaskController extends BaseController
 
         ]);
 
-        $task_id = Task::where('title', $valid['title'])->value("id");
+        $task_id = $tt->id;
         $user_name = User::where('id', $valid['user_id'])->value("name");
 
         broadcast(new NotificationEvent(" اسناد مهمه",  " تم اسناد مهه لك  ", $valid['user_id'], $tt['id']));
@@ -117,6 +118,8 @@ class TaskController extends BaseController
             'title' => "اسناد مهمه",
             'receiver_id' => $valid['user_id'],
             'message' => " {$user_name} تم اسناد مهه لك  ",
+            'type' => 'اسناد مهمة',
+            'need_id' => $task_id
 
         ]);
         $realTime->save();
@@ -168,11 +171,13 @@ class TaskController extends BaseController
         if ($update) {
             $task_name = Task::where('id', $task_id)->value("title");
 
-            broadcast(new NotificationEvent("انهاء مهمه",  "${task_name}  تم انهاء المهمه بنجاح ", 1.5, $task_id));
+            broadcast(new NotificationEvent("انهاء مهمه",  $task_name ."  تم انهاء المهمه بنجاح ", 1.5, $task_id));
             $realTime = Notification::create([
                 'title' => "انهاء مهمه",
                 'receiver_id' => 1.5,
-                'message' => "${task_name}  تم انهاء المهمه بنجاح ",
+                'message' => $task_name."  تم انهاء المهمه بنجاح ",
+                'type' => 'انهاء مهمة',
+                'need_id' => $task_id
 
             ]);
 

@@ -14,6 +14,7 @@ use App\Models\Notification;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdateAppointmentRequest;
+use App\Models\ChildNotification;
 
 class AppointmentController extends BaseController
 {
@@ -51,15 +52,16 @@ class AppointmentController extends BaseController
 
         ]);
 
-        $Appointment_id = Appointment::where('child_id', $valid['child_id'])->value("id");
+        $Appointment_id = $pp->id;
         $child_name = Child::where('id', $valid['child_id'])->value("name");
 
         broadcast(new NotificationEvent("ارسال موعد",  "{$child_name} تم ارسال موعد الى طفلكم ", $valid['child_id'], $Appointment_id));
-        $realTime = Notification::create([
+        $realTime = ChildNotification::create([
             'title' => "ارسال موعد",
             'receiver_id' => $valid['child_id'],
             'message' => "{$child_name} تم ارسال موعد الى طفلكم ",
-
+            'type' => 'ارسال موعد',
+            'need_id' => $Appointment_id
         ]);
         //
         $realTime->save();

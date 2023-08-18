@@ -327,6 +327,8 @@ class ReportResource extends JsonResource
         }
 
 
+        ////////////////
+        ////المراكز
         //////////////////
         $notes = 'لوحظ على الطفل أنه بحاجة للتقييم في شعبة ' . ' ' . EductionalCondition::where('child_id', $this->id)
             ->where('ques_id', 26)->value('answer');

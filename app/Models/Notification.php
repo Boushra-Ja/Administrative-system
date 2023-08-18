@@ -16,5 +16,7 @@ class Notification extends Model
         'title',
         'message',
         'receiver_id',
+        'type' ,
+        'need_id'
     ];
 }

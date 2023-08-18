@@ -9,6 +9,7 @@ use App\Http\Requests\StoreAdviceRequest;
 use App\Http\Requests\UpdateAdviceRequest;
 use App\Http\Resources\Boshra\AdviceResource;
 use App\Models\Child;
+use App\Models\ChildNotification;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 
@@ -42,15 +43,18 @@ class AdviceController extends BaseController
             'child_id' => $request->child_id ,
             'text' => $request->text
         ]);
-        $advice_id=Advice::where('child_id',$request->child_id)->value("id");
+
+        $id = $advice->id;
+
         if($advice)
         {
-            broadcast(new NotificationEvent("ارسال نصيحه",  "تم ارسال بعض النصائح لطفلكم",$request->child_id,$advice_id));
-            $realTime = Notification::create([
-                'title' => "ارسال نصيحه",
+            broadcast(new NotificationEvent("إرسال توجيه من المركز",  "تم ارسال بعض التوجيهات والنصائح لطفلكم",$request->child_id,$id));
+            $realTime = ChildNotification::create([
+                'title' => "إرسال توجيه من المركز",
                 'receiver_id' =>$request->child_id,
-                'message' => "تم ارسال بعض النصائح لطفلكم",
-
+                'message' => "تم إرسال بعض التوجيهات والنصائح لطفلكم",
+                'type' => 'ارسال توجيه',
+                'need_id' => $id
             ]);
             $realTime->save();
             return $this->sendResponse($advice , "success in add advice..");
@@ -64,7 +68,6 @@ class AdviceController extends BaseController
         return $this->sendResponse(AdviceResource::collection($text) , 'success in get advice info') ;
 
     }
-
 
 
     public function destroy($id)

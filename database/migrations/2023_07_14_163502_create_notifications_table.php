@@ -15,6 +15,8 @@ return new class extends Migration
             $table->string('message');
             $table->integer('receiver_id')->unsigned();
             $table->foreign('receiver_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('type');
+            $table->string('need_id');
             $table->timestamps();
             $table->softDeletes();
         });
