@@ -212,7 +212,7 @@ class TaskController extends BaseController
 
                     $task_id = $tt->id;
                     $user_name = User::where('id', $valid['user_id'])->value("name");
-                    broadcast(new NotificationEvent(" اسناد مهمه", " تم اسناد مهه لك  ", $valid['user_id'], $tt['id']));
+                    broadcast(new NotificationEvent("اسناد مهمه", " تم اسناد مهه لك  ", $valid['user_id'], $tt['id']));
                     $realTime = Notification::create([
                         'title' => "اسناد مهمه",
                         'receiver_id' => $valid['user_id'],

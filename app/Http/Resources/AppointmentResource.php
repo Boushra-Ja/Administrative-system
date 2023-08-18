@@ -26,6 +26,7 @@ class appointmentResource extends JsonResource
             'check'=>Task::where('app_id',$this->id)->value('check'),
             'hours' => Task::where('app_id',$this->id)->value('hours'),
             'start' => Task::where('app_id',$this->id)->value('start'),
+            'title' => Task::where('app_id',$this->id)->value('title'),
 
 
         ];
