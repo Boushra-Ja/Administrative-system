@@ -102,7 +102,8 @@ class ChildController extends BaseController
             'name' => $name,
             'phone_num' => $phone_number,
             'age' => $age,
-            'unique_number' => $unique_num
+            'unique_number' => $unique_num ,
+            'section' => 'التدخل المبكر'
 
         ]);
 

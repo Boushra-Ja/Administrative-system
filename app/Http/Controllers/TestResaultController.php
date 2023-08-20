@@ -14,9 +14,9 @@ class TestResaultController extends BaseController
 
     public function store_res(Request $request)
     {
-        $f_name = $request->father_name ;
-        $child_name = $request->child_name ;
-        $child_id = Child::where('name' , $child_name )->get()->value('id') ;
+        $f_name = $request->father_name;
+        $child_name = $request->child_name;
+        $child_id = Child::where('name', $child_name)->get()->value('id');
 
         $res = TestResault::create([
             'child_id' => $request->name,
@@ -25,12 +25,10 @@ class TestResaultController extends BaseController
             'dim_id' => $request->dim_id
         ]);
 
-        if($res)
-        {
-            return $this->sendResponse($res , 'success in store resault') ;
-
+        if ($res) {
+            return $this->sendResponse($res, 'success in store resault');
         }
-        return $this->sendError([] , 'error in store the resault') ;
+        return $this->sendError([], 'error in store the resault');
     }
 
     public function store_test(Request $request)
@@ -157,8 +155,7 @@ class TestResaultController extends BaseController
                 'year' => $year,
                 'month' => $month,
             ];
-        }
-        else{
+        } else {
 
             return   [
                 'dimantion' => PortageDimenssion::where('id', $dim_id)->value('title'),
@@ -171,20 +168,20 @@ class TestResaultController extends BaseController
     }
 
 
-    static public function connect_between_sys3(Request $request)  {
+    static public function connect_between_sys3(Request $request)
+    {
 
-        $childs = Child::where('name' , $request->child_name)->get() ;
-        foreach ($childs as $child ) {
-            $f_name = PersonalInformation::where('child_id',$child['id'])
-            ->where('ques_id' , 19)->value('answer') ;
+        $childs = Child::where('name', $request->child_name)->get();
+        foreach ($childs as $child) {
+            $f_name = PersonalInformation::where('child_id', $child['id'])
+                ->where('ques_id', 19)->value('answer');
 
-            if($f_name == $request->father_name)
-            {
-                $child_id = $child['id'] ;
+            if ($f_name == $request->father_name) {
+                $child_id = $child['id'];
             }
         }
 
-        $dim_id = PortageDimenssion::where('title' , $request->diminssion)->value('id') ;
+        $dim_id = PortageDimenssion::where('title', $request->diminssion)->value('id');
 
         $answers = TestResault::create(
             [
@@ -195,10 +192,31 @@ class TestResaultController extends BaseController
             ]
         );
 
+        $state = "";
+
+        $age = $child['age'];
+        $data = ((($request->basal * 12) + $request->additional) / $age) * 100;
+        if ($data <= 25)
+            $state = "شديد جداً";
+        else if ($data > 25 && $data <= 40)
+            $state = "شديد ";
+        else if ($data > 40 && $data <= 55)
+            $state = "متوسط ";
+        else if ($data > 55 && $data <= 70)
+            $state = "بسيط ";
+        else if ($data > 70 && $data <= 85)
+            $state = "بسيط جداً";
+        else
+            $state = " طبيعي";
+
+
+        Child::where('id', $child_id)->update([
+            'infection' => $state
+        ]);
+
+
         (new  ViewController)->store_infection($child_id, $dim_id);
 
         return $answers;
     }
-
-
 }
