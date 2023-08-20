@@ -137,6 +137,7 @@ Route::post('done_Education_Medical', [App\Http\Controllers\TitelsController::cl
     Route::post('StoreAdvice', [AdviceController::class,'store']);
     Route::get('details_ِbouns/{id}', [BounsController::class,'details_ِbouns']);
     Route::post('storeBouns', [BounsController::class,'storeBouns']);
+    Route::get('OrderBouns', [BounsController::class,'OrderBouns']);
     Route::get('task/details/{id}', [TaskController::class,'details_task']);
 
 
