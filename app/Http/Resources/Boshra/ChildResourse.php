@@ -24,6 +24,8 @@ class ChildResourse extends JsonResource
             'father_name' => PersonalInformation::where('child_id' , $this->id)->where('ques_id' , 19)->value('answer'),
             'name' => $this->name ,
             'age' =>$this->age ,
+            'infection' =>$this->infection ,
+            'section' =>$this->section ,
             'phone' => '0' . $this->phone_num ,
             'birth_date' => PersonalInformation::where('child_id' , $this->id)->where('ques_id' , 4)->value('answer'),
             'family' => FamilyResource::collection($family) ,
