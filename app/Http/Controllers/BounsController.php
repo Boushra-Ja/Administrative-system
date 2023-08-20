@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Events\NotificationEvent;
 use App\Http\Controllers\API\BaseController;
+use App\Http\Resources\PointsResource;
+use App\Http\Resources\TaskkResource;
 use App\Models\Bouns;
 use App\Models\Notification;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdateBounsRequest;
+use Illuminate\Support\Facades\DB;
 
 class BounsController extends BaseController
 {
@@ -47,12 +50,32 @@ class BounsController extends BaseController
         $realTime->save();
 
         return response()->json([
-            'message'=>'Bouns send successfully',
+            'message'=>'PointsResource send successfully',
             'Task' => $tt,
         ]);
 
 
     }
+
+
+    public function OrderBouns()
+
+    {
+
+
+        $r= User::query()->where('role','=','Employee')->orderBy('points', 'desc')->take(5)->get();
+
+        return response()->json([
+
+            'Task' => PointsResource::collection($r),
+        ]);
+
+
+
+
+    }
+
+
 
     public function details_ِbouns($bouns_id)
     {

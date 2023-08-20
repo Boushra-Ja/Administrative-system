@@ -175,6 +175,8 @@ class TaskController extends BaseController
                     'Task' => $tt,
                 ]);
             } else {
+
+                Appointment::where('id', '=', $Appointment_id)->delete();
                 return response()->json([
                     'message' => 'This user is busy in this time',
                 ]);
